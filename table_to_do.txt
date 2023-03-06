@@ -7,7 +7,7 @@ Boncommande.php
 Catparticipant.php
 Cave.php 
 CB.php
-Client.php
+Client.php --> Lou
 Commande.php
 Commands.php
 Coupon.php
