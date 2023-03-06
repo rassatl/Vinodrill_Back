@@ -11,7 +11,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("act_id")]
         public int IdActivite { get; set; }
 
-        [ForeignKey("fk_part_act")]
+        [ForeignKey("fk_prt_act")]
         [Column("act_idpartenaire")]
         public int IdPartenaire { get; set; }
 
@@ -34,7 +34,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255)]
         public string VilleRdv { get; set; }
 
-        [Column("act_horaireactivite")]
+        [Column("act_horaire")]
         public TimeOnly HoraireActivite { get; set; }
     }
 }
