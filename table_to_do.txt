@@ -16,8 +16,8 @@ Etape.php
 FaitPartiDe.php
 Hebergement.php
 Hotel.php --> Ahmed
-Image.php
-ImageAvis.php
+Image.php --> Ahmed
+ImageAvis.php -->Ahmed
 OAuthProvider.php
 Paiement.php  Fait
 Partenaire.php --> Ahmed
