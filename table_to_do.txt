@@ -24,7 +24,7 @@ Partenaire.php --> Ahmed
 Participe.php
 Provider.php
 ReponseAvi.php
-Reservation.php
+Reservation.php --> Reservation
 Sejour.php --> Ahmed
 Societe.php -->Ahmed
 Theme.php
