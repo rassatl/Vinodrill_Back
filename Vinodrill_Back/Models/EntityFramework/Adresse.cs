@@ -12,6 +12,11 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public int IdAdresse { get; set; }
 
+        [ForeignKey("fk_clt_adr")]
+        [Column("adr_idclient")]
+        [Required]
+        public int IdClient { get; set; }
+
         [Column("adr_libelle")]
         [StringLength(250, ErrorMessage = "the length of the caption must be 250 maximum")]
         [Required]
