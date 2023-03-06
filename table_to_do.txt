@@ -19,7 +19,7 @@ Hotel.php --> Ahmed
 Image.php
 ImageAvis.php
 OAuthProvider.php
-Paiement.php
+Paiement.php --> Ahmed
 Partenaire.php --> Ahmed
 Participe.php
 Provider.php
