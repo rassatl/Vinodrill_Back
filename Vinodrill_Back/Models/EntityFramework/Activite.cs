@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Vinodrill_Back.Models.DataManager
+namespace Vinodrill_Back.Models.EntityFramework
 {
     [Table("t_e_activite_act")]
     public partial class Activite
