@@ -1,13 +1,13 @@
-Activite.php
-Adresse.php
-Avi.php
+Activite.php --> Adlen
+Adresse.php --> Lou
+Avi.php --> Adlen
 Avis.php
 backup.php
 Boncommande.php
 Catparticipant.php
-Cave.php
-CB.php
-Client.php
+Cave.php  
+CB.php --> Lou
+Client.php --> Lou
 Commande.php
 Commands.php
 Coupon.php
@@ -15,18 +15,18 @@ Destination.php
 Etape.php
 FaitPartiDe.php
 Hebergement.php
-Hotel.php
+Hotel.php --> Ahmed
 Image.php
 ImageAvis.php
 OAuthProvider.php
 Paiement.php
-Partenaire.php
+Partenaire.php --> Ahmed
 Participe.php
 Provider.php
 ReponseAvi.php
 Reservation.php
 Sejour.php
-Societe.php
+Societe.php -->Ahmed
 Theme.php
 Typevisite.php
 User.php
