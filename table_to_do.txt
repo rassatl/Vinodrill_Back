@@ -3,12 +3,12 @@ Adresse.php --> Lou
 Avi.php --> Adlen
 Avis.php  Fait
 backup.php
-Boncommande.php 
+Boncommande.php --> Baptiste
 Catparticipant.php --> MegaBG
 Cave.php  
 CB.php --> Lou
 Client.php --> Lou
-Commande.php
+Commande.php --> Baptiste
 Commands.php
 Coupon.php
 Destination.php
