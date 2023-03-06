@@ -25,7 +25,7 @@ Participe.php
 Provider.php
 ReponseAvi.php
 Reservation.php
-Sejour.php
+Sejour.php --> Ahmed
 Societe.php -->Ahmed
 Theme.php
 Typevisite.php
