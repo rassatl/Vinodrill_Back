@@ -6,6 +6,11 @@ namespace Vinodrill_Back.Models.EntityFramework
     [Table("t_e_cave_cav")]
     public partial class Cave
     {
+
+        [Key]
+        [Column("cav_id")]
+        public int IdCave { get; set; }
+
         [Key]
         [ForeignKey("fk_cav_prt")]
         [Column("prt_id", Order = 1)]
