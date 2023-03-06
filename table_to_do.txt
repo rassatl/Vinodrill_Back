@@ -21,7 +21,7 @@ ImageAvis.php -->Ahmed
 OAuthProvider.php
 Paiement.php  Fait
 Partenaire.php --> Ahmed
-Participe.php --> Ahmed
+Participe.php --> Participe
 Provider.php
 ReponseAvi.php
 Reservation.php --> Reservation
