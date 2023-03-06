@@ -1,12 +1,12 @@
 Activite.php --> Adlen
 Adresse.php --> Lou
-Avi.php 
+Avi.php --> Adlen
 Avis.php
 backup.php
 Boncommande.php
 Catparticipant.php
-Cave.php 
-CB.php
+Cave.php  
+CB.php --> Lou
 Client.php --> Lou
 Commande.php
 Commands.php
@@ -26,7 +26,7 @@ Provider.php
 ReponseAvi.php
 Reservation.php
 Sejour.php
-Societe.php
+Societe.php -->Ahmed
 Theme.php
 Typevisite.php
 User.php
