@@ -28,7 +28,7 @@ Reservation.php --> Reservation
 Sejour.php --> Ahmed
 Societe.php -->Ahmed
 Theme.php --> Ahmed
-Typevisite.php
+Typevisite.php -> Lou
 User.php
 Visite.php --> Ahmed
 
