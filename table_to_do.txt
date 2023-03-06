@@ -5,7 +5,7 @@ Avis.php  Fait
 backup.php
 Boncommande.php --> Baptiste
 Catparticipant.php --> MegaBG
-Cave.php  
+Cave.php --> Ahmed
 CB.php --> Lou
 Client.php --> Lou
 Commande.php --> Baptiste
@@ -21,14 +21,14 @@ ImageAvis.php -->Ahmed
 OAuthProvider.php
 Paiement.php  Fait
 Partenaire.php --> Ahmed
-Participe.php
+Participe.php --> Ahmed
 Provider.php
 ReponseAvi.php
 Reservation.php --> Reservation
 Sejour.php --> Ahmed
 Societe.php -->Ahmed
 Theme.php --> Ahmed
-Typevisite.php
+Typevisite.php -> Lou
 User.php
 Visite.php --> Ahmed
 
