@@ -27,7 +27,7 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [Column("avis_titreavis")]
         [StringLength(255)]
-        public string Commentairea { get;set; }
+        public string TitreAvis { get;set; }
 
         [Column("avis_dateavis", TypeName = "date")]
         public DateTime DateAvis { get; set; } = DateTime.Now;
@@ -38,9 +38,6 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("avis_typesignalement")]
         [StringLength(255)]
         public string? TypeSignalement { get; set; }
-
-        [Column("avis_estreponse")]
-        public bool EstReponse { get; set; } = false;
 
         [InverseProperty(nameof(ReponseAvi.RepReponseAvi))]
         public ICollection<ReponseAvi> RepAvi { get; set; } = null!;
