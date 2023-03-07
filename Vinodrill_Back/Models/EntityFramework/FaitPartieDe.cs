@@ -3,19 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Vinodrill_Back.Models.EntityFramework
 {
-    [Table("t_j_imageavi_imga")]
-    public partial class ImageAvi
+    [Table("t_j_faitpartiede_fpd")]
+    public partial class FaitPartieDe
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_avis_imga")]
-        [Column("avis_id", Order = 0)]
-        public int IdAvis { get; set; }
+        [ForeignKey("fk_vst_fpd")]
+        [Column("vst_id", Order = 0)]
+        public int IdVisite { get; set; }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_img_imga")]
-        [Column("img_id", Order = 1)]
-        public int IdImage { get; set; }
+        [ForeignKey("fk_etp_fpd")]
+        [Column("etp_id", Order = 1)]
+        public int IdEtape { get; set; }
     }
 }

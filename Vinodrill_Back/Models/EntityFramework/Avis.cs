@@ -29,9 +29,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string Commentaire { get; set; }
 
         [Column("avis_titreavis")]
-        [Required]
-        [StringLength(255, ErrorMessage = " titre lenght must be 255 maximum")]
-        public string Commentairea { get;set; }
+        [StringLength(255)]
+        public string TitreAvis { get;set; }
 
         [Column("avis_dateavis", TypeName = "date")]
         [Required]
@@ -46,8 +45,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = " type signalement lenght must be 255 maximum")]
         public string? TypeSignalement { get; set; }
 
-        [Column("avis_estreponse")]
-        [Required]
-        public bool EstReponse { get; set; }
+        [InverseProperty(nameof(ReponseAvi.RepReponseAvi))]
+        public ICollection<ReponseAvi> RepAvi { get; set; } = null!;
     }
 }
