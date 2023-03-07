@@ -8,13 +8,13 @@ namespace Vinodrill_Back.Models.EntityFramework
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_imga_avis")]
+        [ForeignKey("fk_avis_imga")]
         [Column("avis_id", Order = 0)]
         public int IdAvis { get; set; }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_imga_img")]
+        [ForeignKey("fk_img_imga")]
         [Column("img_id", Order = 1)]
         public int IdImage { get; set; }
     }

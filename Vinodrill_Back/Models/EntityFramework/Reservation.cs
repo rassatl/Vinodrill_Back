@@ -14,7 +14,7 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_rsrv_sjr")]
+        [ForeignKey("fk_sjr_rsrv")]
         [Column("sjr_id", Order = 1)]
         public int IdSejour { get; set; }
 
