@@ -7,16 +7,17 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class Visite
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("vst_id")]
         public int IdVisite { get; set; }
 
         [ForeignKey("fk_tvst_vst")]
-        [Column("tvst_idtypevisite", Order = 1)]
+        [Column("tvst_idtypevisite", Order = 0)]
         [Required]
         public int IdTypeVisite { get; set; }
 
-        [ForeignKey("fk_tvst_prt")]
-        [Column("prt_id", Order = 2)]
+        [ForeignKey("fk_tvst_vrt")]
+        [Column("prt_id", Order = 1)]
         [Required]
         public int IdPartenaire { get; set; }
 
