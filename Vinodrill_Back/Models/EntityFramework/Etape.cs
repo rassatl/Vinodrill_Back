@@ -16,6 +16,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int IdHebergement{ get; set; }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("etp_id")]
         public int IdEtape { get; set; }
 

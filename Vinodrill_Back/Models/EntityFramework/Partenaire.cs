@@ -8,6 +8,7 @@ namespace Vinodrill_Back.Models.EntityFramework
     {
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("prt_id")]
         public int IdPartenaire { get; set; }
 

@@ -7,6 +7,7 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class Image
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("img_id")]
         public int IdImage { get; set; }
 
