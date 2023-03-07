@@ -8,11 +8,11 @@ namespace Vinodrill_Back.Models.EntityFramework
     {
 
         [Key]
-        [ForeignKey("fk_htl_prt")]
+        [ForeignKey("fk_prt_htl")]
         [Column("prt_id", Order = 1)]
         public int IdPartenaire { get; set; }
 
-        [ForeignKey("fk_htl_etht")]
+        [ForeignKey("fk_etht_htl")]
         [Column("ect_nb", Order = 0)]
         [Range(0, 5)]
         public int NbEtoileHotel { get; set; }
