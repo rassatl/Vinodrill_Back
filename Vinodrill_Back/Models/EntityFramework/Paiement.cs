@@ -24,10 +24,12 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [Column("pmt_preference")]
         [Required]
-        public bool PreferencePaiement { get; set; }
+        public bool PreferencePaiement { get; set; } = false;
 
-        [InverseProperty("ClientAdresse")]
-        public virtual ICollection<Client>? ClientNavigation { get; set; } = null!;
+        [InverseProperty(nameof(Client.PaiementClientNavigation))]
+        public virtual Client ClientPaiementNavigation { get; set; } = null!;
 
+        [InverseProperty(nameof(Commande.PaiementCommandeNavigation))]
+        public virtual ICollection<Commande> CommandePaiementNavigation { get; set; } = new List<Commande>();
     }
 }
