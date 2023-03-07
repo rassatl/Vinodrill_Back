@@ -37,7 +37,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public Decimal PrixSejour { get; set; }
 
-        [Column("sjr_description")]
+        [Column("sjr_description", TypeName = "text")]
         [Required]
         public string DescriptionSejour { get; set; }
 

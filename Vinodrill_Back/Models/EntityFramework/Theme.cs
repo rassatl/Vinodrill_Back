@@ -21,7 +21,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string ImgThemePage { get; set; }
 
-        [Column("thm_contenuthemepage")]
+        [Column("thm_contenuthemepage", TypeName = "text")]
         [Required]
         public string ContenuThemePage { get; set; }
     }

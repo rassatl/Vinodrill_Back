@@ -24,7 +24,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public int Note { get;set;}
 
-        [Column("avis_commentaire")]
+        [Column("avis_commentaire", TypeName = "text")]
         [Required]
         public string Commentaire { get; set; }
 

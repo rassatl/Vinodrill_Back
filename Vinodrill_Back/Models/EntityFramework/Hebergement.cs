@@ -21,7 +21,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string LibelleHebergement { get; set; }
 
-        [Column("hbg_description")]
+        [Column("hbg_description", TypeName = "text")]
         [Required]
         public string DescriptionHebergement { get; set; }
 

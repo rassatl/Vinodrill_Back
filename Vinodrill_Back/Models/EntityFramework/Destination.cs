@@ -17,7 +17,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = "the length of the destination must be 255 maximum")]
         public string LibelleDestination { get; set; }
 
-        [Column("dst_description")]
+        [Column("dst_description", TypeName = "text")]
         [Required]
         public string DescriptionDestination { get; set; }
     }

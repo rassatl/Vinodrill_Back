@@ -19,7 +19,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = "libelle must be 255 maximum")]
         public string LibelleActivite { get; set; }
 
-        [Column("act_description")]
+        [Column("act_description", TypeName = "text")]
         public string DescriptionActivite { get; set; }
 
         [Column("act_ruerdv")]

@@ -52,7 +52,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string Contact { get; set; }
 
-        [Column("prt_datail")]
+        [Column("prt_datail", TypeName = "text")]
         [Required]
         public string DetailPartenaire { get; set; }
 

@@ -25,7 +25,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = "the libelle must be 255 maximum")]
         public string LibelleVisite { get; set; }
 
-        [Column("vst_description")]
+        [Column("vst_description", TypeName = "text")]
         public string DescriptionVisite { get; set; }
 
         [Column("vst_horaire")]

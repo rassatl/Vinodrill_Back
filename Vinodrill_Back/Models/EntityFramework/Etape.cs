@@ -25,11 +25,11 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string TitreEtape { get; set; }
 
-        [Column("etp_description")]
+        [Column("etp_description", TypeName = "text")]
         [Required]
         public string DescriptionEtape { get; set; }
 
-        [Column("etp_photo")]
+        [Column("etp_photo", TypeName = "text")]
         [Required]
         public string PhotoEtape { get; set; }
 
