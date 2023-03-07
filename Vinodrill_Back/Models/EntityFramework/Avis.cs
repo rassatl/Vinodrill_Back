@@ -20,26 +20,34 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int IdSejour { get; set; }
 
         [Column("avis_note")]
+        [Range(0, 5)]
+        [Required]
         public int Note { get;set;}
 
         [Column("avis_commentaire")]
+        [Required]
         public string Commentaire { get; set; }
 
         [Column("avis_titreavis")]
-        [StringLength(255)]
+        [Required]
+        [StringLength(255, ErrorMessage = " titre lenght must be 255 maximum")]
         public string Commentairea { get;set; }
 
         [Column("avis_dateavis", TypeName = "date")]
+        [Required]
         public DateTime DateAvis { get; set; } = DateTime.Now;
 
         [Column("avis_avissignale")]
-        public bool AvisSignale { get; set; } = false;
+        [Required]
+        public bool AvisSignale { get; set; }
 
         [Column("avis_typesignalement")]
-        [StringLength(255)]
+        [Required]
+        [StringLength(255, ErrorMessage = " type signalement lenght must be 255 maximum")]
         public string? TypeSignalement { get; set; }
 
         [Column("avis_estreponse")]
-        public bool EstReponse { get; set; } = false;
+        [Required]
+        public bool EstReponse { get; set; }
     }
 }
