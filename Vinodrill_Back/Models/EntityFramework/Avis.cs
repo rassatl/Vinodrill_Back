@@ -41,5 +41,8 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [Column("avis_estreponse")]
         public bool EstReponse { get; set; } = false;
+
+        [InverseProperty(nameof(ReponseAvi.RepReponseAvi))]
+        public ICollection<ReponseAvi> RepAvi { get; set; } = null!;
     }
 }
