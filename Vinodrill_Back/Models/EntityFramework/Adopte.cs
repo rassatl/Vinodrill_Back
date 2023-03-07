@@ -6,11 +6,15 @@ namespace Vinodrill_Back.Models.EntityFramework
     [Table("t_j_adopte_adpt")]
     public partial class Adopte
     {
-        [ForeignKey("fk_adpt_clt")]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [ForeignKey("fk_clt_adpt")]
         [Column("clt_id", Order = 0)]
         public int IdClient { get; set; }
 
-        [ForeignKey("fk_adpt_clt")]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [ForeignKey("fk_cke_adpt")]
         [Column("cke_id", Order = 1)]
         public int IdCookie { get; set; }
 

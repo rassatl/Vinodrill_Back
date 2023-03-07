@@ -12,7 +12,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int IdActivite { get; set; }
 
         [ForeignKey("fk_prt_act")]
-        [Column("act_idpartenaire")]
+        [Column("prt_id")]
         public int IdPartenaire { get; set; }
 
         [Column("act_libelle")]

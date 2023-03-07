@@ -12,6 +12,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int IdPartenaire { get; set; }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("hbg_id")]
         public int IdHebergement { get; set; }
 
