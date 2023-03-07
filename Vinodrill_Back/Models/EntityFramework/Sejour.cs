@@ -6,28 +6,30 @@ namespace Vinodrill_Back.Models.EntityFramework
     [Table("t_e_sejour_sjr")]
     public partial class Sejour
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("sjr_id")]
+        public int IdSejour { get; set; }
 
         [Key]
-        [ForeignKey("fk_sjr_thm")]
-        [Column("thm_id", Order = 0)]
-        public int IdTheme { get; set; }
-
-        [Key]
-        [ForeignKey("fk_sjr_dst")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [ForeignKey("fk_dst_sjr")]
         [Column("dst_id", Order = 1)]
         public int IdDestination { get; set; }
 
         [Key]
-        [Column("sjr_id")]
-        public int IdSejour { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [ForeignKey("fk_thm_sjr")]
+        [Column("thm_id", Order = 0)]
+        public int IdTheme { get; set; }
 
         [Column("sjr_titre")]
-        [StringLength(255, ErrorMessage = " titre lenght must be 255 maximum")]
+        [StringLength(255, ErrorMessage = "titre lenght must be 255 maximum")]
         [Required]
         public string TitreSejour { get; set; }
 
         [Column("sjr_photo")]
-        [StringLength(255, ErrorMessage = " photo lenght must be 255 maximum")]
+        [StringLength(255, ErrorMessage = "photo lenght must be 255 maximum")]
         [Required]
         public string PhotoSejour { get; set; }
 
