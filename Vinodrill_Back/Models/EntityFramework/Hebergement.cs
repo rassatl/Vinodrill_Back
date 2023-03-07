@@ -7,7 +7,7 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class Hebergement
     {
 
-        [ForeignKey("fk_hbg_prt")]
+        [ForeignKey("fk_prt_hbg")]
         [Column("prt_id")]
         public int IdPartenaire { get; set; }
 
@@ -32,7 +32,5 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = " horaire lenght must be 255 maximum")]
         [Required]
         public TimeOnly HoraireHebergement { get; set; }
-
-
     }
 }
