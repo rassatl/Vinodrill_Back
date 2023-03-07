@@ -48,5 +48,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [InverseProperty(nameof(BonCommande.CommandeNavigation))]
         public virtual ICollection<BonCommande> BonCommandeNavigation { get; set; } = null!;
 
+        [InverseProperty(nameof(BonReduction.CommandeNavigation))]
+        public virtual ICollection<BonReduction> BonReductionNavigation { get; set; } = null!;
+
     }
 }
