@@ -7,6 +7,7 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class CatParticipant
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("cppt_id")]
         public int IdCategorieParticipant { get; set; }
 

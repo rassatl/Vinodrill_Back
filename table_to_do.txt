@@ -2,14 +2,12 @@ Activite.php --> Adlen
 Adresse.php --> Lou
 Avi.php --> Adlen
 Avis.php  Fait
-backup.php
 Boncommande.php --> Baptiste
 Catparticipant.php --> MegaBG
 Cave.php --> Ahmed
 CB.php --> Lou
 Client.php --> Lou
 Commande.php --> Baptiste
-Commands.php
 Coupon.php --> Baptiste
 Destination.php --> Lou
 Etape.php --> Ahmed
@@ -18,12 +16,11 @@ Hebergement.php -->ahmed
 Hotel.php --> Ahmed
 Image.php --> Ahmed
 ImageAvis.php -->Ahmed
-OAuthProvider.php
 Paiement.php  Fait
 Partenaire.php --> Ahmed
 Participe.php --> Participe
-Provider.php
-ReponseAvi.php
+Provider.php --> Adlen
+ReponseAvi.php --> Adlen
 Reservation.php --> Reservation
 Sejour.php --> Ahmed
 Societe.php -->Ahmed
