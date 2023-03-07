@@ -38,7 +38,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string CodePostalAdresse { get; set; }
 
         [Column("adr_pays")]
-        [StringLength(5, ErrorMessage = "country length should be 25 maximum")]
+        [StringLength(255, ErrorMessage = "country length should be 255 maximum")]
         [Required]
         public string PaysAdresse { get; set; }
         
