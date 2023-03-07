@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 
 namespace Vinodrill_Back.Models.EntityFramework
 {
@@ -52,8 +53,16 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string EmailClient { get; set; }
 
-        [InverseProperty("ClientAdresse")]
-        public virtual ICollection<Client>? ClientNavigation { get; set; } = null!;
+        [InverseProperty(nameof(Cb.ClientCbNavigation))]
+        public virtual Cb CbClientNavigation { get; set; } = null!;
 
+        [InverseProperty(nameof(Adresse.ClientAdresseNavigation))]
+        public virtual ICollection<Adresse> AdresseClientNavigation { get; set; } = new List<Adresse>();
+
+        [InverseProperty(nameof(Paiement.ClientPaiementNavigation))]
+        public virtual ICollection<Paiement> PaiementClientNavigation { get; set; } = new List<Paiement>();
+
+        [InverseProperty(nameof(Commande.ClientCommandeNavigation))]
+        public virtual ICollection<Commande> CommandeClientNavigation { get; set; } = new List<Commande>();
     }
 }

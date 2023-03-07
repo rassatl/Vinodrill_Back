@@ -41,9 +41,10 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = "country length should be 255 maximum")]
         [Required]
         public string PaysAdresse { get; set; }
-        
-        [InverseProperty("ClientAdresse")]
-        public virtual ICollection<Client>? ClientNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Client.AdresseClientNavigation))]
+        public virtual Client ClientAdresseNavigation { get; set; } = null!;
+
 
     }
 }
