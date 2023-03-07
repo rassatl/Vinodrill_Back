@@ -51,10 +51,10 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string DetailPartenaire { get; set; }
 
-        [InverseProperty("PartenaireHotel")]
+        [InverseProperty(nameof(Hotel.PartenaireHotel))]
         public virtual Hotel HotelPartenaire { get; set; } = null!;
 
-        [InverseProperty("PartenaireSociete")]
+        [InverseProperty(nameof(Societe.PartenaireSociete))]
         public virtual Hotel SocietePartenaire { get; set; } = null!;
 
     }
