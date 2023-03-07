@@ -16,7 +16,6 @@ Hebergement.php -->ahmed
 Hotel.php --> Ahmed
 Image.php --> Ahmed
 ImageAvis.php -->Ahmed
-OAuthProvider.php
 Paiement.php  Fait
 Partenaire.php --> Ahmed
 Participe.php --> Participe
