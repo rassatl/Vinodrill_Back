@@ -8,6 +8,7 @@ namespace Vinodrill_Back.Models.EntityFramework
     {
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("prt_id")]
         public int IdPartenaire { get; set; }
 
@@ -46,14 +47,14 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string Contact { get; set; }
 
-        [Column("prt_datail")]
+        [Column("prt_datail", TypeName = "text")]
         [Required]
         public string DetailPartenaire { get; set; }
 
-        [InverseProperty("PartenaireHotel")]
+        [InverseProperty(nameof(Hotel.PartenaireHotel))]
         public virtual Hotel HotelPartenaire { get; set; } = null!;
 
-        [InverseProperty("PartenaireSociete")]
+        [InverseProperty(nameof(Societe.PartenaireSociete))]
         public virtual Hotel SocietePartenaire { get; set; } = null!;
 
     }

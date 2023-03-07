@@ -7,6 +7,7 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class EtoileHotel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("etht_nb")]
         [Range(0, 5)]
         public int NbEtoileHotel { get; set; }

@@ -12,17 +12,20 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int IdAvis { get; set; }
 
         [ForeignKey("fk_clt_avis")]
-        [Column("avis_idclient")]
+        [Column("clt_id", Order = 0)]
         public int IdClient { get; set;}
 
         [ForeignKey("fk_sej_avis")]
-        [Column("avis_idsejour")]
+        [Column("sjr_id", Order = 1)]
         public int IdSejour { get; set; }
 
         [Column("avis_note")]
+        [Range(0, 5)]
+        [Required]
         public int Note { get;set;}
 
-        [Column("avis_commentaire")]
+        [Column("avis_commentaire", TypeName = "text")]
+        [Required]
         public string Commentaire { get; set; }
 
         [Column("avis_titreavis")]
@@ -30,13 +33,16 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string TitreAvis { get;set; }
 
         [Column("avis_dateavis", TypeName = "date")]
+        [Required]
         public DateTime DateAvis { get; set; } = DateTime.Now;
 
         [Column("avis_avissignale")]
-        public bool AvisSignale { get; set; } = false;
+        [Required]
+        public bool AvisSignale { get; set; }
 
         [Column("avis_typesignalement")]
-        [StringLength(255)]
+        [Required]
+        [StringLength(255, ErrorMessage = " type signalement lenght must be 255 maximum")]
         public string? TypeSignalement { get; set; }
 
         [InverseProperty(nameof(ReponseAvi.RepReponseAvi))]

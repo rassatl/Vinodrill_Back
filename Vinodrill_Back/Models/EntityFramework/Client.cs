@@ -13,12 +13,12 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int IdClient { get; set; }
 
         [ForeignKey("fk_avis_clt")]
-        [Column("avis_idavis")]
+        [Column("avis_idavis", Order = 0)]
         [Required]
-        public int? IdAvisClient { get; set; } = null;
+        public int IdAvisClient { get; set; }
 
         [ForeignKey("fk_cb_clt")]
-        [Column("cb_idcb")]
+        [Column("cb_idcb", Order = 1)]
         [Required]
         public int IdCbClient { get; set; }
 
