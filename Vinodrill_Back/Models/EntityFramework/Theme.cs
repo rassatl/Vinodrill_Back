@@ -7,11 +7,12 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class Theme
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("thm_id")]
         public int IdTheme { get; set; }
 
         [Column("thm_libelle")]
-        [StringLength(255, ErrorMessage = "the length of the libelle must be 255 maximum")]
+        [StringLength(250, ErrorMessage = "the length of the libelle must be 250 maximum")]
         [Required]
         public string LibelleTheme { get; set; }
 

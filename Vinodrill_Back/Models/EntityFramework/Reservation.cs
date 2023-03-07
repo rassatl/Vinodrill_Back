@@ -8,14 +8,14 @@ namespace Vinodrill_Back.Models.EntityFramework
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_rsrv_cmd")]
-        [Column("cmd_id")]
+        [ForeignKey("fk_cmd_rsrv")]
+        [Column("cmd_id", Order = 0)]
         public int RefCommande { get; set; }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ForeignKey("fk_rsrv_sjr")]
-        [Column("sjr_id")]
+        [Column("sjr_id", Order = 1)]
         public int IdSejour { get; set; }
 
         [Column("rsrv_datedebutreservation", TypeName = "date")]
