@@ -8,8 +8,8 @@ namespace Vinodrill_Back.Models.EntityFramework
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_cppt_ppt")]
-        [Column("cppt_id", Order = 0)]
+        [ForeignKey("fk_cpt_ppt")]
+        [Column("cpt_id", Order = 0)]
         public int IdCategorieParticipant { get; set; }
 
         [Key]

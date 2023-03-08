@@ -11,12 +11,12 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("vst_id")]
         public int IdVisite { get; set; }
 
-        [ForeignKey("fk_tvst_vst")]
-        [Column("tvst_idtypevisite", Order = 0)]
+        [ForeignKey("fk_tvs_vst")]
+        [Column("tvs_idtypevisite", Order = 0)]
         [Required]
         public int IdTypeVisite { get; set; }
 
-        [ForeignKey("fk_tvst_vrt")]
+        [ForeignKey("fk_tvs_vrt")]
         [Column("prt_id", Order = 1)]
         [Required]
         public int IdPartenaire { get; set; }

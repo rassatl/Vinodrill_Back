@@ -3,30 +3,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Vinodrill_Back.Models.EntityFramework
 {
-    [Table("t_e_bonreduction_brdc")]
+    [Table("t_e_bonreduction_brd")]
     public partial class BonReduction
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("brdc_id")]
+        [Column("brd_id")]
         public int IdBonReduction { get; set; }
 
-        [ForeignKey("fk_cmd_brdc")]
+        [ForeignKey("fk_cmd_brd")]
         [Required]
         [Column("cmd_id")]
         public int RefCommande { get; set; }
 
         [Required]
-        [Column("brdc_codebonreduction")]
+        [Column("brd_codebonreduction")]
         [StringLength(255)]
         public string CodeBonReduction { get; set; }
 
         [Required]
-        [Column("brdc_datevalidite", TypeName = "date")]
+        [Column("brd_datevalidite", TypeName = "date")]
         public DateTime DateValidite { get; set; }
 
         [Required]
-        [Column("brdc_estvalide")]
+        [Column("brd_estvalide")]
         public bool EstValide { get; set; }
 
         [InverseProperty(nameof(Commande.BonReductionNavigation))]
