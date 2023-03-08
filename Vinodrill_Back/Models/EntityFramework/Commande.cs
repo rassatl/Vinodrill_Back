@@ -25,10 +25,12 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public DateTime DateCommande { get; set; }
 
+
         [Column("cmd_prixcommande")]
         [Required]
         public decimal PrixCommande { get; set; }
 
+        [IntegerValidator]
         [Column("cmd_quantite")]
         [Required]
         public int Quantite { get; set; }

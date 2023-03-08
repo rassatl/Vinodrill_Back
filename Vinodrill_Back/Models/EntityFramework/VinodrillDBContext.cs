@@ -13,6 +13,10 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Commande>(entity =>
+            {
+                entity.Property(c => c.Quantite);
+            });
         }
     }
 }
