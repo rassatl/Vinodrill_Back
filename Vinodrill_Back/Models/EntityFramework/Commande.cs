@@ -30,7 +30,6 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public decimal PrixCommande { get; set; }
 
-        [IntegerValidator]
         [Column("cmd_quantite")]
         [Required]
         public int Quantite { get; set; }
@@ -59,8 +58,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [InverseProperty(nameof(Paiement.CommandePaiementNavigation))]
         public virtual Paiement PaiementCommandeNavigation { get; set; } = null!;
 
-        [InverseProperty(nameof(Reservation.CommandeReservationNavigation))]
-        public virtual ICollection<Reservation> ReservationCommandeNavigation {get; set; } = null!;
+        //[InverseProperty(nameof(Reservation.CommandeReservationNavigation))]
+        //public virtual ICollection<Reservation> ReservationCommandeNavigation {get; set; } = null!;
 
     }
 }
