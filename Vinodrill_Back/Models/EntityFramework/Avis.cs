@@ -45,16 +45,16 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = "type signalement lenght must be 255 maximum")]
         public string? TypeSignalement { get; set; }
 
-        [InverseProperty(nameof(ReponseAvi.AviReponseAviNavigation))]
-        public virtual ReponseAvi ReponseAviAviNavigation { get; set; } = null;
+        [InverseProperty(nameof(ReponseAvis.AvisReponseAvisNavigation))]
+        public virtual ReponseAvis ReponseAvisAvisNavigation { get; set; } = null;
 
         [InverseProperty(nameof(Client.AvisClientNavigation))]
         public virtual Client ClientAvisNavigation { get; set; } = null;
 
         [InverseProperty(nameof(Image.AvisImageNavigation))]
-        public virtual ICollection<Image> ImageAvisNavigation { get; set; } = null;
+        public virtual ICollection<Image> ImageAvisNavigation { get; set; } = new List<Image>();
 
         [InverseProperty(nameof(Sejour.AvisSejourNavigation))]
-        public virtual ICollection<Sejour> SejourAvisNavigation { get; set; } = null;
+        public virtual ICollection<Sejour> SejourAvisNavigation { get; set; } = new List<Sejour>();
     }
 }

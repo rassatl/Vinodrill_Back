@@ -43,7 +43,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string PaysAdresse { get; set; }
 
         [InverseProperty(nameof(Client.AdresseClientNavigation))]
-        public virtual ICollection<Client> ClientAdresseNavigation { get; set; } = null!;
+        public virtual ICollection<Client> ClientAdresseNavigation { get; set; } = new List<Client>();
 
 
     }
