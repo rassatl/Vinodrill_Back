@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Vinodrill_Back.Models.EntityFramework
 {
-    [Table("t_e_hotel_htl")]
+    [Table("t_h_hotel_htl")]
     public partial class Hotel : Partenaire
     {
 
@@ -58,10 +58,13 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string DetailPartenaire { get; set; }
 
         [InverseProperty(nameof(Partenaire.HotelPartenaireNavigation))]
-        public virtual ICollection<Partenaire> PartenaireHotelNavigation { get; set; } = new List<Partenaire>();
+        public virtual Partenaire PartenaireHotelNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(EtoileHotel.HotelEtoileHotelNavigation))]
-        public virtual ICollection<EtoileHotel> EtoileHotHotelNavigation { get; set; } = new List<EtoileHotel>();
+        public virtual EtoileHotel EtoileHotHotelNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Hebergement.HotelHebergementNavigation))]
+        public virtual ICollection<Hebergement> HebergementHotelNavigation { get; set; } = new List<Hebergement>();
 
     }
 }

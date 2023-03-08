@@ -33,5 +33,11 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = " horaire lenght must be 255 maximum")]
         [Required]
         public TimeOnly HoraireHebergement { get; set; }
+
+        [InverseProperty(nameof(Hotel.HebergementHotelNavigation))]
+        public virtual Hotel HotelHebergementNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Etape.HebergementEtapeNavigation))]
+        public virtual ICollection<Etape> EtapeHebergementNavigation { get; set; } = new List<Etape>();
     }
 }

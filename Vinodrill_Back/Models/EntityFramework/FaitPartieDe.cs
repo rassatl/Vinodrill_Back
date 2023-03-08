@@ -17,5 +17,11 @@ namespace Vinodrill_Back.Models.EntityFramework
         [ForeignKey("fk_etp_fpd")]
         [Column("etp_id", Order = 1)]
         public int IdEtape { get; set; }
+
+        [InverseProperty(nameof(Visite.FaitPartieDeVisiteNavigation))]
+        public virtual Visite VisiteFaitPartieDeNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Etape.FaitPartieDeEtapeNavigation))]
+        public virtual Etape EtapeFaitPartieDeNavigation { get; set; } = null!;
     }
 }

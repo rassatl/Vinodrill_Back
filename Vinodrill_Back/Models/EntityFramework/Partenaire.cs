@@ -47,18 +47,18 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string Contact { get; set; }
 
-        [Column("prt_datail", TypeName = "text")]
+        [Column("prt_detailpartenaire", TypeName = "text")]
         [Required]
         public string DetailPartenaire { get; set; }
 
-        [InverseProperty(nameof(Hotel.PartenaireHotelNavigation))]
-        public virtual Hotel HotelPartenaireNavigation { get; set; } = null!;
-
         [InverseProperty(nameof(Societe.PartenaireSocieteNavigation))]
-        public virtual Hotel SocietePartenaireNavigation { get; set; } = null!;
+        public virtual ICollection<Societe> SocietePartenaireNavigation { get; set; } = new List<Societe>();
 
         [InverseProperty(nameof(Cave.PartenaireCaveNavigation))]
-        public virtual Cave CavePartenaireNavigation { get; set; } = null!;
+        public virtual ICollection<Cave> CavePartenaireNavigation { get; set; } = new List<Cave>();
+
+        [InverseProperty(nameof(Hotel.PartenaireHotelNavigation))]
+        public virtual ICollection<Hotel> HotelPartenaireNavigation { get; set; } = new List<Hotel>();
 
 
     }

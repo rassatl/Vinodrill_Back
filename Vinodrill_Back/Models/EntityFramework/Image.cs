@@ -15,5 +15,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = "the length of the libelle must be 255 maximum")]
         [Required]
         public string LienImage { get; set; }
+
+        [InverseProperty(nameof(ImageAvis.ImageImageAvisNavigation))]
+        public virtual ICollection<ImageAvis> CatParticipantParticipeNavigation { get; set; } = new List<ImageAvis>();
     }
 }

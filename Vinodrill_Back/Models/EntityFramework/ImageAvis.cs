@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Vinodrill_Back.Models.EntityFramework
 {
-    [Table("t_j_imageavi_ima")]
-    public partial class ImageAvi
+    [Table("t_j_imageavis_ima")]
+    public partial class ImageAvis
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -17,5 +17,11 @@ namespace Vinodrill_Back.Models.EntityFramework
         [ForeignKey("fk_img_ima")]
         [Column("im_id", Order = 1)]
         public int IdImage { get; set; }
+
+        [InverseProperty(nameof(Avis.ImageAvisAvisNavigation))]
+        public virtual Avis AvisImageAvisNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Image.ImageAvisImageNavigation))]
+        public virtual Image ImageImageAvisNavigation { get; set; } = null!;
     }
 }
