@@ -43,16 +43,16 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string VideoEtape { get; set; }
 
-        [InverseProperty(nameof(Visite.EtapeVisiteNavigation))]
-        public virtual ICollection<Visite> VisiteEtapeNavigation {get; set; } = null;
+        [InverseProperty(nameof(FaitPartieDe.EtapeFaitPartieDeNavigation))]
+        public virtual ICollection<FaitPartieDe> FaitPartieDeEtapeNavigation { get; set; } = new List<FaitPartieDe>();
 
         [InverseProperty(nameof(Hebergement.EtapeHebergementNavigation))]
-        public virtual ICollection<Hebergement> HebergementEtapeNavigation {get; set; } = null;
+        public virtual ICollection<Hebergement> HebergementEtapeNavigation {get; set; } = new List<Hebergement>();
 
-        [InverseProperty(nameof(Activite.EtapeActiviteNavigation))]
-        public virtual ICollection<Activite> ActiviteEtapeNavigation {get; set; } = null;
+        [InverseProperty(nameof(Effectue.EtapeEffectueNavigation))]
+        public virtual ICollection<Effectue> EffectueEtapeNavigation { get; set; } = new List<Effectue>();
 
-         [InverseProperty(nameof(Sejour.EtapeSejourNavigation))]
+        [InverseProperty(nameof(Sejour.EtapeSejourNavigation))]
         public virtual ICollection<Sejour> SejourEtapeNavigation {get; set; } = null!;
     }
 }

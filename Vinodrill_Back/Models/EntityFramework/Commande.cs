@@ -53,13 +53,13 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual BonReduction BonReductionCommandeNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Client.CommandeClientNavigation))]
-        public virtual ICollection<Client> ClientCommandeNavigation { get; set; } = null;
+        public virtual ICollection<Client> ClientCommandeNavigation { get; set; } = new List<Client>();
 
         [InverseProperty(nameof(Paiement.CommandePaiementNavigation))]
-        public virtual ICollection<Paiement> PaiementCommandeNavigation { get; set; } = null;
+        public virtual ICollection<Paiement> PaiementCommandeNavigation { get; set; } = new List<Paiement>();
 
-        //[InverseProperty(nameof(Reservation.CommandeReservationNavigation))]
-        //public virtual ICollection<Reservation> ReservationCommandeNavigation {get; set; } = null!;
+        [InverseProperty(nameof(Reservation.CommandeReservationNavigation))]
+        public virtual ICollection<Reservation> ReservationCommandeNavigation { get; set; } = new List<Reservation>();
 
     }
 }

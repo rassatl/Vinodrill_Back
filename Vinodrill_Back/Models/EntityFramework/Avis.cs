@@ -51,8 +51,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [InverseProperty(nameof(Client.AvisClientNavigation))]
         public virtual Client ClientAvisNavigation { get; set; } = null;
 
-        [InverseProperty(nameof(Image.AvisImageNavigation))]
-        public virtual ICollection<Image> ImageAvisNavigation { get; set; } = new List<Image>();
+        [InverseProperty(nameof(ImageAvis.AvisImageAvisNavigation))]
+        public virtual ICollection<ImageAvis> ImageAvisAvisNavigation { get; set; } = new List<ImageAvis>();
 
         [InverseProperty(nameof(Sejour.AvisSejourNavigation))]
         public virtual ICollection<Sejour> SejourAvisNavigation { get; set; } = new List<Sejour>();

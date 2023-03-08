@@ -19,9 +19,9 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int IdPartenaire { get; set; }
 
         [InverseProperty(nameof(Partenaire.CavePartenaireNavigation))]
-        public virtual Partenaire PartenaireCaveNavigation { get; set; } = null;
+        public virtual Partenaire PartenaireCaveNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Visite.CaveVisiteNavigation))]
-        public virtual Visite VisiteCaveNavigation { get; set; } = null;
+        public virtual Visite VisiteCaveNavigation { get; set; } = null!;
     }
 }

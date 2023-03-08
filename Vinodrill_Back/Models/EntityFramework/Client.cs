@@ -54,7 +54,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string EmailClient { get; set; }
 
         [InverseProperty(nameof(Cb.ClientCbNavigation))]
-        public virtual ICollection<Cb> CbClientNavigation { get; set; } = null!;
+        public virtual ICollection<Cb> CbClientNavigation { get; set; } = new List<Cb>();
 
         [InverseProperty(nameof(Adresse.ClientAdresseNavigation))]
         public virtual Adresse AdresseClientNavigation { get; set; } = null!;
@@ -67,8 +67,5 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [InverseProperty(nameof(Avis.ClientAvisNavigation))]
         public virtual Avis AvisClientNavigation { get; set; } = null!;
-
-        [InverseProperty(nameof(Sejour.ClientSejourNavigation))]
-        public virtual ICollection<Sejour> SejourClientNavigation { get; set; } = null;
     }
 }
