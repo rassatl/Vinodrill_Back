@@ -6,13 +6,11 @@ namespace Vinodrill_Back.Models.EntityFramework
     [Table("t_j_effectue_efc")]
     public partial class Effectue
     {
-        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ForeignKey("fk_vst_efc")]
         [Column("act_id", Order = 0)]
         public int IdActivite { get; set; }
 
-        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ForeignKey("fk_etp_efc")]
         [Column("etp_id", Order = 1)]

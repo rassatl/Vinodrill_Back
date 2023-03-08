@@ -17,6 +17,6 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string LienImage { get; set; }
 
         [InverseProperty(nameof(ImageAvis.ImageImageAvisNavigation))]
-        public virtual ICollection<ImageAvis> CatParticipantParticipeNavigation { get; set; } = new List<ImageAvis>();
+        public virtual ICollection<ImageAvis> ImageAvisImageNavigation { get; set; } = new List<ImageAvis>();
     }
 }

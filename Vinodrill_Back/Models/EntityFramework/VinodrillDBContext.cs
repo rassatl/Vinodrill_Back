@@ -11,6 +11,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public VinodrillDBContext(DbContextOptions<VinodrillDBContext> options) : base(options)
         {
         }
+        public virtual DbSet<Activite> Activites { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,18 @@ namespace Vinodrill_Back.Models.EntityFramework
             {
                 entity.HasKey(e => new { e.IdVisite, e.IdEtape })
                     .HasName("pk_fait_parti_de");
+            });
+
+            modelBuilder.Entity<Effectue>(entity =>
+            {
+                entity.HasKey(e => new { e.IdActivite, e.IdEtape })
+                    .HasName("pk_effectue");
+            });
+
+            modelBuilder.Entity<ImageAvis>(entity =>
+            {
+                entity.HasKey(e => new { e.IdImage, e.IdAvis })
+                    .HasName("pk_image_avis");
             });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
