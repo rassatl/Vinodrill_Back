@@ -13,7 +13,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("prt_id", Order = 1)]
         public int IdPartenaire { get; set; }
 
-        [ForeignKey("fk_etht_htl")]
+        [ForeignKey("fk_eth_htl")]
         [Column("ect_nb", Order = 0)]
         [Range(0, 5)]
         public int NbEtoileHotel { get; set; }
@@ -57,11 +57,11 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string DetailPartenaire { get; set; }
 
-        [InverseProperty(nameof(Partenaire.HotelPartenaire))]
-        public virtual ICollection<Partenaire> PartenaireHotel { get; set; } = new List<Partenaire>();
+        [InverseProperty(nameof(Partenaire.HotelPartenaireNavigation))]
+        public virtual ICollection<Partenaire> PartenaireHotelNavigation { get; set; } = new List<Partenaire>();
 
-        [InverseProperty(nameof(EtoileHotel.HotelEtoileHot))]
-        public virtual ICollection<EtoileHotel> EtoileHotHotel { get; set; } = new List<EtoileHotel>();
+        [InverseProperty(nameof(EtoileHotel.HotelEtoileHotelNavigation))]
+        public virtual ICollection<EtoileHotel> EtoileHotHotelNavigation { get; set; } = new List<EtoileHotel>();
 
     }
 }
