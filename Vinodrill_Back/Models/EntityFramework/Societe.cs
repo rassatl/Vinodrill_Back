@@ -56,8 +56,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string DetailPartenaire { get; set; }
 
-        [InverseProperty(nameof(Partenaire.SocietePartenaire))]
-        public virtual ICollection<Partenaire> PartenaireSociete { get; set; } = new List<Partenaire>();
+        [InverseProperty(nameof(Partenaire.SocietePartenaireNavigation))]
+        public virtual ICollection<Partenaire> PartenaireSocieteNavigation { get; set; } = new List<Partenaire>();
 
 
     }

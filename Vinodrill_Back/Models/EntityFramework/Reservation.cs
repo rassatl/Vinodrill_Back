@@ -3,39 +3,45 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Vinodrill_Back.Models.EntityFramework
 {
-    [Table("t_j_reservation_rsrv")]
+    [Table("t_j_reservation_rsv")]
     public partial class Reservation
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_cmd_rsrv")]
+        [ForeignKey("fk_cmd_rsv")]
         [Column("cmd_id", Order = 0)]
         public int RefCommande { get; set; }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_sjr_rsrv")]
+        [ForeignKey("fk_sjr_rsv")]
         [Column("sjr_id", Order = 1)]
         public int IdSejour { get; set; }
 
-        [Column("rsrv_datedebutreservation", TypeName = "date")]
+        [Column("rsv_datedebutreservation", TypeName = "date")]
         [Required]
         public DateTime DateDebutReservation { get; set; }
 
-        [Column("rsrv_estcadeau")]
+        [Column("rsv_estcadeau")]
         [Required]
         public bool EstCadeau { get; set; }
 
-        [Column("rsrv_nbenfant")]
+        [Column("rsv_nbenfant")]
         [Required]
         public int NbEnfant { get; set; }
 
-        [Column("rsrv_nbadulte")]
+        [Column("rsv_nbadulte")]
         [Required]
         public int NbAdulte { get; set; }
 
-        [Column("rsrv_nbchambre")]
+        [Column("rsv_nbchambre")]
         [Required]
         public int NbChambre { get; set; }
+
+        [InverseProperty(nameof(Commande.ReservationCommandeNavigation))]
+        public virtual Commande CommandeReservationNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Sejour.ReservationSejourNavigation))]
+        public virtual Sejour SejourReservationNavigation { get; set; } = null!;
     }
 }

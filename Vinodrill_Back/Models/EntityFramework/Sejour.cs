@@ -57,5 +57,23 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("sjr_notemoyenne")]
         [Required]
         public Decimal NoteMoyenne { get; set; }
+
+        [InverseProperty(nameof(Reservation.SejourReservationNavigation))]
+        public virtual ICollection<Reservation> ReservationSejourNavigation { get; set; } = null;
+
+        [InverseProperty(nameof(Participe.SejourParticipeNavigation))]
+        public virtual ICollection<Participe> ParticipeSejourNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Destination.SejourDestinationNavigation))]
+        public virtual Destination DestinationSejourNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Theme.SejourThemeNavigation))]
+        public virtual Theme ThemeSejourNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Etape.SejourEtapeNavigation))]
+        public virtual ICollection<Etape> EtapeSejourNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Avis.SejourAvisNavigation))]
+        public virtual ICollection<Avis> AvisSejourNavigation { get; set; } = null;
     }
 }

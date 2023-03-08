@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Vinodrill_Back.Models.EntityFramework
 {
     [Table("t_e_cave_cav")]
-    public partial class Cave:Partenaire
+    public partial class Cave : Partenaire
     {
 
         [Key]
@@ -56,6 +56,9 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("prt_datail", TypeName = "text")]
         [Required]
         public string DetailPartenaire { get; set; }
+
+        [InverseProperty(nameof(Partenaire.CavePartenaireNavigation))]
+        public virtual ICollection<Partenaire> PartenaireCaveNavigation { get; set; } = new List<Partenaire>();
 
     }
 }

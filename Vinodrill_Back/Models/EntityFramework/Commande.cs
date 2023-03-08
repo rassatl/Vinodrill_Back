@@ -45,17 +45,20 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public bool EstCheque { get; set; }
 
-        [InverseProperty(nameof(BonCommande.CommandeNavigation))]
-        public virtual ICollection<BonCommande> BonCommandeNavigation { get; set; } = null!;
+        [InverseProperty(nameof(BonCommande.CommandeBonCommandeNavigation))]
+        public virtual ICollection<BonCommande> BonCommandeCommandeNavigation { get; set; } = null!;
 
-        [InverseProperty(nameof(BonReduction.CommandeNavigation))]
-        public virtual ICollection<BonReduction> BonReductionNavigation { get; set; } = null!;
+        [InverseProperty(nameof(BonReduction.CommandeBonReductionNavigation))]
+        public virtual ICollection<BonReduction> BonReductionCommandeNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Client.CommandeClientNavigation))]
         public virtual Client ClientCommandeNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Paiement.CommandePaiementNavigation))]
         public virtual Paiement PaiementCommandeNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Reservation.CommandeReservationNavigation))]
+        public virtual ICollection<Reservation> ReservationCommandeNavigation {get; set; } = null!;
 
     }
 }

@@ -20,7 +20,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("prt_rue")]
         [StringLength(255, ErrorMessage = " rue lenght must be 255 maximum")]
         [Required]
-        public string RuePartenaire { get; set; } 
+        public string RuePartenaire { get; set; }
 
         [Column("prt_cp")]
         [StringLength(5, ErrorMessage = " cp lenght must be 5 maximum")]
@@ -51,11 +51,15 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string DetailPartenaire { get; set; }
 
-        [InverseProperty(nameof(Hotel.PartenaireHotel))]
-        public virtual Hotel HotelPartenaire { get; set; } = null!;
+        [InverseProperty(nameof(Hotel.PartenaireHotelNavigation))]
+        public virtual Hotel HotelPartenaireNavigation { get; set; } = null!;
 
-        [InverseProperty(nameof(Societe.PartenaireSociete))]
-        public virtual Hotel SocietePartenaire { get; set; } = null!;
+        [InverseProperty(nameof(Societe.PartenaireSocieteNavigation))]
+        public virtual Hotel SocietePartenaireNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Cave.PartenaireCaveNavigation))]
+        public virtual Cave CavePartenaireNavigation { get; set; } = null!;
+
 
     }
 }
