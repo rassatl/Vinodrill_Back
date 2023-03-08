@@ -24,5 +24,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("thm_contenuthemepage", TypeName = "text")]
         [Required]
         public string ContenuThemePage { get; set; }
+
+        [InverseProperty(nameof(Sejour.ThemeSejourNavigation))]
+        public virtual ICollection<Sejour> SejourThemeNavigation { get; set; } = new List<Sejour>();
     }
 }

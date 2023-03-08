@@ -11,13 +11,13 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("vst_id")]
         public int IdVisite { get; set; }
 
-        [ForeignKey("fk_tvst_vst")]
-        [Column("tvst_idtypevisite", Order = 0)]
+        [ForeignKey("fk_tvs_vst")]
+        [Column("tvs_id", Order = 0)]
         [Required]
         public int IdTypeVisite { get; set; }
 
-        [ForeignKey("fk_tvst_vrt")]
-        [Column("prt_id", Order = 1)]
+        [ForeignKey("fk_cav_vst")]
+        [Column("cav_id", Order = 1)]
         [Required]
         public int IdPartenaire { get; set; }
 
@@ -30,6 +30,17 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [Column("vst_horaire")]
         public TimeOnly HoraireVisite { get; set; }
+
+        [InverseProperty(nameof(FaitPartieDe.VisiteFaitPartieDeNavigation))]
+        public virtual ICollection<FaitPartieDe> FaitPartieDeVisiteNavigation { get; set; } = new List<FaitPartieDe>();
+
+        [InverseProperty(nameof(TypeVisite.VisiteTypeVisiteNavigation))]
+        public virtual TypeVisite TypeVisiteVisiteNavigation { get; set; } = null!;
+
+        [InverseProperty(nameof(Cave.VisiteCaveNavigation))]
+        public virtual Cave CaveVisiteNavigation { get; set; } = null!;
+
+
 
     }
 }

@@ -59,10 +59,10 @@ namespace Vinodrill_Back.Models.EntityFramework
         public Decimal NoteMoyenne { get; set; }
 
         [InverseProperty(nameof(Reservation.SejourReservationNavigation))]
-        public virtual ICollection<Reservation> ReservationSejourNavigation { get; set; } = null;
+        public virtual ICollection<Reservation> ReservationSejourNavigation { get; set; } = new List<Reservation>();
 
         [InverseProperty(nameof(Participe.SejourParticipeNavigation))]
-        public virtual ICollection<Participe> ParticipeSejourNavigation { get; set; } = null!;
+        public virtual ICollection<Participe> ParticipeSejourNavigation { get; set; } = new List<Participe>();
 
         [InverseProperty(nameof(Destination.SejourDestinationNavigation))]
         public virtual Destination DestinationSejourNavigation { get; set; } = null!;
@@ -71,9 +71,9 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual Theme ThemeSejourNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Etape.SejourEtapeNavigation))]
-        public virtual ICollection<Etape> EtapeSejourNavigation { get; set; } = null!;
+        public virtual ICollection<Etape> EtapeSejourNavigation { get; set; } = new List<Etape>();
 
         [InverseProperty(nameof(Avis.SejourAvisNavigation))]
-        public virtual ICollection<Avis> AvisSejourNavigation { get; set; } = null;
+        public virtual ICollection<Avis> AvisSejourNavigation { get; set; } = new List<Avis>();
     }
 }
