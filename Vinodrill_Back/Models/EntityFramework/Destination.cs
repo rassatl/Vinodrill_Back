@@ -22,6 +22,6 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string DescriptionDestination { get; set; }
 
         [InverseProperty(nameof(Sejour.DestinationSejourNavigation))]
-        public virtual Sejour SejourDestinationNavigation { get; set; } = null!;
+        public virtual ICollection<Sejour> SejourDestinationNavigation { get; set; } = new List<Sejour>();
     }
 }

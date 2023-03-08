@@ -61,7 +61,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual Partenaire PartenaireHotelNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(EtoileHotel.HotelEtoileHotelNavigation))]
-        public virtual EtoileHotel EtoileHotHotelNavigation { get; set; } = null!;
+        public virtual EtoileHotel EtoileHotelHotelNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Hebergement.HotelHebergementNavigation))]
         public virtual ICollection<Hebergement> HebergementHotelNavigation { get; set; } = new List<Hebergement>();

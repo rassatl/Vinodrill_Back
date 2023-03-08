@@ -19,9 +19,9 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int IdEtape { get; set; }
 
         [InverseProperty(nameof(Activite.EffectueActiviteNavigation))]
-        public virtual ICollection<Activite> ActiviteEffectueNavigation { get; set; } = new List<Activite>();
+        public virtual Activite ActiviteEffectueNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Etape.EffectueEtapeNavigation))]
-        public virtual ICollection<Etape> EtapeEffectueNavigation { get; set; } = new List<Etape>();
+        public virtual Etape EtapeEffectueNavigation { get; set; } = null!;
     }
 }

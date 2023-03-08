@@ -47,12 +47,12 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual ICollection<FaitPartieDe> FaitPartieDeEtapeNavigation { get; set; } = new List<FaitPartieDe>();
 
         [InverseProperty(nameof(Hebergement.EtapeHebergementNavigation))]
-        public virtual ICollection<Hebergement> HebergementEtapeNavigation {get; set; } = new List<Hebergement>();
+        public virtual Hebergement HebergementEtapeNavigation {get; set; } = null;
 
         [InverseProperty(nameof(Effectue.EtapeEffectueNavigation))]
         public virtual ICollection<Effectue> EffectueEtapeNavigation { get; set; } = new List<Effectue>();
 
         [InverseProperty(nameof(Sejour.EtapeSejourNavigation))]
-        public virtual ICollection<Sejour> SejourEtapeNavigation {get; set; } = null!;
+        public virtual Sejour SejourEtapeNavigation {get; set; } = null!;
     }
 }
