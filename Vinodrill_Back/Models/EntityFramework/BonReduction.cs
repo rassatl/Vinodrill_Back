@@ -29,8 +29,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("brdc_estvalide")]
         public bool EstValide { get; set; }
 
-        [InverseProperty(nameof(Commande.BonReductionNavigation))]
-        public virtual Commande CommandeNavigation { get; set; } = null!;
+        [InverseProperty(nameof(Commande.BonReductionCommandeNavigation))]
+        public virtual Commande CommandeBonReductionNavigation { get; set; } = null!;
 
     }
 }
