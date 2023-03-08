@@ -32,7 +32,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public bool EstValide { get; set; }
 
         [InverseProperty(nameof(Commande.BonCommandeCommandeNavigation))]
-        public virtual Commande CommandeBonCommandeNavigation { get; set; } = null!;
+        public virtual ICollection<Commande> CommandeBonCommandeNavigation { get; set; } = null;
 
     }
 }

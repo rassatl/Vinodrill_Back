@@ -20,5 +20,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("dst_description", TypeName = "text")]
         [Required]
         public string DescriptionDestination { get; set; }
+
+        [InverseProperty(nameof(Sejour.DestinationSejourNavigation))]
+        public virtual Sejour SejourDestinationNavigation { get; set; } = null!;
     }
 }

@@ -42,5 +42,17 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = " Video lenght must be 255 maximum")]
         [Required]
         public string VideoEtape { get; set; }
+
+        [InverseProperty(nameof(Visite.EtapeVisiteNavigation))]
+        public virtual ICollection<Visite> VisiteEtapeNavigation {get; set; } = null;
+
+        [InverseProperty(nameof(Hebergement.EtapeHebergementNavigation))]
+        public virtual ICollection<Hebergement> HebergementEtapeNavigation {get; set; } = null;
+
+        [InverseProperty(nameof(Activite.EtapeActiviteNavigation))]
+        public virtual ICollection<Activite> ActiviteEtapeNavigation {get; set; } = null;
+
+         [InverseProperty(nameof(Sejour.EtapeSejourNavigation))]
+        public virtual ICollection<Sejour> SejourEtapeNavigation {get; set; } = null!;
     }
 }
