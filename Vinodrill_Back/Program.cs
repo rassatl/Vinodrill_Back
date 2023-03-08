@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Vinodrill_Back.Models.EntityFramework;
+
 namespace Vinodrill_Back
 {
     public class Program
@@ -7,6 +10,7 @@ namespace Vinodrill_Back
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

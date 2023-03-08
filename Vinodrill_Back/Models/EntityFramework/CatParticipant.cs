@@ -15,5 +15,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = "the length of the name must be 255 maximum")]
         [Required]
         public string NomCategorieParticipant { get; set; }
+
+        [InverseProperty(nameof(Commande.CategorieParticipantCommandeNavigation))]
+        public virtual ICollection<Commande> CommandeCategorieParticipantNavigation { get; set; } = null;
     }
 }

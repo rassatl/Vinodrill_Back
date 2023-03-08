@@ -25,6 +25,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public DateTime DateCommande { get; set; }
 
+
         [Column("cmd_prixcommande")]
         [Required]
         public decimal PrixCommande { get; set; }
@@ -46,19 +47,19 @@ namespace Vinodrill_Back.Models.EntityFramework
         public bool EstCheque { get; set; }
 
         [InverseProperty(nameof(BonCommande.CommandeBonCommandeNavigation))]
-        public virtual ICollection<BonCommande> BonCommandeCommandeNavigation { get; set; } = null!;
+        public virtual BonCommande BonCommandeCommandeNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(BonReduction.CommandeBonReductionNavigation))]
-        public virtual ICollection<BonReduction> BonReductionCommandeNavigation { get; set; } = null!;
+        public virtual BonReduction BonReductionCommandeNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Client.CommandeClientNavigation))]
-        public virtual Client ClientCommandeNavigation { get; set; } = null!;
+        public virtual ICollection<Client> ClientCommandeNavigation { get; set; } = null;
 
         [InverseProperty(nameof(Paiement.CommandePaiementNavigation))]
-        public virtual Paiement PaiementCommandeNavigation { get; set; } = null!;
+        public virtual ICollection<Paiement> PaiementCommandeNavigation { get; set; } = null;
 
-        [InverseProperty(nameof(Reservation.CommandeReservationNavigation))]
-        public virtual ICollection<Reservation> ReservationCommandeNavigation {get; set; } = null!;
+        //[InverseProperty(nameof(Reservation.CommandeReservationNavigation))]
+        //public virtual ICollection<Reservation> ReservationCommandeNavigation {get; set; } = null!;
 
     }
 }
