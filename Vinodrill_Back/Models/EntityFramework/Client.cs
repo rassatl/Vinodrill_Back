@@ -64,5 +64,8 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [InverseProperty(nameof(Commande.ClientCommandeNavigation))]
         public virtual ICollection<Commande> CommandeClientNavigation { get; set; } = new List<Commande>();
+
+        [InverseProperty(nameof(Avis.ClientAvisNavigation))]
+        public virtual Avis AvisClientNavigation { get; set; } = null!;
     }
 }

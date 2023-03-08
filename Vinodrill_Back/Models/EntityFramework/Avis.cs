@@ -42,10 +42,13 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [Column("avis_typesignalement")]
         [Required]
-        [StringLength(255, ErrorMessage = " type signalement lenght must be 255 maximum")]
+        [StringLength(255, ErrorMessage = "type signalement lenght must be 255 maximum")]
         public string? TypeSignalement { get; set; }
 
         [InverseProperty(nameof(ReponseAvi.RepReponseAvi))]
         public ICollection<ReponseAvi> RepAvi { get; set; } = null!;
+
+        [InverseProperty(nameof(Client.AvisClientNavigation))]
+        public virtual Client ClientAvisNavigation { get; set; } = null!;
     }
 }
