@@ -54,18 +54,18 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string EmailClient { get; set; }
 
         [InverseProperty(nameof(Cb.ClientCbNavigation))]
-        public virtual ICollection<Cb> CbClientNavigation { get; set; } = new List<Cb>();
+        public virtual Cb CbClientNavigation { get; set; } = null;
 
         [InverseProperty(nameof(Adresse.ClientAdresseNavigation))]
-        public virtual Adresse AdresseClientNavigation { get; set; } = null!;
+        public virtual ICollection<Adresse> AdresseClientNavigation { get; set; } = new List<Adresse>();
 
         [InverseProperty(nameof(Paiement.ClientPaiementNavigation))]
-        public virtual Paiement PaiementClientNavigation { get; set; } = null!;
+        public virtual ICollection<Paiement> PaiementClientNavigation { get; set; } = new List<Paiement>();
 
         [InverseProperty(nameof(Commande.ClientCommandeNavigation))]
-        public virtual Commande CommandeClientNavigation { get; set; } = null!;
+        public virtual ICollection<Commande> CommandeClientNavigation { get; set; } = new List<Commande>();
 
         [InverseProperty(nameof(Avis.ClientAvisNavigation))]
-        public virtual Avis AvisClientNavigation { get; set; } = null!;
+        public virtual Avis AvisClientNavigation { get; set; } = null;
     }
 }

@@ -38,7 +38,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public TimeOnly HoraireActivite { get; set; }
 
         [InverseProperty(nameof(Societe.ActiviteSocieteNavigation))]
-        public virtual ICollection<Societe> SocieteActiviteNavigation { get; set; } = new List<Societe>();
+        public virtual Societe SocieteActiviteNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Effectue.ActiviteEffectueNavigation))]
         public virtual ICollection<Effectue> EffectueActiviteNavigation { get; set; } = new List<Effectue>();
