@@ -37,14 +37,16 @@ namespace Vinodrill_Back.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Activite>> GetActiviteById(int id)
         {
-            var Activite = await dataRepository.GetById(id);
+            //var Activite = await dataRepository.GetById(id);
 
-            if (Activite == null)
-            {
-                return NotFound();
-            }
+            //if (Activite == null)
+            //{
+            //    return NotFound();
+            //}
 
-            return Activite;
+            //return Activite;
+
+            return StatusCode(StatusCodes.Status405MethodNotAllowed);
         }
 
         //PUT: api/Activites/5
