@@ -11,14 +11,10 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("sjr_id")]
         public int IdSejour { get; set; }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ForeignKey("fk_dst_sjr")]
         [Column("dst_id", Order = 1)]
         public int IdDestination { get; set; }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ForeignKey("fk_thm_sjr")]
         [Column("thm_id", Order = 0)]
         public int IdTheme { get; set; }

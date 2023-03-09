@@ -6,13 +6,11 @@ namespace Vinodrill_Back.Models.EntityFramework
     [Table("t_j_reservation_rsv")]
     public partial class Reservation
     {
-        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ForeignKey("fk_cmd_rsv")]
         [Column("cmd_id", Order = 0)]
         public int RefCommande { get; set; }
 
-        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ForeignKey("fk_sjr_rsv")]
         [Column("sjr_id", Order = 1)]

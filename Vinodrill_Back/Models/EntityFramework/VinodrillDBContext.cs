@@ -37,6 +37,24 @@ namespace Vinodrill_Back.Models.EntityFramework
                 entity.HasKey(e => new { e.IdImage, e.IdAvis })
                     .HasName("pk_image_avis");
             });
+
+            modelBuilder.Entity<Participe>(entity =>
+            {
+                entity.HasKey(p => new { p.IdCategorieParticipant , p.IdSejour })
+                    .HasName("pk_participe");
+            });
+
+            modelBuilder.Entity<ReponseAvis>(entity =>
+            {
+                entity.HasKey(r => new { r.Id, r.IdAvis })
+                    .HasName("pk_reponse_avis");
+            });
+
+            modelBuilder.Entity<Reservation>(entity =>
+            {
+                entity.HasKey(r => new { r.IdSejour, r.RefCommande })
+                    .HasName("pk_reservation");
+            });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
