@@ -14,6 +14,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         }
         public virtual DbSet<Activite> Activites { get; set; } = null!;
         public virtual DbSet<Adresse> Adresses { get; set; } = null!;
+        public virtual DbSet<Sejour> Sejours { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -118,10 +119,10 @@ namespace Vinodrill_Back.Models.EntityFramework
 
             modelBuilder.Entity<Partenaire>(entity =>
             {
-                entity
-                   .HasIndex(e => e.EmailPartenaire)
-                   .IsUnique()
-                   .HasDatabaseName("uq_prt_email");
+                //entity
+                //   .HasIndex(e => e.EmailPartenaire)
+                //   .IsUnique()
+                //   .HasDatabaseName("uq_prt_email");
             });
 
             modelBuilder.Entity<Client>(entity =>
