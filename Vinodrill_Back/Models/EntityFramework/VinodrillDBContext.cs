@@ -36,6 +36,18 @@ namespace Vinodrill_Back.Models.EntityFramework
             {
                 entity.HasKey(e => new { e.IdImage, e.IdAvis })
                     .HasName("pk_image_avis");
+
+                entity.HasOne(d => d.AvisImageAvisNavigation)
+                    .WithMany(p => p.ImageAvisAvisNavigation)
+                    .HasForeignKey(d => d.IdAvis)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_avi_ima");
+
+                entity.HasOne(d => d.ImageImageAvisNavigation)
+                    .WithMany(p => p.ImageAvisImageNavigation)
+                    .HasForeignKey(d => d.IdImage)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_img_ima");
             });
 
             modelBuilder.Entity<Participe>(entity =>
@@ -55,12 +67,21 @@ namespace Vinodrill_Back.Models.EntityFramework
                 entity.HasKey(r => new { r.IdSejour, r.RefCommande })
                     .HasName("pk_reservation");
             });
+
             modelBuilder.Entity<EtoileHotel>(entity =>
             {
                 entity.HasCheckConstraint("ck_eth_nb", "eth_nb between 0 and 5");
             });
-        
-    }
+
+            modelBuilder.Entity<Activite>(entity =>
+            {
+                entity.HasOne(d => d.SocieteActiviteNavigation)
+                    .WithMany(p => p.ActiviteSocieteNavigation)
+                    .HasForeignKey(d => d.IdPartenaire)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_prt_act");
+            });
+        }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

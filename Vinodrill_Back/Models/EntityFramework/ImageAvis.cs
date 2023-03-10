@@ -7,12 +7,12 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class ImageAvis
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_avi_ima")]
+        [ForeignKey("IdAvis")]
         [Column("avi_id", Order = 0)]
         public int IdAvis { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_img_ima")]
+        [ForeignKey("IdImage")]
         [Column("im_id", Order = 1)]
         public int IdImage { get; set; }
 
