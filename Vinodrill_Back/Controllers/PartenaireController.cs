@@ -12,11 +12,11 @@ namespace Vinodrill_Back.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PartenairesController : ControllerBase
+    public class PartenaireController : ControllerBase
     {
         private readonly IDataRepository<Partenaire> dataRepository;
 
-        public PartenairesController(IDataRepository<Partenaire> dataRepo)
+        public PartenaireController(IDataRepository<Partenaire> dataRepo)
         {
             dataRepository = dataRepo;
         }
@@ -53,7 +53,7 @@ namespace Vinodrill_Back.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PutPartenaires(int id, Partenaire Partenaire)
+        public async Task<IActionResult> PutPartenaire(int id, Partenaire Partenaire)
         {
 
             if (id != Partenaire.IdPartenaire)
