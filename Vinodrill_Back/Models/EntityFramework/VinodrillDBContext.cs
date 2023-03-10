@@ -21,8 +21,9 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual DbSet<Participe> Participes { get; set; } = null!;
         public virtual DbSet<Avis> Avis { get; set; } = null!;
         public virtual DbSet<CatParticipant> Catparticipants { get; set; } = null!;
+        public virtual DbSet<Cave> Caves { get; set; } = null!;
+        public virtual DbSet<Client> Clients { get; set; } = null!;
         public virtual DbSet<Partenaire> Partenaire { get; set; }
-        public virtual DbSet<Avis> Avis { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
