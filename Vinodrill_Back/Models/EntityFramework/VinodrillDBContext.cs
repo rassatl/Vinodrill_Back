@@ -131,10 +131,10 @@ namespace Vinodrill_Back.Models.EntityFramework
 
             modelBuilder.Entity<Partenaire>(entity =>
             {
-                entity
-                   .HasIndex(e => e.EmailPartenaire)
-                   .IsUnique()
-                   .HasDatabaseName("uq_prt_email");
+                //entity
+                //   .HasIndex(e => e.EmailPartenaire)
+                //   .IsUnique()
+                //   .HasDatabaseName("uq_prt_email");
             });
 
             modelBuilder.Entity<Client>(entity =>
