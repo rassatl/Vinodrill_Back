@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Vinodrill_Back.Migrations
 {
-    public partial class CreationBDVinoDrill : Migration
+    public partial class VinoDrillDBCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -481,7 +481,7 @@ namespace Vinodrill_Back.Migrations
                     act_libelle = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     act_description = table.Column<string>(type: "text", nullable: false),
                     act_ruerdv = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    act_cprdv = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: false),
+                    act_cprdv = table.Column<string>(type: "char(5)", nullable: false),
                     act_villerdv = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     act_horaire = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
                     SocieteActiviteNavigationIdPartenaire = table.Column<int>(type: "integer", nullable: false)

@@ -12,8 +12,8 @@ using Vinodrill_Back.Models.EntityFramework;
 namespace Vinodrill_Back.Migrations
 {
     [DbContext(typeof(VinodrillDBContext))]
-    [Migration("20230309142427_CreationBDVinoDrill")]
-    partial class CreationBDVinoDrill
+    [Migration("20230310072549_VinoDrillDBCreationv2")]
+    partial class VinoDrillDBCreationv2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,8 +50,7 @@ namespace Vinodrill_Back.Migrations
 
                     b.Property<string>("CpRdv")
                         .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("character varying(5)")
+                        .HasColumnType("char(5)")
                         .HasColumnName("act_cprdv");
 
                     b.Property<string>("DescriptionActivite")
@@ -79,9 +78,6 @@ namespace Vinodrill_Back.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("act_ruerdv");
 
-                    b.Property<int>("SocieteActiviteNavigationIdPartenaire")
-                        .HasColumnType("integer");
-
                     b.Property<string>("VilleRdv")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -90,7 +86,7 @@ namespace Vinodrill_Back.Migrations
 
                     b.HasKey("IdActivite");
 
-                    b.HasIndex("SocieteActiviteNavigationIdPartenaire");
+                    b.HasIndex("IdPartenaire");
 
                     b.ToTable("t_e_activite_act");
                 });
@@ -1192,7 +1188,7 @@ namespace Vinodrill_Back.Migrations
                 {
                     b.HasOne("Vinodrill_Back.Models.EntityFramework.Societe", "SocieteActiviteNavigation")
                         .WithMany("ActiviteSocieteNavigation")
-                        .HasForeignKey("SocieteActiviteNavigationIdPartenaire")
+                        .HasForeignKey("IdPartenaire")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

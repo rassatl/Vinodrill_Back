@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Vinodrill_Back.Models.EntityFramework;
@@ -11,9 +12,10 @@ using Vinodrill_Back.Models.EntityFramework;
 namespace Vinodrill_Back.Migrations
 {
     [DbContext(typeof(VinodrillDBContext))]
-    partial class VinodrillDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230310071948_VinoDrillDBCreation")]
+    partial class VinoDrillDBCreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,6 +78,9 @@ namespace Vinodrill_Back.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("act_ruerdv");
 
+                    b.Property<int>("SocieteActiviteNavigationIdPartenaire")
+                        .HasColumnType("integer");
+
                     b.Property<string>("VilleRdv")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -84,7 +89,7 @@ namespace Vinodrill_Back.Migrations
 
                     b.HasKey("IdActivite");
 
-                    b.HasIndex("IdPartenaire");
+                    b.HasIndex("SocieteActiviteNavigationIdPartenaire");
 
                     b.ToTable("t_e_activite_act");
                 });
@@ -1186,7 +1191,7 @@ namespace Vinodrill_Back.Migrations
                 {
                     b.HasOne("Vinodrill_Back.Models.EntityFramework.Societe", "SocieteActiviteNavigation")
                         .WithMany("ActiviteSocieteNavigation")
-                        .HasForeignKey("IdPartenaire")
+                        .HasForeignKey("SocieteActiviteNavigationIdPartenaire")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
