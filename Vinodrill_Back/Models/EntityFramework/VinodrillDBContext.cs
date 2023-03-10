@@ -59,6 +59,8 @@ namespace Vinodrill_Back.Models.EntityFramework
             {
                 entity.HasCheckConstraint("ck_cmd_prix", "cmd_quantite > 0");
 
+                entity.Property(e => e.EstCheque).HasDefaultValue(false);
+
                 entity.HasOne(d => d.ClientCommandeNavigation)
                     .WithMany(p => p.CommandeClientNavigation)
                     .HasForeignKey(d => d.IdClient)
@@ -391,6 +393,22 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .HasForeignKey(d => d.IdPartenaire)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_prt_cav");
+            });
+
+            modelBuilder.Entity<AvisPartenaire>(entity => {
+                entity.HasOne(d => d.PartenaireAvisPartenaireNavigation)
+                    .WithMany(p => p.AvisPartenairePartenaireNavigation)
+                    .HasForeignKey(d => d.IdPartenaire)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_prt_avp");
+
+                entity.HasOne(d => d.ClientAvisPartenaireNavigation)
+                    .WithMany(p => p.AvisPartenaireClientNavigation)
+                    .HasForeignKey(d => d.IdClient)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_clt_avp");
+
+                entity.Property(e => e.AvisSignale).HasDefaultValue(false);
             });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

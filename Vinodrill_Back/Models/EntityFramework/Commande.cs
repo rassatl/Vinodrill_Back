@@ -12,14 +12,13 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int RefCommande { get; set; }
 
         [ForeignKey("IdClient")]
-        [Column("cmd_idclient", Order = 0)]
+        [Column("clt_idclient", Order = 0)]
         [Required]
         public int IdClient { get; set; }
 
         [ForeignKey("IdPaiement")]
         [Column("cmd_idpaiement", Order = 1)]
-        [Required]
-        public int IdPaiement { get; set; }
+        public int? IdPaiement { get; set; }
 
         [Column("cmd_datecommande", TypeName = "date")]
         [Required]
@@ -44,7 +43,7 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [Column("cmd_estcheque")]
         [Required]
-        public bool EstCheque { get; set; }
+        public bool EstCheque { get; set; } = false;
 
         [InverseProperty(nameof(BonCommande.CommandeBonCommandeNavigation))]
         public virtual ICollection<BonCommande> BonCommandeCommandeNavigation { get; set; } = new List<BonCommande>();
