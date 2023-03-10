@@ -19,7 +19,10 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual DbSet<Theme> Themes { get; set; } = null!;
         public virtual DbSet<Societe> Societes { get; set; } = null!;
         public virtual DbSet<Participe> Participes { get; set; } = null!;
-
+        public virtual DbSet<Avis> Avis { get; set; } = null!;
+        public virtual DbSet<CatParticipant> Catparticipants { get; set; } = null!;
+        public virtual DbSet<Partenaire> Partenaire { get; set; }
+        public virtual DbSet<Avis> Avis { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -370,7 +373,6 @@ namespace Vinodrill_Back.Models.EntityFramework
             });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-        public DbSet<Vinodrill_Back.Models.EntityFramework.Avis> Avis { get; set; }
-        public DbSet<Vinodrill_Back.Models.EntityFramework.TypeVisite> TypeVisite { get; set; }
+
     }
 }
