@@ -16,7 +16,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public int IdTypeVisite { get; set; }
 
-        [ForeignKey("fk_cav_vst")]
+        [ForeignKey("IdPartenaire")]
         [Column("cav_id", Order = 1)]
         [Required]
         public int IdPartenaire { get; set; }
