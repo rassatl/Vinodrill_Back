@@ -15,6 +15,12 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual DbSet<Activite> Activites { get; set; } = null!;
         public virtual DbSet<Adresse> Adresses { get; set; } = null!;
         public virtual DbSet<Visite> Visites { get; set; } = null!;
+        public virtual DbSet<TypeVisite> TypeVisites { get; set; } = null!;
+        public virtual DbSet<Theme> Themes { get; set; } = null!;
+        public virtual DbSet<Societe> Societes { get; set; } = null!;
+        public virtual DbSet<Participe> Participes { get; set; } = null!;
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -365,5 +371,6 @@ namespace Vinodrill_Back.Models.EntityFramework
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
         public DbSet<Vinodrill_Back.Models.EntityFramework.Avis> Avis { get; set; }
+        public DbSet<Vinodrill_Back.Models.EntityFramework.TypeVisite> TypeVisite { get; set; }
     }
 }

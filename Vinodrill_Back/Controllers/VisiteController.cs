@@ -24,7 +24,7 @@ namespace Vinodrill_Back.Controllers
             return await dataRepository.GetAll();
         }
 
-        // GET: api/Activites/GetActiviteById/5
+        // GET: api/Activites/GetVisiteById/5
         [HttpGet("GetVisiteById/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Visite))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Vinodrill_Back.Models.EntityFramework;
+using Vinodrill_Back.Models.Repository;
 
 namespace Vinodrill_Back.Models.DataManager
 {
-    public class VisiteManager
+    public class VisiteManager : IDataRepository<Visite>
     {
         readonly VinodrillDBContext? dbContext;
 
