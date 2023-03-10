@@ -6,7 +6,6 @@ namespace Vinodrill_Back.Models.EntityFramework
     [Table("t_e_destination_dst")]
     public partial class Destination
     {
-        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("dst_id")]
         [Required]

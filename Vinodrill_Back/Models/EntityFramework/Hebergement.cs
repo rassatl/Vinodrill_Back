@@ -7,7 +7,7 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class Hebergement
     {
 
-        [ForeignKey("fk_prt_hbg")]
+        [ForeignKey("IdPartenaire")]
         [Column("prt_id")]
         public int IdPartenaire { get; set; }
 

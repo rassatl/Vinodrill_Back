@@ -11,7 +11,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int Id { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_avi_rav")]
+        [ForeignKey("IdAvis")]
         [Column("rav_idavis")]
         public int IdAvis { get; set;}
 

@@ -13,8 +13,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("prt_id", Order = 1)]
         public int IdPartenaire { get; set; }*/
 
-        [ForeignKey("fk_act_sct")]
-        [Column("act_id", Order = 0)]
+        [ForeignKey("IdTypeActivite")]
+        [Column("tac_id", Order = 0)]
         public int IdTypeActivite { get; set; }
 
        

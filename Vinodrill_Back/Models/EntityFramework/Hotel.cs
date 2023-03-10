@@ -7,7 +7,7 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class Hotel : Partenaire
     {
 
-        [ForeignKey("fk_eth_htl")]
+        [ForeignKey("NbEtoileHotel")]
         [Column("ect_nb", Order = 0)]
         [Range(0, 5)]
         public int NbEtoileHotel { get; set; }

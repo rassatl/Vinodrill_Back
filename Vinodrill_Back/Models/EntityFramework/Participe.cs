@@ -7,12 +7,12 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class Participe
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_cpt_ppt")]
+        [ForeignKey("IdCategorieParticipant")]
         [Column("cpt_id", Order = 0)]
         public int IdCategorieParticipant { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_sjr_ppt")]
+        [ForeignKey("IdSejour")]
         [Column("sjr_id", Order = 1)]
         public int IdSejour { get; set; }
 

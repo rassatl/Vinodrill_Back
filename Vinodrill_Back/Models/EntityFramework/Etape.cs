@@ -7,11 +7,11 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class Etape
     {
 
-        [ForeignKey("fk_sje_etp")]
+        [ForeignKey("IdSejour")]
         [Column("sjr_id", Order = 0)]
         public int IdSejour { get; set; }
 
-        [ForeignKey("fk_hbg_etp")]
+        [ForeignKey("IdHebergement")]
         [Column("hbg_id", Order = 1)]
         public int IdHebergement{ get; set; }
 
