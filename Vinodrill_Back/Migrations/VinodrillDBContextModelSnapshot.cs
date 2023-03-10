@@ -22,21 +22,6 @@ namespace Vinodrill_Back.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PartenaireSociete", b =>
-                {
-                    b.Property<int>("PartenaireSocieteNavigationIdPartenaire")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SocietePartenaireNavigationIdPartenaire")
-                        .HasColumnType("integer");
-
-                    b.HasKey("PartenaireSocieteNavigationIdPartenaire", "SocietePartenaireNavigationIdPartenaire");
-
-                    b.HasIndex("SocietePartenaireNavigationIdPartenaire");
-
-                    b.ToTable("PartenaireSociete");
-                });
-
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Activite", b =>
                 {
                     b.Property<int>("IdActivite")
@@ -776,12 +761,12 @@ namespace Vinodrill_Back.Migrations
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.ReponseAvis", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("IdReponseAvis")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("rav_id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdReponseAvis"));
 
                     b.Property<int>("IdAvis")
                         .ValueGeneratedOnAdd()
@@ -793,7 +778,7 @@ namespace Vinodrill_Back.Migrations
                         .HasColumnType("text")
                         .HasColumnName("rav_commentaire");
 
-                    b.HasKey("Id", "IdAvis")
+                    b.HasKey("IdReponseAvis", "IdAvis")
                         .HasName("pk_reponse_avis");
 
                     b.HasIndex("IdAvis");
@@ -1028,13 +1013,6 @@ namespace Vinodrill_Back.Migrations
                 {
                     b.HasBaseType("Vinodrill_Back.Models.EntityFramework.Partenaire");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("integer")
-                        .HasColumnName("prt_id")
-                        .HasColumnOrder(0);
-
-                    b.HasIndex("Id");
-
                     b.ToTable("t_h_cave_cav");
                 });
 
@@ -1047,12 +1025,7 @@ namespace Vinodrill_Back.Migrations
                         .HasColumnName("ect_nb")
                         .HasColumnOrder(0);
 
-                    b.Property<int>("PartenaireHotelNavigationIdPartenaire")
-                        .HasColumnType("integer");
-
                     b.HasIndex("NbEtoileHotel");
-
-                    b.HasIndex("PartenaireHotelNavigationIdPartenaire");
 
                     b.ToTable("t_h_hotel_htl");
                 });
@@ -1069,21 +1042,6 @@ namespace Vinodrill_Back.Migrations
                     b.HasIndex("IdTypeActivite");
 
                     b.ToTable("t_h_societe_sct");
-                });
-
-            modelBuilder.Entity("PartenaireSociete", b =>
-                {
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Partenaire", null)
-                        .WithMany()
-                        .HasForeignKey("PartenaireSocieteNavigationIdPartenaire")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Societe", null)
-                        .WithMany()
-                        .HasForeignKey("SocietePartenaireNavigationIdPartenaire")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Activite", b =>
@@ -1368,38 +1326,26 @@ namespace Vinodrill_Back.Migrations
                 {
                     b.HasOne("Vinodrill_Back.Models.EntityFramework.Partenaire", "PartenaireCaveNavigation")
                         .WithMany("CavePartenaireNavigation")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("IdPartenaire")
                         .IsRequired()
                         .HasConstraintName("fk_prt_cav");
-
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Partenaire", null)
-                        .WithOne()
-                        .HasForeignKey("Vinodrill_Back.Models.EntityFramework.Cave", "IdPartenaire")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("PartenaireCaveNavigation");
                 });
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Hotel", b =>
                 {
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Partenaire", null)
-                        .WithOne()
-                        .HasForeignKey("Vinodrill_Back.Models.EntityFramework.Hotel", "IdPartenaire")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Partenaire", "PartenaireHotelNavigation")
+                        .WithMany("HotelPartenaireNavigation")
+                        .HasForeignKey("IdPartenaire")
+                        .IsRequired()
+                        .HasConstraintName("fk_prt_htl");
 
                     b.HasOne("Vinodrill_Back.Models.EntityFramework.EtoileHotel", "EtoileHotelHotelNavigation")
                         .WithMany("HotelEtoileHotelNavigation")
                         .HasForeignKey("NbEtoileHotel")
                         .IsRequired()
                         .HasConstraintName("fk_eth_htl");
-
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Partenaire", "PartenaireHotelNavigation")
-                        .WithMany("HotelPartenaireNavigation")
-                        .HasForeignKey("PartenaireHotelNavigationIdPartenaire")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("EtoileHotelHotelNavigation");
 
@@ -1408,17 +1354,19 @@ namespace Vinodrill_Back.Migrations
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Societe", b =>
                 {
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Partenaire", null)
-                        .WithOne()
-                        .HasForeignKey("Vinodrill_Back.Models.EntityFramework.Societe", "IdPartenaire")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Partenaire", "PartenaireSocieteNavigation")
+                        .WithMany("SocietePartenaireNavigation")
+                        .HasForeignKey("IdPartenaire")
+                        .IsRequired()
+                        .HasConstraintName("fk_prt_sct");
 
                     b.HasOne("Vinodrill_Back.Models.EntityFramework.TypeActivite", "TypeActiviteSocieteNavigation")
                         .WithMany("SocieteTypeActiviteNavigation")
                         .HasForeignKey("IdTypeActivite")
                         .IsRequired()
                         .HasConstraintName("fk_tac_sct");
+
+                    b.Navigation("PartenaireSocieteNavigation");
 
                     b.Navigation("TypeActiviteSocieteNavigation");
                 });
@@ -1502,6 +1450,8 @@ namespace Vinodrill_Back.Migrations
                     b.Navigation("CavePartenaireNavigation");
 
                     b.Navigation("HotelPartenaireNavigation");
+
+                    b.Navigation("SocietePartenaireNavigation");
                 });
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Sejour", b =>

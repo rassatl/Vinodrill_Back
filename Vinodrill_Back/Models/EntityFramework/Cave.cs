@@ -6,11 +6,6 @@ namespace Vinodrill_Back.Models.EntityFramework
     [Table("t_h_cave_cav")]
     public partial class Cave : Partenaire
     {
-        [ForeignKey("Id")]
-        [Column("prt_id", Order = 0)]
-        [Required]
-        public int Id { get; set; }
-
         [InverseProperty(nameof(Partenaire.CavePartenaireNavigation))]
         public virtual Partenaire PartenaireCaveNavigation { get; set; } = null!;
 

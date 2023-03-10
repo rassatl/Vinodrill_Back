@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Runtime.Intrinsics.X86;
+using Vinodrill_Back.Models.EntityFramework;
 
 namespace Vinodrill_Back.Models.EntityFramework
 {
@@ -244,6 +245,12 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .HasForeignKey(d => d.NbEtoileHotel)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_eth_htl");
+
+                entity.HasOne(d => d.PartenaireHotelNavigation)
+                    .WithMany(p => p.HotelPartenaireNavigation)
+                    .HasForeignKey(d => d.IdPartenaire)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_prt_htl");
             });
 
             modelBuilder.Entity<Participe>(entity =>
@@ -310,6 +317,12 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .HasForeignKey(d => d.IdTypeActivite)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_tac_sct");
+
+                entity.HasOne(d => d.PartenaireSocieteNavigation)
+                    .WithMany(p => p.SocietePartenaireNavigation)
+                    .HasForeignKey(d => d.IdPartenaire)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_prt_sct");
             });
 
             modelBuilder.Entity<Sejour>(entity =>
@@ -344,11 +357,12 @@ namespace Vinodrill_Back.Models.EntityFramework
             modelBuilder.Entity<Cave>(entity => {
                 entity.HasOne(d => d.PartenaireCaveNavigation)
                     .WithMany(p => p.CavePartenaireNavigation)
-                    .HasForeignKey(d => d.Id)
+                    .HasForeignKey(d => d.IdPartenaire)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_prt_cav");
             });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        public DbSet<Vinodrill_Back.Models.EntityFramework.Avis> Avis { get; set; }
     }
 }
