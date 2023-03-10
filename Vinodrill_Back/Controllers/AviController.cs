@@ -33,9 +33,21 @@ namespace Vinodrill_Back.Controllers
         [HttpGet("GetAvisById/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Avis))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Avis>> GetAvisById(int id)
+        public async Task<ActionResult<Avis>> GetAvisById(int id, bool? withSejour = false, bool withClient = false, bool? withImage = false, bool withReponse = false)
         {
-            return StatusCode(StatusCodes.Status405MethodNotAllowed);
+            var avi = await dataRepository.GetById(id);
+
+            if (withClient) {}
+
+
+            if (avi == null)
+            {
+                return NotFound();
+            }
+
+            return avi;
+
+            // return StatusCode(StatusCodes.Status405MethodNotAllowed);
         }
 
         //PUT: api/Avis/5
@@ -90,7 +102,7 @@ namespace Vinodrill_Back.Controllers
             if (avi == null)
             {
                 return NotFound();
-            }
+            }            
 
             await dataRepository.Delete(avi.Value);
 
