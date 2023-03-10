@@ -16,6 +16,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual DbSet<Adresse> Adresses { get; set; } = null!;
         public virtual DbSet<Avis> Avis { get; set; } = null!;
         public virtual DbSet<CatParticipant> Catparticipants { get; set; } = null!;
+        public virtual DbSet<Cave> Caves { get; set; } = null!;
+        public virtual DbSet<Client> Clients { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

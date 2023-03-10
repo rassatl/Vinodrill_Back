@@ -14,32 +14,27 @@ namespace Vinodrill_Back.Controllers
     [ApiController]
     public class CatparticipantController : ControllerBase
     {
-        private readonly VinodrillDBContext _context;
-
-        public CatparticipantController(VinodrillDBContext context)
+        private readonly IDataRepository<CatParticipant> dataRepository;
+        public CatparticipantController(IDataRepository<CatParticipant> dataRepo)
         {
-            _context = context;
+            dataRepository = dataRepo;
         }
 
         // GET: api/CatParticipant
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CatParticipant>>> GetCatParticipant()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CatParticipant>))]
+        public async Task<ActionResult<IEnumerable<CatParticipant>>> GetAdresses()
         {
-            return await _context.Catparticipants.ToListAsync();
+            return await dataRepository.GetAll();
         }
 
-        // GET: api/CatParticipant/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CatParticipant>> GetCatParticipant(int id)
+        // GET: api/CatParticipant/GetCatParticipantById/5
+        [HttpGet("GetCatParticipanteById/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CatParticipant))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<CatParticipant>> GetCatParticipantById(int id)
         {
-            var avis = await _context.Catparticipants.FindAsync(id);
-
-            if (avis == null)
-            {
-                return NotFound();
-            }
-
-            return avis;
+            return StatusCode(StatusCodes.Status405MethodNotAllowed);
         }
 
         //PUT: api/Catparticipants/5
@@ -67,29 +62,35 @@ namespace Vinodrill_Back.Controllers
                 return NoContent();
             }
         }
-        // POST: api/CatParticipant
+        // POST: api/CatParticipants
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Avis>> PostCatParticipant(CatParticipant catparticipant)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CatParticipant))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<CatParticipant>> PostAdresse(CatParticipant catparticipant)
         {
-            _context.Catparticipants.Add(catparticipant);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await dataRepository.Add(catparticipant);
 
-            return CreatedAtAction("GetCatParticipant", new { id = catparticipant.IdCategorieParticipant }, catparticipant);
+            return CreatedAtAction("GetCatParticipantById", new { id = catparticipant.IdCategorieParticipant }, catparticipant);
         }
 
-        // DELETE: api/CatParticipant/5
+        // DELETE: api/CatParticipants/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCatParticipant(int id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteAdresse(int id)
         {
-            var catparticipant = await _context.Catparticipants.FindAsync(id);
+            var catparticipant = await dataRepository.GetById(id);
             if (catparticipant == null)
             {
                 return NotFound();
             }
 
-            _context.Catparticipants.Remove(catparticipant);
-            await _context.SaveChangesAsync();
+            await dataRepository.Delete(catparticipant.Value);
 
             return NoContent();
         }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Vinodrill_Back.Models.EntityFramework;
+using Vinodrill_Back.Models.Repository;
 
 namespace Vinodrill_Back.Controllers
 {
@@ -13,95 +14,87 @@ namespace Vinodrill_Back.Controllers
     [ApiController]
     public class AviController : ControllerBase
     {
-        private readonly VinodrillDBContext _context;
+        private readonly IDataRepository<Avis> dataRepository;
 
-        public AviController(VinodrillDBContext context)
+        public AviController(IDataRepository<Avis> dataRepo)
         {
-            _context = context;
+            dataRepository = dataRepo;
         }
 
         // GET: api/Avis
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Avis>>> GetAvis()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Avis>))]
+        public async Task<ActionResult<IEnumerable<Avis>>> GetAdresses()
         {
-            return await _context.Avis.ToListAsync();
+            return await dataRepository.GetAll();
         }
 
-        // GET: api/Avis/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Avis>> GetAvis(int id)
+        // GET: api/Avis/GetAvisById/5
+        [HttpGet("GetAvisById/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Avis))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Avis>> GetAvisById(int id)
         {
-            var avis = await _context.Avis.FindAsync(id);
-
-            if (avis == null)
-            {
-                return NotFound();
-            }
-
-            return avis;
+            return StatusCode(StatusCodes.Status405MethodNotAllowed);
         }
 
-        // PUT: api/Avis/5
+        //PUT: api/Avis/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAvis(int id, Avis avis)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PutAdresse(int id, Avis avi)
         {
-            if (id != avis.IdAvis)
+
+            if (id != avi.IdAvis)
             {
                 return BadRequest();
             }
 
-            _context.Entry(avis).State = EntityState.Modified;
-
-            try
+            var userToUpdate = await dataRepository.GetById(id);
+            if (userToUpdate == null)
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!AvisExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                await dataRepository.Update(userToUpdate.Value, avi);
+                return NoContent();
             }
-
-            return NoContent();
         }
 
         // POST: api/Avis
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Avis>> PostAvis(Avis avis)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Avis))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Avis>> PostAdresse(Avis avi)
         {
-            _context.Avis.Add(avis);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await dataRepository.Add(avi);
 
-            return CreatedAtAction("GetAvis", new { id = avis.IdAvis }, avis);
+            return CreatedAtAction("GetAvisById", new { id = avi.IdAvis }, avi);
         }
 
         // DELETE: api/Avis/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAvis(int id)
         {
-            var avis = await _context.Avis.FindAsync(id);
-            if (avis == null)
+            var avi = await dataRepository.GetById(id);
+            if (avi == null)
             {
                 return NotFound();
             }
 
-            _context.Avis.Remove(avis);
-            await _context.SaveChangesAsync();
+            await dataRepository.Delete(avi.Value);
 
             return NoContent();
-        }
-
-        private bool AvisExists(int id)
-        {
-            return _context.Avis.Any(e => e.IdAvis == id);
         }
     }
 }
