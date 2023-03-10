@@ -8,7 +8,7 @@ namespace Vinodrill_Back.Models.EntityFramework
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("rav_id")]
-        public int Id { get; set; }
+        public int IdReponseAvis { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ForeignKey("IdAvis")]
