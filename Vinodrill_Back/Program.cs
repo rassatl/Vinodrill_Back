@@ -23,7 +23,7 @@ namespace Vinodrill_Back
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
+            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContextRemote")));
             builder.Services.AddScoped<IDataRepository<Activite>, ActiviteManager>();
             builder.Services.AddScoped<IAvisRepository, AviManager>();
 
