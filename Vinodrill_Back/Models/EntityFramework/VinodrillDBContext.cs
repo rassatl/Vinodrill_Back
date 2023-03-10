@@ -13,6 +13,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         }
         public virtual DbSet<Activite> Activites { get; set; } = null!;
         public virtual DbSet<Adresse> Adresses { get; set; } = null!;
+        public virtual DbSet<Visite> Visites { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
