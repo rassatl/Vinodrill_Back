@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Vinodrill_Back.Models.EntityFramework;
@@ -11,9 +12,10 @@ using Vinodrill_Back.Models.EntityFramework;
 namespace Vinodrill_Back.Migrations
 {
     [DbContext(typeof(VinodrillDBContext))]
-    partial class VinodrillDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230310073635_VinoDrillDBCreationv4")]
+    partial class VinoDrillDBCreationv4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -690,16 +692,28 @@ namespace Vinodrill_Back.Migrations
                         .HasColumnName("im_id")
                         .HasColumnOrder(1);
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdImage"));
+
                     b.Property<int>("IdAvis")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("avi_id")
                         .HasColumnOrder(0);
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdAvis"));
+
+                    b.Property<int>("AvisImageAvisNavigationIdAvis")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ImageImageAvisNavigationIdImage")
+                        .HasColumnType("integer");
+
                     b.HasKey("IdImage", "IdAvis")
                         .HasName("pk_image_avis");
 
-                    b.HasIndex("IdAvis");
+                    b.HasIndex("AvisImageAvisNavigationIdAvis");
+
+                    b.HasIndex("ImageImageAvisNavigationIdImage");
 
                     b.ToTable("t_j_imageavis_ima");
                 });
@@ -1337,15 +1351,15 @@ namespace Vinodrill_Back.Migrations
                 {
                     b.HasOne("Vinodrill_Back.Models.EntityFramework.Avis", "AvisImageAvisNavigation")
                         .WithMany("ImageAvisAvisNavigation")
-                        .HasForeignKey("IdAvis")
-                        .IsRequired()
-                        .HasConstraintName("fk_avi_ima");
+                        .HasForeignKey("AvisImageAvisNavigationIdAvis")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Vinodrill_Back.Models.EntityFramework.Image", "ImageImageAvisNavigation")
                         .WithMany("ImageAvisImageNavigation")
-                        .HasForeignKey("IdImage")
-                        .IsRequired()
-                        .HasConstraintName("fk_img_ima");
+                        .HasForeignKey("ImageImageAvisNavigationIdImage")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AvisImageAvisNavigation");
 
