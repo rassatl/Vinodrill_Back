@@ -81,6 +81,20 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_prt_act");
             });
+            modelBuilder.Entity<Partenaire>(entity =>
+            {
+                entity
+                   .HasIndex(e => e.EmailPartenaire)
+                   .IsUnique()
+                   .HasDatabaseName("uq_prt_email");
+            });
+            modelBuilder.Entity<Client>(entity =>
+            {
+                entity
+                   .HasIndex(e => e.EmailClient)
+                   .IsUnique()
+                   .HasDatabaseName("uq_clt_email");
+            });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
