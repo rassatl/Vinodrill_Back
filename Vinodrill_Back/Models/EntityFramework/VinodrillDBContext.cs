@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Runtime.Intrinsics.X86;
+using Vinodrill_Back.Models.EntityFramework;
 
 namespace Vinodrill_Back.Models.EntityFramework
 {
@@ -92,7 +93,7 @@ namespace Vinodrill_Back.Models.EntityFramework
 
             modelBuilder.Entity<ReponseAvis>(entity =>
             {
-                entity.HasKey(r => new { r.Id, r.IdAvis })
+                entity.HasKey(r => new { r.IdReponseAvis, r.IdAvis })
                     .HasName("pk_reponse_avis");
             });
 
@@ -194,6 +195,7 @@ namespace Vinodrill_Back.Models.EntityFramework
                 entity.HasKey(e => new { e.IdDestination })
                     .HasName("pk_destination");
             });
+
             modelBuilder.Entity<Effectue>(entity =>
             {
                 entity.HasKey(e => new { e.IdActivite, e.IdEtape })
@@ -204,6 +206,7 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .HasForeignKey(d => d.IdActivite)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_vst_efc");
+
                 entity.HasOne(d => d.EtapeEffectueNavigation)
                     .WithMany(p => p.EffectueEtapeNavigation)
                     .HasForeignKey(d => d.IdEtape)
@@ -211,6 +214,7 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .HasConstraintName("fk_etp_efc");
 
             });
+
             modelBuilder.Entity<Etape>(entity =>
             {
                 entity.HasOne(d => d.SejourEtapeNavigation)
@@ -218,12 +222,14 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .HasForeignKey(d => d.IdSejour)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_sje_etp");
+
                 entity.HasOne(d => d.HebergementEtapeNavigation)
                     .WithMany(p => p.EtapeHebergementNavigation)
                     .HasForeignKey(d => d.IdHebergement)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_hbg_etp");
             });
+
             modelBuilder.Entity<Hebergement>(entity =>
             {
                 entity.HasOne(d => d.HotelHebergementNavigation)
@@ -232,6 +238,7 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_prt_hbg");
             });
+
             modelBuilder.Entity<Hotel>(entity =>
             {
                 entity.HasOne(d => d.EtoileHotelHotelNavigation)
@@ -239,22 +246,32 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .HasForeignKey(d => d.NbEtoileHotel)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_eth_htl");
+
+                entity.HasOne(d => d.PartenaireHotelNavigation)
+                    .WithMany(p => p.HotelPartenaireNavigation)
+                    .HasForeignKey(d => d.IdPartenaire)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_prt_htl");
             });
+
             modelBuilder.Entity<Participe>(entity =>
             {
                 entity.HasKey(p => new { p.IdCategorieParticipant, p.IdSejour })
                     .HasName("pk_participe");
+
                 entity.HasOne(d => d.CatParticipantParticipeNavigation)
                     .WithMany(p => p.ParticipeCatParticipantNavigation)
                     .HasForeignKey(d => d.IdCategorieParticipant)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_cpt_ppt");
+
                 entity.HasOne(d => d.SejourParticipeNavigation)
                     .WithMany(p => p.ParticipeSejourNavigation)
                     .HasForeignKey(d => d.IdSejour)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_sjr_ppt");
             });
+
             modelBuilder.Entity<Paiement>(entity =>
             {
                 entity.HasOne(d => d.ClientPaiementNavigation)
@@ -263,31 +280,37 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_clt_pmt");
             });
+
             modelBuilder.Entity<ReponseAvis>(entity =>
             {
-                entity.HasKey(r => new { r.Id, r.IdAvis })
+                entity.HasKey(r => new { r.IdReponseAvis, r.IdAvis })
                     .HasName("pk_reponse_avis");
+
                 entity.HasOne(d => d.AvisReponseAvisNavigation)
                     .WithMany(p => p.ReponseAvisAvisNavigation)
                     .HasForeignKey(d => d.IdAvis)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_avi_rav");
             });
+
             modelBuilder.Entity<Reservation>(entity =>
             {
                 entity.HasKey(r => new { r.IdSejour, r.RefCommande })
                     .HasName("pk_reservation");
+
                 entity.HasOne(d => d.CommandeReservationNavigation)
                     .WithMany(p => p.ReservationCommandeNavigation)
                     .HasForeignKey(d => d.RefCommande)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_cmd_rsv");
+
                 entity.HasOne(d => d.SejourReservationNavigation)
                     .WithMany(p => p.ReservationSejourNavigation)
                     .HasForeignKey(d => d.IdSejour)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_sjr_rsv");
             });
+
             modelBuilder.Entity<Societe>(entity =>
             {
                 entity.HasOne(d => d.TypeActiviteSocieteNavigation)
@@ -295,7 +318,14 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .HasForeignKey(d => d.IdTypeActivite)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_tac_sct");
+
+                entity.HasOne(d => d.PartenaireSocieteNavigation)
+                    .WithMany(p => p.SocietePartenaireNavigation)
+                    .HasForeignKey(d => d.IdPartenaire)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_prt_sct");
             });
+
             modelBuilder.Entity<Sejour>(entity =>
             {
                 entity.HasOne(d => d.DestinationSejourNavigation)
@@ -309,6 +339,7 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_thm_sjr");
             });
+
             modelBuilder.Entity<Visite>(entity =>
             {
                 entity.HasOne(d => d.TypeVisiteVisiteNavigation)
@@ -323,7 +354,16 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_cav_vst");
             });
+
+            modelBuilder.Entity<Cave>(entity => {
+                entity.HasOne(d => d.PartenaireCaveNavigation)
+                    .WithMany(p => p.CavePartenaireNavigation)
+                    .HasForeignKey(d => d.IdPartenaire)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_prt_cav");
+            });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        public DbSet<Vinodrill_Back.Models.EntityFramework.Avis> Avis { get; set; }
     }
 }

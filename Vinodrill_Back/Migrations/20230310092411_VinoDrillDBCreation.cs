@@ -170,24 +170,16 @@ namespace Vinodrill_Back.Migrations
                 name: "t_h_cave_cav",
                 columns: table => new
                 {
-                    prt_id = table.Column<int>(type: "integer", nullable: false),
-                    PartenaireCaveNavigationIdPartenaire = table.Column<int>(type: "integer", nullable: false)
+                    prt_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_t_h_cave_cav", x => x.prt_id);
                     table.ForeignKey(
-                        name: "FK_t_h_cave_cav_t_e_partenaire_prt_PartenaireCaveNavigationIdP~",
-                        column: x => x.PartenaireCaveNavigationIdPartenaire,
-                        principalTable: "t_e_partenaire_prt",
-                        principalColumn: "prt_id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_t_h_cave_cav_t_e_partenaire_prt_prt_id",
+                        name: "fk_prt_cav",
                         column: x => x.prt_id,
                         principalTable: "t_e_partenaire_prt",
-                        principalColumn: "prt_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "prt_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -195,8 +187,7 @@ namespace Vinodrill_Back.Migrations
                 columns: table => new
                 {
                     ect_nb = table.Column<int>(type: "integer", nullable: false),
-                    prt_id = table.Column<int>(type: "integer", nullable: false),
-                    PartenaireHotelNavigationIdPartenaire = table.Column<int>(type: "integer", nullable: false)
+                    prt_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,17 +198,10 @@ namespace Vinodrill_Back.Migrations
                         principalTable: "t_e_etoilehotel_eth",
                         principalColumn: "eth_nb");
                     table.ForeignKey(
-                        name: "FK_t_h_hotel_htl_t_e_partenaire_prt_PartenaireHotelNavigationI~",
-                        column: x => x.PartenaireHotelNavigationIdPartenaire,
-                        principalTable: "t_e_partenaire_prt",
-                        principalColumn: "prt_id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_t_h_hotel_htl_t_e_partenaire_prt_prt_id",
+                        name: "fk_prt_htl",
                         column: x => x.prt_id,
                         principalTable: "t_e_partenaire_prt",
-                        principalColumn: "prt_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "prt_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -263,11 +247,10 @@ namespace Vinodrill_Back.Migrations
                 {
                     table.PrimaryKey("PK_t_h_societe_sct", x => x.prt_id);
                     table.ForeignKey(
-                        name: "FK_t_h_societe_sct_t_e_partenaire_prt_prt_id",
+                        name: "fk_prt_sct",
                         column: x => x.prt_id,
                         principalTable: "t_e_partenaire_prt",
-                        principalColumn: "prt_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "prt_id");
                     table.ForeignKey(
                         name: "fk_tac_sct",
                         column: x => x.tac_id,
@@ -328,18 +311,16 @@ namespace Vinodrill_Back.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     vst_libelle = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     vst_description = table.Column<string>(type: "text", nullable: false),
-                    vst_horaire = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
-                    CaveVisiteNavigationIdPartenaire = table.Column<int>(type: "integer", nullable: false)
+                    vst_horaire = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_t_e_visite_vst", x => x.vst_id);
                     table.ForeignKey(
-                        name: "FK_t_e_visite_vst_t_h_cave_cav_CaveVisiteNavigationIdPartenaire",
-                        column: x => x.CaveVisiteNavigationIdPartenaire,
+                        name: "fk_cav_vst",
+                        column: x => x.cav_id,
                         principalTable: "t_h_cave_cav",
-                        principalColumn: "prt_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "prt_id");
                     table.ForeignKey(
                         name: "fk_tvs_vst",
                         column: x => x.tvs_id,
@@ -419,30 +400,6 @@ namespace Vinodrill_Back.Migrations
                         column: x => x.sjr_id,
                         principalTable: "t_e_sejour_sjr",
                         principalColumn: "sjr_id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PartenaireSociete",
-                columns: table => new
-                {
-                    PartenaireSocieteNavigationIdPartenaire = table.Column<int>(type: "integer", nullable: false),
-                    SocietePartenaireNavigationIdPartenaire = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PartenaireSociete", x => new { x.PartenaireSocieteNavigationIdPartenaire, x.SocietePartenaireNavigationIdPartenaire });
-                    table.ForeignKey(
-                        name: "FK_PartenaireSociete_t_e_partenaire_prt_PartenaireSocieteNavig~",
-                        column: x => x.PartenaireSocieteNavigationIdPartenaire,
-                        principalTable: "t_e_partenaire_prt",
-                        principalColumn: "prt_id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PartenaireSociete_t_h_societe_sct_SocietePartenaireNavigati~",
-                        column: x => x.SocietePartenaireNavigationIdPartenaire,
-                        principalTable: "t_h_societe_sct",
-                        principalColumn: "prt_id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -664,34 +621,23 @@ namespace Vinodrill_Back.Migrations
                 name: "t_j_faitpartiede_fpd",
                 columns: table => new
                 {
-                    vst_id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    vst_id = table.Column<int>(type: "integer", nullable: false),
                     etp_id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    VisiteFaitPartieDeNavigationIdVisite = table.Column<int>(type: "integer", nullable: false),
-                    EtapeFaitPartieDeNavigationIdEtape = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_fait_parti_de", x => new { x.vst_id, x.etp_id });
                     table.ForeignKey(
-                        name: "FK_t_j_faitpartiede_fpd_t_e_etape_etp_EtapeFaitPartieDeNavigat~",
-                        column: x => x.EtapeFaitPartieDeNavigationIdEtape,
+                        name: "fk_etp_fpd",
+                        column: x => x.etp_id,
                         principalTable: "t_e_etape_etp",
-                        principalColumn: "etp_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "etp_id");
                     table.ForeignKey(
-                        name: "FK_t_j_faitpartiede_fpd_t_e_visite_vst_VisiteFaitPartieDeNavig~",
-                        column: x => x.VisiteFaitPartieDeNavigationIdVisite,
+                        name: "fk_vst_fpd",
+                        column: x => x.vst_id,
                         principalTable: "t_e_visite_vst",
-                        principalColumn: "vst_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "vst_id");
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PartenaireSociete_SocietePartenaireNavigationIdPartenaire",
-                table: "PartenaireSociete",
-                column: "SocietePartenaireNavigationIdPartenaire");
 
             migrationBuilder.CreateIndex(
                 name: "IX_t_e_activite_act_prt_id",
@@ -776,9 +722,9 @@ namespace Vinodrill_Back.Migrations
                 column: "thm_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_t_e_visite_vst_CaveVisiteNavigationIdPartenaire",
+                name: "IX_t_e_visite_vst_cav_id",
                 table: "t_e_visite_vst",
-                column: "CaveVisiteNavigationIdPartenaire");
+                column: "cav_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_t_e_visite_vst_tvs_id",
@@ -786,19 +732,9 @@ namespace Vinodrill_Back.Migrations
                 column: "tvs_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_t_h_cave_cav_PartenaireCaveNavigationIdPartenaire",
-                table: "t_h_cave_cav",
-                column: "PartenaireCaveNavigationIdPartenaire");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_t_h_hotel_htl_ect_nb",
                 table: "t_h_hotel_htl",
                 column: "ect_nb");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_t_h_hotel_htl_PartenaireHotelNavigationIdPartenaire",
-                table: "t_h_hotel_htl",
-                column: "PartenaireHotelNavigationIdPartenaire");
 
             migrationBuilder.CreateIndex(
                 name: "IX_t_h_societe_sct_tac_id",
@@ -811,14 +747,9 @@ namespace Vinodrill_Back.Migrations
                 column: "etp_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_t_j_faitpartiede_fpd_EtapeFaitPartieDeNavigationIdEtape",
+                name: "IX_t_j_faitpartiede_fpd_etp_id",
                 table: "t_j_faitpartiede_fpd",
-                column: "EtapeFaitPartieDeNavigationIdEtape");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_t_j_faitpartiede_fpd_VisiteFaitPartieDeNavigationIdVisite",
-                table: "t_j_faitpartiede_fpd",
-                column: "VisiteFaitPartieDeNavigationIdVisite");
+                column: "etp_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_t_j_imageavis_ima_avi_id",
@@ -838,9 +769,6 @@ namespace Vinodrill_Back.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "PartenaireSociete");
-
             migrationBuilder.DropTable(
                 name: "t_e_adresse_adr");
 
