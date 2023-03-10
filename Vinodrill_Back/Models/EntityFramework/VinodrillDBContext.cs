@@ -15,9 +15,30 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<Adopte>(entity =>
+            //{
+            //    entity.HasOne(d => d.fk_clt_adt)
+            //        .WithMany(p => p.ImageAvisImageNavigation)
+            //        .HasForeignKey(d => d.IdImage)
+            //        .OnDelete(DeleteBehavior.ClientSetNull)
+            //        .HasConstraintName("fk_clt_adt");
+            //});
+
             modelBuilder.Entity<Commande>(entity =>
             {
                 entity.HasCheckConstraint("ck_cmd_prix", "cmd_quantite > 0");
+
+                entity.HasOne(d => d.ClientCommandeNavigation)
+                    .WithMany(p => p.CommandeClientNavigation)
+                    .HasForeignKey(d => d.IdClient)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_clt_cmd");
+
+                entity.HasOne(d => d.PaiementCommandeNavigation)
+                    .WithMany(p => p.CommandePaiementNavigation)
+                    .HasForeignKey(d => d.IdPaiement)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_pmt_cmd");
             });
 
             modelBuilder.Entity<FaitPartieDe>(entity =>
@@ -81,6 +102,7 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_prt_act");
             });
+
             modelBuilder.Entity<Partenaire>(entity =>
             {
                 entity
@@ -88,12 +110,70 @@ namespace Vinodrill_Back.Models.EntityFramework
                    .IsUnique()
                    .HasDatabaseName("uq_prt_email");
             });
+
             modelBuilder.Entity<Client>(entity =>
             {
                 entity
                    .HasIndex(e => e.EmailClient)
                    .IsUnique()
                    .HasDatabaseName("uq_clt_email");
+
+                //entity.HasOne(d => d.CbClientNavigation)
+                //    .Has(p => p.ClientCbNavigation)
+                //    .HasForeignKey(d => d.IdClient)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("fk_clt_adr");
+            });
+
+            modelBuilder.Entity<Adresse>(entity =>
+            {
+                entity.HasOne(d => d.ClientAdresseNavigation)
+                    .WithMany(p => p.AdresseClientNavigation)
+                    .HasForeignKey(d => d.IdClient)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_clt_adr");
+            });
+
+            modelBuilder.Entity<Avis>(entity =>
+            {
+                entity.HasOne(d => d.ClientAvisNavigation)
+                    .WithMany(p => p.AvisClientNavigation)
+                    .HasForeignKey(d => d.IdClient)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_clt_avi");
+
+                entity.HasOne(d => d.SejourAvisNavigation)
+                    .WithMany(p => p.AvisSejourNavigation)
+                    .HasForeignKey(d => d.IdClient)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_sej_avi");
+            });
+
+            modelBuilder.Entity<BonCommande>(entity =>
+            {
+                entity.HasOne(d => d.CommandeBonCommandeNavigation)
+                    .WithMany(p => p.BonCommandeCommandeNavigation)
+                    .HasForeignKey(d => d.IdBonCommande)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_cmd_bcm");
+            });
+
+            modelBuilder.Entity<BonReduction>(entity =>
+            {
+                entity.HasOne(d => d.CommandeBonReductionNavigation)
+                    .WithMany(p => p.BonReductionCommandeNavigation)
+                    .HasForeignKey(d => d.RefCommande)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_cmd_brd");
+            });
+
+            modelBuilder.Entity<BonReduction>(entity =>
+            {
+                entity.HasOne(d => d.CommandeBonReductionNavigation)
+                    .WithMany(p => p.BonReductionCommandeNavigation)
+                    .HasForeignKey(d => d.RefCommande)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_cmd_brd");
             });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

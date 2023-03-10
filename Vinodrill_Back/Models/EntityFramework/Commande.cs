@@ -11,12 +11,12 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("cmd_id")]
         public int RefCommande { get; set; }
 
-        [ForeignKey("fk_clt_cmd")]
+        [ForeignKey("IdClient")]
         [Column("cmd_idclient", Order = 0)]
         [Required]
         public int IdClient { get; set; }
 
-        [ForeignKey("fk_pmt_cmd")]
+        [ForeignKey("IdPaiement")]
         [Column("cmd_idpaiement", Order = 1)]
         [Required]
         public int IdPaiement { get; set; }

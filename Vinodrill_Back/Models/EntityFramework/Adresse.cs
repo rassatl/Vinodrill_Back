@@ -12,7 +12,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public int IdAdresse { get; set; }
 
-        [ForeignKey("fk_clt_adr")]
+        [ForeignKey("IdClient")]
         [Column("clt_idclient")]
         [Required]
         public int IdClient { get; set; }

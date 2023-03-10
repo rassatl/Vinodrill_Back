@@ -18,7 +18,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public int IdAvisClient { get; set; }
 
-        [ForeignKey("fk_cb_clt")]
+        [ForeignKey("CbClientNavigation")]
         [Column("cb_idcb", Order = 1)]
         [Required]
         public int IdCbClient { get; set; }

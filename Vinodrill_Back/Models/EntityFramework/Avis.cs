@@ -11,11 +11,11 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("avi_id")]
         public int IdAvis { get; set; }
 
-        [ForeignKey("fk_clt_avi")]
+        [ForeignKey("IdClient")]
         [Column("clt_id", Order = 0)]
         public int IdClient { get; set;}
 
-        [ForeignKey("fk_sej_avi")]
+        [ForeignKey("IdSejour")]
         [Column("sjr_id", Order = 1)]
         public int IdSejour { get; set; }
 
