@@ -52,7 +52,7 @@ namespace Vinodrill_Back.Models.EntityFramework
 
             modelBuilder.Entity<Participe>(entity =>
             {
-                entity.HasKey(p => new { p.IdCategorieParticipant , p.IdSejour })
+                entity.HasKey(p => new { p.IdCategorieParticipant, p.IdSejour })
                     .HasName("pk_participe");
             });
 
