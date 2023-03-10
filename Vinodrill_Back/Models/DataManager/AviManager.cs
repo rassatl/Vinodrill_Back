@@ -49,7 +49,16 @@ namespace Vinodrill_Back.Models.DataManager
 
         public async Task<ActionResult<Avis>> GetById(int id)
         {
-            return await dbContext.Avis.FirstOrDefaultAsync(a => a.IdAvis == id);
+            Avis response = await dbContext.Avis.FirstOrDefaultAsync(a => a.IdAvis == id);
+
+            return response;
+        }
+
+        public async Task<ActionResult<Avis>> GetByIdWithSejour(int id)
+        {
+            Avis response = await dbContext.Avis.Include(a => a.SejourAvisNavigation).FirstOrDefaultAsync(a => a.IdAvis == id);
+
+            return response;
         }
     }
 }
