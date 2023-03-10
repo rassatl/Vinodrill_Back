@@ -40,7 +40,7 @@ namespace Vinodrill_Back.Models.EntityFramework
 
             modelBuilder.Entity<Participe>(entity =>
             {
-                entity.HasKey(p => new { p.IdCategorieParticipant , p.IdSejour })
+                entity.HasKey(p => new { p.IdCategorieParticipant, p.IdSejour })
                     .HasName("pk_participe");
             });
 
@@ -59,8 +59,21 @@ namespace Vinodrill_Back.Models.EntityFramework
             {
                 entity.HasCheckConstraint("ck_eth_nb", "eth_nb between 0 and 5");
             });
-        
-    }
+            modelBuilder.Entity<Partenaire>(entity =>
+            {
+                entity
+                   .HasIndex(e => e.EmailPartenaire)
+                   .IsUnique()
+                   .HasDatabaseName("uq_prt_email"); 
+            });
+            modelBuilder.Entity<Client>(entity =>
+            {
+                entity
+                   .HasIndex(e => e.EmailClient)
+                   .IsUnique()
+                   .HasDatabaseName("uq_clt_email"); 
+            });
+        }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

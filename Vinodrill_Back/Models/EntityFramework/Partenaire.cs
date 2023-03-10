@@ -38,7 +38,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string PhotoPartenaire { get; set; }
 
         [Column("prt_email")]
-        [StringLength(255, ErrorMessage = " email lenght must be 255 maximum")]
+        [EmailAddress]
+        [StringLength(255, MinimumLength = 6, ErrorMessage = " email lenght must be 255 maximum")]
         [Required]
         public string EmailPartenaire { get; set; }
 

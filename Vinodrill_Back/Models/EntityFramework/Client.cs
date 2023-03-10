@@ -49,7 +49,7 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [Column("clt_email")]
         [EmailAddress]
-        [StringLength(255, ErrorMessage = "email length must be 255 maximum")]
+        [StringLength(255, MinimumLength = 6, ErrorMessage = " email lenght must be 255 maximum")]
         [Required]
         public string EmailClient { get; set; }
 
