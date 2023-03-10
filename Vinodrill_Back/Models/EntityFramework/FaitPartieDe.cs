@@ -7,12 +7,12 @@ namespace Vinodrill_Back.Models.EntityFramework
     public partial class FaitPartieDe
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_vst_fpd")]
+        [ForeignKey("IdVisite")]
         [Column("vst_id", Order = 0)]
         public int IdVisite { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [ForeignKey("fk_etp_fpd")]
+        [ForeignKey("IdEtape")]
         [Column("etp_id", Order = 1)]
         public int IdEtape { get; set; }
 
