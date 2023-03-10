@@ -11,7 +11,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("brd_id")]
         public int IdBonReduction { get; set; }
 
-        [ForeignKey("fk_cmd_brd")]
+        [ForeignKey("RefCommande")]
         [Required]
         [Column("cmd_id")]
         public int RefCommande { get; set; }
