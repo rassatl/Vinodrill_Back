@@ -14,7 +14,18 @@ namespace Vinodrill_Back.Models.EntityFramework
         }
         public virtual DbSet<Activite> Activites { get; set; } = null!;
         public virtual DbSet<Adresse> Adresses { get; set; } = null!;
-        public virtual DbSet<Sejour> Sejours { get; set; } = null!;
+        public virtual DbSet<Visite> Visites { get; set; } = null!;
+        public virtual DbSet<TypeVisite> TypeVisites { get; set; } = null!;
+        public virtual DbSet<Theme> Themes { get; set; } = null!;
+        public virtual DbSet<Societe> Societes { get; set; } = null!;
+        public virtual DbSet<Participe> Participes { get; set; } = null!;
+        public virtual DbSet<Avis> Avis { get; set; } = null!;
+        public virtual DbSet<CatParticipant> Catparticipants { get; set; } = null!;
+        public virtual DbSet<Cave> Caves { get; set; } = null!;
+        public virtual DbSet<Client> Clients { get; set; } = null!;
+        public virtual DbSet<Partenaire> Partenaires { get; set; } = null!;
+        public virtual DbSet<Commande> Commandes { get; set; } = null!;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -364,6 +375,6 @@ namespace Vinodrill_Back.Models.EntityFramework
             });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-        public DbSet<Vinodrill_Back.Models.EntityFramework.Avis> Avis { get; set; }
+
     }
 }
