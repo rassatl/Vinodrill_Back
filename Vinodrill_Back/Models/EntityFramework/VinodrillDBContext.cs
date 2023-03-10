@@ -91,7 +91,7 @@ namespace Vinodrill_Back.Models.EntityFramework
 
             modelBuilder.Entity<ReponseAvis>(entity =>
             {
-                entity.HasKey(r => new { r.Id, r.IdAvis })
+                entity.HasKey(r => new { r.IdReponseAvis, r.IdAvis })
                     .HasName("pk_reponse_avis");
             });
 
