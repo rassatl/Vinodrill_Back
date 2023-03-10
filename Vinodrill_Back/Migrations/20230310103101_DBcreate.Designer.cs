@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Vinodrill_Back.Models.EntityFramework;
@@ -11,9 +12,10 @@ using Vinodrill_Back.Models.EntityFramework;
 namespace Vinodrill_Back.Migrations
 {
     [DbContext(typeof(VinodrillDBContext))]
-    partial class VinodrillDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230310103101_DBcreate")]
+    partial class DBcreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -729,6 +731,10 @@ namespace Vinodrill_Back.Migrations
                         .HasColumnName("prt_ville");
 
                     b.HasKey("IdPartenaire");
+
+                    b.HasIndex("EmailPartenaire")
+                        .IsUnique()
+                        .HasDatabaseName("uq_prt_email");
 
                     b.ToTable("t_e_partenaire_prt");
                 });
