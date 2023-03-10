@@ -701,12 +701,6 @@ namespace Vinodrill_Back.Migrations
                 column: "clt_idclient");
 
             migrationBuilder.CreateIndex(
-                name: "uq_prt_email",
-                table: "t_e_partenaire_prt",
-                column: "prt_email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_t_e_reponseavis_rav_rav_idavis",
                 table: "t_e_reponseavis_rav",
                 column: "rav_idavis");

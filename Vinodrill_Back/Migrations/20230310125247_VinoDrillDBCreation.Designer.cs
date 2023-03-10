@@ -12,7 +12,7 @@ using Vinodrill_Back.Models.EntityFramework;
 namespace Vinodrill_Back.Migrations
 {
     [DbContext(typeof(VinodrillDBContext))]
-    [Migration("20230310092411_VinoDrillDBCreation")]
+    [Migration("20230310125247_VinoDrillDBCreation")]
     partial class VinoDrillDBCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -731,10 +731,6 @@ namespace Vinodrill_Back.Migrations
                         .HasColumnName("prt_ville");
 
                     b.HasKey("IdPartenaire");
-
-                    b.HasIndex("EmailPartenaire")
-                        .IsUnique()
-                        .HasDatabaseName("uq_prt_email");
 
                     b.ToTable("t_e_partenaire_prt");
                 });

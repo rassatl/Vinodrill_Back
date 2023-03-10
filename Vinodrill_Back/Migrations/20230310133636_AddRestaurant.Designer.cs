@@ -12,8 +12,8 @@ using Vinodrill_Back.Models.EntityFramework;
 namespace Vinodrill_Back.Migrations
 {
     [DbContext(typeof(VinodrillDBContext))]
-    [Migration("20230310103101_DBcreate")]
-    partial class DBcreate
+    [Migration("20230310133636_AddRestaurant")]
+    partial class AddRestaurant
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -541,6 +541,20 @@ namespace Vinodrill_Back.Migrations
                     b.HasCheckConstraint("ck_eth_nb", "eth_nb between 0 and 5");
                 });
 
+            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.EtoileRestaurant", b =>
+                {
+                    b.Property<int>("NbEtoileRestaurant")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("etr_nb");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("NbEtoileRestaurant"));
+
+                    b.HasKey("NbEtoileRestaurant");
+
+                    b.ToTable("t_e_etoilerestaurant_etr");
+                });
+
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.FaitPartieDe", b =>
                 {
                     b.Property<int>("IdVisite")
@@ -731,10 +745,6 @@ namespace Vinodrill_Back.Migrations
                         .HasColumnName("prt_ville");
 
                     b.HasKey("IdPartenaire");
-
-                    b.HasIndex("EmailPartenaire")
-                        .IsUnique()
-                        .HasDatabaseName("uq_prt_email");
 
                     b.ToTable("t_e_partenaire_prt");
                 });
@@ -948,6 +958,26 @@ namespace Vinodrill_Back.Migrations
                     b.ToTable("t_e_typeactivite_tac");
                 });
 
+            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.TypeCuisine", b =>
+                {
+                    b.Property<int>("IdTypeCuisine")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("tcu_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdTypeCuisine"));
+
+                    b.Property<string>("LibelleTypeCuisine")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("tcu_libelle");
+
+                    b.HasKey("IdTypeCuisine");
+
+                    b.ToTable("t_e_type_cuisine_tcu");
+                });
+
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.TypeVisite", b =>
                 {
                     b.Property<int>("IdTypeVisite")
@@ -1030,6 +1060,30 @@ namespace Vinodrill_Back.Migrations
                     b.HasIndex("NbEtoileHotel");
 
                     b.ToTable("t_h_hotel_htl");
+                });
+
+            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Restaurant", b =>
+                {
+                    b.HasBaseType("Vinodrill_Back.Models.EntityFramework.Partenaire");
+
+                    b.Property<int>("IdTypeCuisineCuisine")
+                        .HasColumnType("integer")
+                        .HasColumnName("tcu_id");
+
+                    b.Property<int>("NbEtoileRestaurantRestaurant")
+                        .HasColumnType("integer")
+                        .HasColumnName("etr_nb");
+
+                    b.Property<string>("SpecialiteRestaurant")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("res_specialite");
+
+                    b.HasIndex("IdTypeCuisineCuisine");
+
+                    b.HasIndex("NbEtoileRestaurantRestaurant");
+
+                    b.ToTable("t_e_restaurant_res");
                 });
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Societe", b =>
@@ -1354,6 +1408,31 @@ namespace Vinodrill_Back.Migrations
                     b.Navigation("PartenaireHotelNavigation");
                 });
 
+            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Restaurant", b =>
+                {
+                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Partenaire", null)
+                        .WithOne()
+                        .HasForeignKey("Vinodrill_Back.Models.EntityFramework.Restaurant", "IdPartenaire")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Vinodrill_Back.Models.EntityFramework.TypeCuisine", "TypeCuisineCuisineNavigation")
+                        .WithMany("RestaurantTypeCuisineCuisineNavigation")
+                        .HasForeignKey("IdTypeCuisineCuisine")
+                        .IsRequired()
+                        .HasConstraintName("fk_tcu_res");
+
+                    b.HasOne("Vinodrill_Back.Models.EntityFramework.EtoileRestaurant", "EtoileRestaurantRestaurantNavigation")
+                        .WithMany("RestaurantEtoileRestaurantRestaurantNavigation")
+                        .HasForeignKey("NbEtoileRestaurantRestaurant")
+                        .IsRequired()
+                        .HasConstraintName("fk_etr_res");
+
+                    b.Navigation("EtoileRestaurantRestaurantNavigation");
+
+                    b.Navigation("TypeCuisineCuisineNavigation");
+                });
+
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Societe", b =>
                 {
                     b.HasOne("Vinodrill_Back.Models.EntityFramework.Partenaire", "PartenaireSocieteNavigation")
@@ -1432,6 +1511,11 @@ namespace Vinodrill_Back.Migrations
                     b.Navigation("HotelEtoileHotelNavigation");
                 });
 
+            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.EtoileRestaurant", b =>
+                {
+                    b.Navigation("RestaurantEtoileRestaurantRestaurantNavigation");
+                });
+
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Hebergement", b =>
                 {
                     b.Navigation("EtapeHebergementNavigation");
@@ -1475,6 +1559,11 @@ namespace Vinodrill_Back.Migrations
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.TypeActivite", b =>
                 {
                     b.Navigation("SocieteTypeActiviteNavigation");
+                });
+
+            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.TypeCuisine", b =>
+                {
+                    b.Navigation("RestaurantTypeCuisineCuisineNavigation");
                 });
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.TypeVisite", b =>
