@@ -14,9 +14,9 @@ namespace Vinodrill_Back.Controllers
     [ApiController]
     public class AviController : ControllerBase
     {
-        private readonly IDataRepository<Avis> dataRepository;
+        private readonly IAvisRepository dataRepository;
 
-        public AviController(IDataRepository<Avis> dataRepo)
+        public AviController(IAvisRepository dataRepo)
         {
             dataRepository = dataRepo;
         }
@@ -33,12 +33,17 @@ namespace Vinodrill_Back.Controllers
         [HttpGet("GetAvisById/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Avis))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Avis>> GetAvisById(int id, bool? withSejour = false, bool withClient = false, bool? withImage = false, bool withReponse = false)
+        public async Task<ActionResult<Avis>> GetAvisById(int id, [FromQuery] bool includeSejour = false)
         {
-            var avi = await dataRepository.GetById(id);
-
-            if (withClient) {}
-
+            // initialisation de la variable qui va contenir l'avis à retourner, null par défaut, de type inconu
+            ActionResult<Avis>? avi;
+            
+            if (includeSejour) 
+            {
+                avi = await dataRepository.GetByIdWithSejour(id);
+            } else {
+                avi = await dataRepository.GetById(id);
+            }
 
             if (avi == null)
             {

@@ -6,7 +6,7 @@ using System.Runtime.Intrinsics.X86;
 
 namespace Vinodrill_Back.Models.DataManager
 {
-    public class AviManager : IDataRepository<Avis>
+    public class AviManager : IAvisRepository
     {
         readonly VinodrillDBContext? dbContext;
 

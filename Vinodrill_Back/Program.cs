@@ -25,7 +25,7 @@ namespace Vinodrill_Back
 
             builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
             builder.Services.AddScoped<IDataRepository<Activite>, ActiviteManager>();
-            builder.Services.AddScoped<IDataRepository<Avis>, AviManager>();
+            builder.Services.AddScoped<IAvisRepository, AviManager>();
 
 
             var app = builder.Build();
