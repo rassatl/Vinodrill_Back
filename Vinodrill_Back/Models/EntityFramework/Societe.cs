@@ -20,7 +20,7 @@ namespace Vinodrill_Back.Models.EntityFramework
        
 
         [InverseProperty(nameof(Partenaire.SocietePartenaireNavigation))]
-        public virtual ICollection<Partenaire> PartenaireSocieteNavigation { get; set; } = new List<Partenaire>();
+        public virtual Partenaire PartenaireSocieteNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Activite.SocieteActiviteNavigation))]
         public virtual ICollection<Activite> ActiviteSocieteNavigation { get; set; } = new List<Activite>();
