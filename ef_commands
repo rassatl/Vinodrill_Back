@@ -1,5 +1,5 @@
 dotnet tool install --global dotnet-ef --version 6.0.14
 dotnet tool uninstall --global dotnet-ef
-dotnet-ef migrations add NomMigration--project Vinodrill_Back
+dotnet-ef migrations add NomMigration --project Vinodrill_Back
 dotnet-ef database update --project Vinodrill_Back
 dotnet-ef migrations script --project Vinodrill_Back
