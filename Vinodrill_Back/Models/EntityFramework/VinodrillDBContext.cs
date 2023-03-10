@@ -175,6 +175,135 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_cmd_brd");
             });
+
+            modelBuilder.Entity<Destination>(entity =>
+            {
+                entity.HasKey(e => new { e.IdDestination })
+                    .HasName("pk_destination");
+            });
+            modelBuilder.Entity<Effectue>(entity =>
+            {
+                entity.HasKey(e => new { e.IdActivite, e.IdEtape })
+                    .HasName("pk_effectue");
+
+                entity.HasOne(d => d.ActiviteEffectueNavigation)
+                    .WithMany(p => p.EffectueActiviteNavigation)
+                    .HasForeignKey(d => d.IdActivite)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_vst_efc");
+                entity.HasOne(d => d.EtapeEffectueNavigation)
+                    .WithMany(p => p.EffectueEtapeNavigation)
+                    .HasForeignKey(d => d.IdEtape)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_etp_efc");
+
+            });
+            modelBuilder.Entity<Etape>(entity =>
+            {
+                entity.HasOne(d => d.SejourEtapeNavigation)
+                    .WithMany(p => p.EtapeSejourNavigation)
+                    .HasForeignKey(d => d.IdSejour)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_sje_etp");
+                entity.HasOne(d => d.HebergementEtapeNavigation)
+                    .WithMany(p => p.EtapeHebergementNavigation)
+                    .HasForeignKey(d => d.IdHebergement)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_hbg_etp");
+            });
+            modelBuilder.Entity<Hebergement>(entity =>
+            {
+                entity.HasOne(d => d.HotelHebergementNavigation)
+                    .WithMany(p => p.HebergementHotelNavigation)
+                    .HasForeignKey(d => d.IdPartenaire)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_prt_hbg");
+            });
+            modelBuilder.Entity<Hotel>(entity =>
+            {
+                entity.HasOne(d => d.EtoileHotelHotelNavigation)
+                    .WithMany(p => p.HotelEtoileHotelNavigation)
+                    .HasForeignKey(d => d.NbEtoileHotel)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_eth_htl");
+            });
+            modelBuilder.Entity<Participe>(entity =>
+            {
+                entity.HasKey(p => new { p.IdCategorieParticipant, p.IdSejour })
+                    .HasName("pk_participe");
+                entity.HasOne(d => d.CatParticipantParticipeNavigation)
+                    .WithMany(p => p.ParticipeCatParticipantNavigation)
+                    .HasForeignKey(d => d.IdCategorieParticipant)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_cpt_ppt");
+                entity.HasOne(d => d.SejourParticipeNavigation)
+                    .WithMany(p => p.ParticipeSejourNavigation)
+                    .HasForeignKey(d => d.IdSejour)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_sjr_ppt");
+            });
+            modelBuilder.Entity<Paiement>(entity =>
+            {
+                entity.HasOne(d => d.ClientPaiementNavigation)
+                    .WithMany(p => p.PaiementClientNavigation)
+                    .HasForeignKey(d => d.IdClientPaiement)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_clt_pmt");
+            });
+            modelBuilder.Entity<ReponseAvis>(entity =>
+            {
+                entity.HasKey(r => new { r.Id, r.IdAvis })
+                    .HasName("pk_reponse_avis");
+                entity.HasOne(d => d.AvisReponseAvisNavigation)
+                    .WithMany(p => p.ReponseAvisAvisNavigation)
+                    .HasForeignKey(d => d.IdAvis)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_avi_rav");
+            });
+            modelBuilder.Entity<Reservation>(entity =>
+            {
+                entity.HasKey(r => new { r.IdSejour, r.RefCommande })
+                    .HasName("pk_reservation");
+                entity.HasOne(d => d.CommandeReservationNavigation)
+                    .WithMany(p => p.ReservationCommandeNavigation)
+                    .HasForeignKey(d => d.RefCommande)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_cmd_rsv");
+                entity.HasOne(d => d.SejourReservationNavigation)
+                    .WithMany(p => p.ReservationSejourNavigation)
+                    .HasForeignKey(d => d.IdSejour)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_sjr_rsv");
+            });
+            modelBuilder.Entity<Societe>(entity =>
+            {
+                entity.HasOne(d => d.TypeActiviteSocieteNavigation)
+                    .WithMany(p => p.SocieteTypeActiviteNavigation)
+                    .HasForeignKey(d => d.IdTypeActivite)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_tac_sct");
+            });
+            modelBuilder.Entity<Sejour>(entity =>
+            {
+                entity.HasOne(d => d.DestinationSejourNavigation)
+                    .WithMany(p => p.SejourDestinationNavigation)
+                    .HasForeignKey(d => d.IdDestination)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_dst_sjr");
+                entity.HasOne(d => d.ThemeSejourNavigation)
+                    .WithMany(p => p.SejourThemeNavigation)
+                    .HasForeignKey(d => d.IdTheme)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_thm_sjr");
+            });
+            modelBuilder.Entity<Visite>(entity =>
+            {
+                entity.HasOne(d => d.TypeVisiteVisiteNavigation)
+                    .WithMany(p => p.VisiteTypeVisiteNavigation)
+                    .HasForeignKey(d => d.IdTypeVisite)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_tvs_vst");
+            });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
