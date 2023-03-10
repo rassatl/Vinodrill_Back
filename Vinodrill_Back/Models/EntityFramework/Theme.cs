@@ -18,11 +18,9 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [Column("thm_imgthemepage")]
         [StringLength(255, ErrorMessage = "the length of the imgthemepage must be 255 maximum")]
-        [Required]
         public string ImgThemePage { get; set; }
 
         [Column("thm_contenuthemepage", TypeName = "text")]
-        [Required]
         public string ContenuThemePage { get; set; }
 
         [InverseProperty(nameof(Sejour.ThemeSejourNavigation))]

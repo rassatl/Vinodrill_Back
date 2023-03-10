@@ -38,21 +38,17 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string DescriptionSejour { get; set; }
 
         [Column("sjr_nbjour")]
-        [Required]
-        public int NbJour { get; set; }
+        public int? NbJour { get; set; }
 
         [Column("sjr_nbnuit")]
-        [Required]
-        public int NbNuit { get; set; }
+        public int? NbNuit { get; set; }
 
         [Column("sjr_libelletemps")]
         [StringLength(255, ErrorMessage = " libelletemps lenght must be 255 maximum")]
-        [Required]
-        public string LibelleTemps { get; set; }
+        public string? LibelleTemps { get; set; }
 
         [Column("sjr_notemoyenne")]
-        [Required]
-        public Decimal NoteMoyenne { get; set; }
+        public Decimal? NoteMoyenne { get; set; }
 
         [InverseProperty(nameof(Reservation.SejourReservationNavigation))]
         public virtual ICollection<Reservation> ReservationSejourNavigation { get; set; } = new List<Reservation>();

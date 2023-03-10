@@ -17,8 +17,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string LibelleDestination { get; set; }
 
         [Column("dst_description", TypeName = "text")]
-        [Required]
-        public string DescriptionDestination { get; set; }
+        public string? DescriptionDestination { get; set; }
 
         [InverseProperty(nameof(Sejour.DestinationSejourNavigation))]
         public virtual ICollection<Sejour> SejourDestinationNavigation { get; set; } = new List<Sejour>();

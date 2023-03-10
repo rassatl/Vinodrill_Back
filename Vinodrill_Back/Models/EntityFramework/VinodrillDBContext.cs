@@ -26,6 +26,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual DbSet<Hotel> Hotels { get; set; }
         public virtual DbSet<Partenaire> Partenaires { get; set; } = null!;
         public virtual DbSet<Commande> Commandes { get; set; } = null!;
+        public virtual DbSet<Sejour> Sejours { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,6 +39,21 @@ namespace Vinodrill_Back.Models.EntityFramework
             //        .OnDelete(DeleteBehavior.ClientSetNull)
             //        .HasConstraintName("fk_clt_adt");
             //});
+
+            modelBuilder.Entity<Restaurant>(entity =>
+            {
+                entity.HasOne(d => d.EtoileRestaurantRestaurantNavigation)
+                    .WithMany(p => p.RestaurantEtoileRestaurantRestaurantNavigation)
+                    .HasForeignKey(d => d.NbEtoileRestaurantRestaurant)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_etr_res");
+
+                entity.HasOne(d => d.TypeCuisineCuisineNavigation)
+                    .WithMany(p => p.RestaurantTypeCuisineCuisineNavigation)
+                    .HasForeignKey(d => d.IdTypeCuisineCuisine)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_tcu_res");
+            });
 
             modelBuilder.Entity<Commande>(entity =>
             {
@@ -173,6 +189,8 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .HasForeignKey(d => d.IdClient)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_sej_avi");
+
+                entity.Property(e => e.AvisSignale).HasDefaultValue(false);
             });
 
             modelBuilder.Entity<BonCommande>(entity =>

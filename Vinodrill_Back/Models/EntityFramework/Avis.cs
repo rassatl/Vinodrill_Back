@@ -30,18 +30,16 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [Column("avi_titreavis")]
         [StringLength(255)]
-        public string TitreAvis { get;set; }
+        public string? TitreAvis { get;set; }
 
         [Column("avi_dateavis", TypeName = "date")]
         [Required]
         public DateTime DateAvis { get; set; } = DateTime.Now;
 
         [Column("avi_avissignale")]
-        [Required]
-        public bool AvisSignale { get; set; }
+        public bool AvisSignale { get; set; } = false;
 
         [Column("avi_typesignalement")]
-        [Required]
         [StringLength(255, ErrorMessage = "type signalement lenght must be 255 maximum")]
         public string? TypeSignalement { get; set; }
 

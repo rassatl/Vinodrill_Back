@@ -15,13 +15,11 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [ForeignKey("fk_avi_clt")]
         [Column("avi_idavis", Order = 0)]
-        [Required]
-        public int IdAvisClient { get; set; }
+        public int? IdAvisClient { get; set; }
 
         [ForeignKey("CbClientNavigation")]
         [Column("cb_idcb", Order = 1)]
-        [Required]
-        public int IdCbClient { get; set; }
+        public int? IdCbClient { get; set; }
 
         [Column("clt_nom")]
         [StringLength(255, ErrorMessage = "the client name must be 255 maximum")]
@@ -45,7 +43,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Column("clt_motdepasse")]
         [StringLength(255, ErrorMessage = "motdepasse length must be 255 maximum")]
         [Required]
-        public string MotDePasseClient { get; set; }
+        public string? MotDePasseClient { get; set; }
 
         [Column("clt_email")]
         [EmailAddress]

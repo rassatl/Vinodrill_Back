@@ -35,13 +35,11 @@ namespace Vinodrill_Back.Models.EntityFramework
 
         [Column("etp_url")]
         [StringLength(255, ErrorMessage = " URL lenght must be 255 maximum")]
-        [Required]
-        public string UrlEtape { get; set; }
+        public string? UrlEtape { get; set; }
 
         [Column("etp_video")]
         [StringLength(255, ErrorMessage = " Video lenght must be 255 maximum")]
-        [Required]
-        public string VideoEtape { get; set; }
+        public string? VideoEtape { get; set; }
 
         [InverseProperty(nameof(FaitPartieDe.EtapeFaitPartieDeNavigation))]
         public virtual ICollection<FaitPartieDe> FaitPartieDeEtapeNavigation { get; set; } = new List<FaitPartieDe>();
