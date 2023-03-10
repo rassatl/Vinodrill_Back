@@ -55,7 +55,12 @@ namespace Vinodrill_Back.Models.EntityFramework
                 entity.HasKey(r => new { r.IdSejour, r.RefCommande })
                     .HasName("pk_reservation");
             });
-        }
+            modelBuilder.Entity<EtoileHotel>(entity =>
+            {
+                entity.HasCheckConstraint("ck_eth_nb", "eth_nb between 0 and 5");
+            });
+        
+    }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
