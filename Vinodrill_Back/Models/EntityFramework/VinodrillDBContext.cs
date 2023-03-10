@@ -364,5 +364,6 @@ namespace Vinodrill_Back.Models.EntityFramework
             });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        public DbSet<Vinodrill_Back.Models.EntityFramework.Partenaire> Partenaire { get; set; }
     }
 }
