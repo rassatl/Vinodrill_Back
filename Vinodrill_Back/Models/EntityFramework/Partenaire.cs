@@ -43,8 +43,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string EmailPartenaire { get; set; }
 
-        [Column("prt_contact")]
-        [StringLength(10, ErrorMessage = " contact lenght must be 10 maximum")]
+        [Column("prt_contact", TypeName = "char(10)")]
+        [RegularExpression(@"^0[0-9]{9}$", ErrorMessage = "Contact lenght must be 10 maximum, starting by 0 and only with numbers")]
         [Required]
         public string Contact { get; set; }
 
