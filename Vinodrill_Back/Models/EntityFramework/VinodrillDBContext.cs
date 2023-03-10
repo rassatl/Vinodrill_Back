@@ -12,6 +12,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         {
         }
         public virtual DbSet<Activite> Activites { get; set; } = null!;
+        public virtual DbSet<Adresse> Adresses { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -314,6 +315,12 @@ namespace Vinodrill_Back.Models.EntityFramework
                     .HasForeignKey(d => d.IdTypeVisite)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_tvs_vst");
+
+                entity.HasOne(d => d.CaveVisiteNavigation)
+                    .WithMany(p => p.VisiteCaveNavigation)
+                    .HasForeignKey(d => d.IdPartenaire)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_cav_vst");
             });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
