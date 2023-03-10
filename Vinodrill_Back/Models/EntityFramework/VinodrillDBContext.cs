@@ -45,6 +45,17 @@ namespace Vinodrill_Back.Models.EntityFramework
             {
                 entity.HasKey(e => new { e.IdVisite, e.IdEtape })
                     .HasName("pk_fait_parti_de");
+
+                entity.HasOne(d => d.VisiteFaitPartieDeNavigation)
+                    .WithMany(p => p.FaitPartieDeVisiteNavigation)
+                    .HasForeignKey(d => d.IdVisite)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_vst_fpd");
+                entity.HasOne(d => d.EtapeFaitPartieDeNavigation)
+                    .WithMany(p => p.FaitPartieDeEtapeNavigation)
+                    .HasForeignKey(d => d.IdEtape)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_etp_fpd");
             });
 
             modelBuilder.Entity<Effectue>(entity =>
