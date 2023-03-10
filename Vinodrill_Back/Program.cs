@@ -12,7 +12,12 @@ namespace Vinodrill_Back
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+                
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -20,6 +25,8 @@ namespace Vinodrill_Back
 
             builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
             builder.Services.AddScoped<IDataRepository<Activite>, ActiviteManager>();
+            builder.Services.AddScoped<IDataRepository<Avis>, AviManager>();
+
 
             var app = builder.Build();
 
