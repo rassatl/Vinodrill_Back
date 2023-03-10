@@ -11,11 +11,11 @@ namespace Vinodrill_Back.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AvisController : ControllerBase
+    public class AviController : ControllerBase
     {
         private readonly VinodrillDBContext _context;
 
-        public AvisController(VinodrillDBContext context)
+        public AviController(VinodrillDBContext context)
         {
             _context = context;
         }

@@ -364,6 +364,5 @@ namespace Vinodrill_Back.Models.EntityFramework
             });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-        public DbSet<Vinodrill_Back.Models.EntityFramework.Avis> Avis { get; set; }
     }
 }

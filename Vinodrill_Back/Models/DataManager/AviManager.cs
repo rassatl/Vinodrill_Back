@@ -47,7 +47,7 @@ namespace Vinodrill_Back.Models.DataManager
             return await dbContext.Avis.ToListAsync();
         }
 
-        public async Task<ActionResult<Activite>> GetById(int id)
+        public async Task<ActionResult<Avis>> GetById(int id)
         {
             return await dbContext.Avis.FirstOrDefaultAsync(a => a.IdAvis == id);
         }
