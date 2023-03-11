@@ -25,6 +25,7 @@ namespace Vinodrill_Back
 
             builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContextRemote")));
             builder.Services.AddScoped<IDataRepository<Activite>, ActiviteManager>();
+            builder.Services.AddScoped<IDataRepository<Adresse>, AdresseManager>();
             builder.Services.AddScoped<IAvisRepository, AviManager>();
 
 
