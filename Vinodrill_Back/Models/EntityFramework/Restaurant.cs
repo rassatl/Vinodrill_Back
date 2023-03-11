@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Vinodrill_Back.Models.EntityFramework
 {
-    [Table("t_e_restaurant_res")]
+    [Table("t_h_restaurant_res")]
     public partial class Restaurant : Partenaire
     {
         [ForeignKey(nameof(TypeCuisineCuisineNavigation))]
