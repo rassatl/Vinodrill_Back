@@ -40,31 +40,25 @@ namespace Vinodrill_Back.Controllers
             return await dataRepository.GetAll();
         }
 
-        // // GET: api/Avis/GetAvisById/5
-        // [HttpGet("GetAvisById/{id}")]
-        // [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Avis))]
-        // [ProducesResponseType(StatusCodes.Status404NotFound)]
-        // public async Task<ActionResult<Avis>> GetAvisById(int id, [FromQuery] bool includeSejour = false)
-        // {
-        //     // initialisation de la variable qui va contenir l'avis à retourner, null par défaut, de type inconu
-        //     ActionResult<Avis>? avi;
-            
-        //     if (includeSejour) 
-        //     {
-        //         avi = await dataRepository.GetByIdWithSejour(id);
-        //     } else {
-        //         avi = await dataRepository.GetById(id);
-        //     }
+        // GET: api/Avis/GetAvisById/5
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Avis))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Sejour>> GetAvisById(int id, [FromQuery] bool includeSejour = false)
+        {
+            // initialisation de la variable qui va contenir l'avis à retourner, null par défaut, de type inconu
 
-        //     if (avi == null)
-        //     {
-        //         return NotFound();
-        //     }
+            var sejour = await dataRepository.GetById(id);
 
-        //     return avi;
+            if (sejour == null)
+            {
+                return NotFound();
+            }
 
-        //     // return StatusCode(StatusCodes.Status405MethodNotAllowed);
-        // }
+            return sejour;
+
+            // return StatusCode(StatusCodes.Status405MethodNotAllowed);
+        }
 
         // //PUT: api/Avis/5
         // // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
