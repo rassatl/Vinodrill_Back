@@ -962,12 +962,10 @@ namespace Vinodrill_Back.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdTheme"));
 
                     b.Property<string>("ContenuThemePage")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("thm_contenuthemepage");
 
                     b.Property<string>("ImgThemePage")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("thm_imgthemepage");
@@ -1128,7 +1126,7 @@ namespace Vinodrill_Back.Migrations
 
                     b.HasIndex("NbEtoileRestaurantRestaurant");
 
-                    b.ToTable("t_e_restaurant_res");
+                    b.ToTable("t_h_restaurant_res");
                 });
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Societe", b =>
