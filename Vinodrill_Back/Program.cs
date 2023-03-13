@@ -62,11 +62,13 @@ namespace Vinodrill_Back
 
             builder.Services.AddScoped<IDataRepository<Activite>, ActiviteManager>();
             builder.Services.AddScoped<IDataRepository<Adresse>, AdresseManager>();
+            builder.Services.AddScoped<IDataRepository<Partenaire>,PartenaireManager>();
+            builder.Services.AddScoped<IDataRepository<Destination>, DestinationManager>();
             builder.Services.AddScoped<IAvisRepository, AviManager>();
             builder.Services.AddScoped<ISejourRepository, SejourManager>();
 
 
-            var app = builder.Build();
+             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
