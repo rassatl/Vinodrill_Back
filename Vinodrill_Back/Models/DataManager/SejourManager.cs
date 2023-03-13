@@ -76,7 +76,7 @@ namespace Vinodrill_Back.Models.DataManager
                 var ids = idsCatParticipant.Split(',').Select(int.Parse).ToArray();
 
                 // get all id sejour from Participe table
-                var catParticipant = await dbContext.Participe
+                var catParticipant = await dbContext.Participes
                     .Where(c => ids.Contains(c.IdCategorieParticipant))
                     .ToListAsync();
 
