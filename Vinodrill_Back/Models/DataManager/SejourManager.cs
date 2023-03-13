@@ -48,69 +48,108 @@ namespace Vinodrill_Back.Models.DataManager
             return await dbContext.Sejours.FirstOrDefaultAsync(a => a.IdSejour == id);
         }
 
-        public async Task<ActionResult<IEnumerable<Sejour>>> GetAllFromSpecificDestination(string idsDestination)
+        public async Task<ActionResult<IEnumerable<Sejour>>> GetAllWithParams(string? idsSejour = null, string? idsDestination = null, string? idsTheme = null, string? idsCatParticipant = null, int? limit = null, int? idSejour = null)
         {
-            try {
-                var ids = idsDestination.Split(',').Select(int.Parse).ToArray();
-                return await dbContext.Sejours
-                    .Where(s => ids.Contains(s.IdDestination))
-                    .Include(s => s.ThemeSejourNavigation)
-                    .Include(s => s.DestinationSejourNavigation)
-                    .ToListAsync();
-            } catch (Exception e) {
-                return null;
+            var sejours = dbContext.Sejours.AsQueryable();
+
+            if(idsSejour is not null) {
+                try {
+                    var ids = idsSejour.Split(',').Select(int.Parse).ToArray();
+                    sejours = dbContext.Sejours.Where(s => ids.Contains(s.IdSejour));
+                } catch (Exception e) {
+                    return null;
+                }
             }
-        }
 
-        public async Task<ActionResult<IEnumerable<Sejour>>> GetAllFromSpecificTheme(string idsTheme)
-        {
-            try {
-                var ids = idsTheme.Split(',').Select(int.Parse).ToArray();
-                return await dbContext.Sejours
-                    .Where(s => ids.Contains(s.IdTheme))
-                    .ToListAsync();
-            } catch (Exception e) {
-                return null;
+            if(idsDestination is not null) {
+                try {
+                    var ids = idsDestination.Split(',').Select(int.Parse).ToArray();
+                    return await dbContext.Sejours
+                        .Where(s => ids.Contains(s.IdDestination))
+                        .Include(s => s.ThemeSejourNavigation)
+                        .Include(s => s.DestinationSejourNavigation)
+                        .ToListAsync();
+                } catch (Exception e) {
+                    return null;
+                }
             }
-        }
 
-        public async Task<ActionResult<IEnumerable<Sejour>>> GetAllFromSpecificCatParticipant(string idsCatParticipant)
-        {
-            try {
-                // get all id from query parameter
-                var ids = idsCatParticipant.Split(',').Select(int.Parse).ToArray();
-
-                // get all id sejour from Participe table
-                var catParticipant = await dbContext.Participes
-                    .Where(c => ids.Contains(c.IdCategorieParticipant))
-                    .ToListAsync();
-
-                // get all id sejour from the previous query
-                var idsSejour = catParticipant.Select(c => c.IdSejour).ToArray();
-
-                // get all sejour with the id sejour from the previous query
-                return await dbContext.Sejours
-                    .Where(s => idsSejour.Contains(s.IdSejour))
-                    .ToListAsync();
-
-            } catch (Exception e) {
-                return null;
+            if(idsTheme is not null) {
+                try {
+                    var ids = idsTheme.Split(',').Select(int.Parse).ToArray();
+                    sejours = sejours.Where(s => ids.Contains(s.IdTheme));
+                } catch (Exception e) {
+                    return null;
+                }
             }
+
+            if(idsCatParticipant is not null) {
+                try {
+                    // get all id from query parameter
+                    var ids = idsCatParticipant.Split(',').Select(int.Parse).ToArray();
+
+                    // get all id sejour from Participe table
+                    var catParticipant = await dbContext.Participes
+                        .Where(c => ids.Contains(c.IdCategorieParticipant))
+                        .ToListAsync();
+
+                    // get all id sejour from the previous query
+                    var idsSejourFromQuery = catParticipant.Select(c => c.IdSejour).ToArray();
+
+                    // get all sejour with the id sejour from the previous query
+                    return await dbContext.Sejours
+                        .Where(s => idsSejourFromQuery.Contains(s.IdSejour))
+                        .ToListAsync();
+
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+
+
+            if(idSejour is not null) {
+                sejours = sejours.Where(s => s.IdSejour != idSejour);
+            }
+
+            if(limit is not null) {
+                sejours = sejours.Take((int)limit);
+            }
+
+            return await sejours.ToListAsync();
         }
 
-        public Task<ActionResult<IEnumerable<Sejour>>> GetAllExceptSpecificSejour(int idSejour)
+        public async Task<ActionResult<Sejour>> GetById(int id, bool includeVisite = false, bool includeDestination = false, bool includeTheme = false, bool includeCatParticipant = false, bool includaAvis = false, bool includeEtape = false, bool includeHebergement = false)
         {
-            throw new NotImplementedException();
-        }
+            var sejour = dbContext.Sejours
+                .Where(s => s.IdSejour == id)
+                .AsQueryable();
 
-        public Task<ActionResult<IEnumerable<Sejour>>> GetAllSetLimit(int limit)
-        {
-            throw new NotImplementedException();
-        }
+            if(includeDestination) {
+                sejour = sejour.Include(s => s.DestinationSejourNavigation);
+            }
 
-        public Task<ActionResult<IEnumerable<Sejour>>> GetMultipleSejour(string idsSejour)
-        {
-            throw new NotImplementedException();
+            if(includeTheme) {
+                sejour = sejour.Include(s => s.ThemeSejourNavigation);
+            }
+
+            if(includeCatParticipant) {
+                sejour = sejour.Include(s => s.ParticipeSejourNavigation)
+                    .ThenInclude(p => p.CatParticipantParticipeNavigation);
+            }
+
+            if(includaAvis) {
+                sejour = sejour.Include(s => s.AvisSejourNavigation);
+            }
+
+            if(includeEtape) {
+                sejour = sejour.Include(s => s.EtapeSejourNavigation);
+            }
+
+            if(includeHebergement) {
+                sejour = sejour.Include(s => s.EtapeSejourNavigation).ThenInclude(e => e.HebergementEtapeNavigation);
+            }
+
+            return await sejour.FirstOrDefaultAsync();
         }
     }
 }

@@ -24,31 +24,20 @@ namespace Vinodrill_Back.Controllers
         // GET: api/Avis
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Avis>))]
-        public async Task<ActionResult<IEnumerable<Sejour>>> GetSejours([FromQuery] string? idstheme = "")
+        public async Task<ActionResult<IEnumerable<Sejour>>> GetSejours([FromQuery] string? idstheme = null, [FromQuery] string? idsSejour = null, [FromQuery] string? idsDestination = null,[FromQuery]  string? idsCatParticipant = null, [FromQuery] int? limit = null, [FromQuery] int? idSejour = null)
         {
-            if (idstheme != "")
-            {
-                var reponse = await dataRepository.GetAllFromSpecificTheme(idstheme);
-
-                if (reponse == null)
-                {
-                    return BadRequest($"'{idstheme}' is not a valid parameter, use comma separated integer instead (like 1,2,3)");
-                }
-
-                return reponse;
-            }
-            return await dataRepository.GetAll();
+            return await dataRepository.GetAllWithParams(idsSejour, idsDestination, idstheme, idsCatParticipant, limit, idSejour);
         }
 
         // GET: api/Avis/GetAvisById/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Avis))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Sejour>> GetAvisById(int id, [FromQuery] bool includeSejour = false)
+        public async Task<ActionResult<Sejour>> GetAvisById(int id, [FromQuery] bool includeVisite = false, [FromQuery] bool includeDestination = false, [FromQuery] bool includeTheme = false, [FromQuery] bool includeCatParticipant = false, [FromQuery] bool includaAvis = false, [FromQuery] bool includeEtape = false, [FromQuery] bool includeHebergement = false)
         {
             // initialisation de la variable qui va contenir l'avis à retourner, null par défaut, de type inconu
 
-            var sejour = await dataRepository.GetById(id);
+            var sejour = await dataRepository.GetById(id, includeVisite, includeDestination, includeTheme, includeCatParticipant, includaAvis, includeEtape, includeHebergement);
 
             if (sejour == null)
             {
