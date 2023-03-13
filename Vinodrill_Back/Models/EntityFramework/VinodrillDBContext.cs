@@ -414,6 +414,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
         public DbSet<Vinodrill_Back.Models.EntityFramework.Destination> Destination { get; set; }
         public DbSet<Vinodrill_Back.Models.EntityFramework.Effectue> Effectue { get; set; }
+        public DbSet<Vinodrill_Back.Models.EntityFramework.Restaurant> Restaurant { get; set; }
 
     }
 }

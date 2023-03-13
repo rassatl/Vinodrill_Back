@@ -21,7 +21,7 @@ namespace Vinodrill_Back.Controllers //PROBLEM
             dataRepository = dataRepo;
         }
 
-        // GET: api/Partenaires
+        // GET: api/Destination
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Destination>))]
         public async Task<ActionResult<IEnumerable<Destination>>> GetDestination()
@@ -46,7 +46,7 @@ namespace Vinodrill_Back.Controllers //PROBLEM
 
         }
 
-        ///PUT: api/Partenaire/5
+        ///PUT: api/Destination/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
