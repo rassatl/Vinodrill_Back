@@ -24,11 +24,11 @@ namespace Vinodrill_Back
                 });
 
             // For Entity Framework
-            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContextRemote")));
-            builder.Services.AddDbContext<AuthDbContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContextRemote")));
+            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
+            builder.Services.AddDbContext<AuthDbContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
 
             // For Identity
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+            builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();
 

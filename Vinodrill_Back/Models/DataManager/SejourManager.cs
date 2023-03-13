@@ -23,6 +23,11 @@ namespace Vinodrill_Back.Models.DataManager
         {
             dbContext.Entry(entityToUpdate).State = EntityState.Modified;
 
+            entityToUpdate.TitreSejour = entity.TitreSejour;
+            entityToUpdate.DescriptionSejour = entity.DescriptionSejour;
+            entityToUpdate.PrixSejour = entity.PrixSejour;
+            entityToUpdate.NbJour = entity.NbJour;
+
             await dbContext.SaveChangesAsync();
         }
 
