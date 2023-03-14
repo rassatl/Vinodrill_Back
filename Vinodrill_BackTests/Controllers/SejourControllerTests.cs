@@ -23,11 +23,28 @@ namespace Vinodrill_Back.Controllers.Tests
         private ISejourRepository _dataRepository;
         public SejourControllerTests()
         {
-            var builder = new DbContextOptionsBuilder<VinodrillDBContext>().UseNpgsql("Server=localhost;port=5432;Database=vino; uid=postgres; password=postgres;"); // Chaine de connexion à mettre dans les ( )
+            var builder = new DbContextOptionsBuilder<VinodrillDBContext>().UseNpgsql("Server=postgresql-vinodrill.alwaysdata.net;port=5432;Database=vinodrill_main_db;uid=vinodrill;password=uaK99vfWnq6GLrg;SearchPath=vinodrill;"); // Chaine de connexion à mettre dans les ( )
             _context = new VinodrillDBContext(builder.Options);
             _dataRepository = new SejourManager(_context);
             _controller = new SejourController(_dataRepository);
 
+        }
+
+        [TestMethod()]
+        public async Task GetSejourTestAsync()
+        {
+            ActionResult<IEnumerable<Sejour>> users = await _controller.GetSejours();
+            CollectionAssert.AreEqual(_context.Sejours.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
+        }
+
+        [TestMethod()]
+        public async Task PutSejourTest()
+        {
+            Sejour user = await _context.Sejours.FindAsync(1);
+            user.TitreSejour += "a";
+            await _controller.PutSejour(user.IdSejour, user);
+            Sejour modifie = await _context.Sejours.FindAsync(1);
+            Assert.AreEqual(user, modifie, "pas les memes");
         }
 
         [TestMethod]
@@ -36,9 +53,9 @@ namespace Vinodrill_Back.Controllers.Tests
 
             Sejour user = new Sejour
             {
-                IdSejour = 500,
-                IdDestination = 500,
-                IdTheme = 500,
+                IdSejour = 1,
+                IdDestination = 1,
+                IdTheme = 1,
                 TitreSejour = "MegaSejour",
                 PhotoSejour = "https://MegaPhoto.png",
                 PrixSejour = 100,
@@ -52,14 +69,14 @@ namespace Vinodrill_Back.Controllers.Tests
 
             // Act
             var mockRepository = new Mock<ISejourRepository>();
-            mockRepository.Setup(x => x.GetById(500, false, false, false, false, false, false, false).Result).Returns(user);
+            mockRepository.Setup(x => x.GetById(1, false, false, false, false, false, false, false).Result).Returns(user);
             var userController = new SejourController(mockRepository.Object);
 
 
             user.TitreSejour = "MegaBgSejourModifié";
             userController.PutSejour(user.IdSejour, user);
 
-            var actionResult = userController.GetSejourById(500).Result;
+            var actionResult = userController.GetSejourById(1).Result;
             // Assert
             Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Sejour>), "Pas un ActionResult<Sejour>");
             var result = actionResult.Value;
@@ -80,9 +97,9 @@ namespace Vinodrill_Back.Controllers.Tests
             // 2. On supprime le user après l'avoir créé. Dans ce cas, nous avons besoin d'appeler la méthode DELETE de l’API ou remove du DbSet.
             Sejour user = new Sejour
             {
-                IdSejour = 500,
-                IdDestination = 500,
-                IdTheme = 500,
+                IdSejour = 1,
+                IdDestination = 1,
+                IdTheme = 1,
                 TitreSejour = "MegaSejour",
                 PhotoSejour = "https://MegaPhoto.png",
                 PrixSejour = 100,
@@ -112,9 +129,9 @@ namespace Vinodrill_Back.Controllers.Tests
 
             Sejour user = new Sejour
             {
-                IdSejour = 500,
-                IdDestination = 500,
-                IdTheme = 500,
+                IdSejour = 1,
+                IdDestination = 1,
+                IdTheme = 1,
                 TitreSejour = "MegaSejour",
                 PhotoSejour = "https://MegaPhoto.png",
                 PrixSejour = 100,
@@ -141,9 +158,9 @@ namespace Vinodrill_Back.Controllers.Tests
             var userController = new SejourController(mockRepository.Object);
             Sejour user = new Sejour
             {
-                IdSejour = 500,
-                IdDestination = 500,
-                IdTheme = 500,
+                IdSejour = 1,
+                IdDestination = 1,
+                IdTheme = 1,
                 TitreSejour = "MegaSejour",
                 PhotoSejour = "https://MegaPhoto.png",
                 PrixSejour = 100,
@@ -164,15 +181,40 @@ namespace Vinodrill_Back.Controllers.Tests
             Assert.AreEqual(user, (Sejour)result.Value, "Sejours pas identiques");
         }
 
+        [TestMethod()]
+        public async Task GetSejourByIdTest()
+        {
+            ActionResult<Sejour> user = await _controller.GetSejourById(1);
+            Assert.AreEqual(_context.Sejours.Where(c => c.IdSejour == 1).FirstOrDefault(), user.Value, "Sejour différent");
+        }
+
+        [TestMethod()]
+        public async Task GetSejourByIdTestFalse()
+        {
+            ActionResult<Sejour> user = await _controller.GetSejourById(1);
+            Assert.AreNotEqual(_context.Sejours.Where(c => c.IdSejour == 2).FirstOrDefault(), user.Value, "Sejour différent");
+        }
+
+        [TestMethod]
+        public void GetSejourById_UnknownIdPassed_ReturnsNotFoundResult_AvecMoq()
+        {
+            var mockRepository = new Mock<ISejourRepository>();
+            var userController = new SejourController(mockRepository.Object);
+            // Act
+            var actionResult = userController.GetSejourById(0).Result;
+            // Assert
+            Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundResult));
+        }
+
         [TestMethod]
         public void GetSejourById_ExistingIdPassed_ReturnsRightItem_AvecMoq()
         {
             // Arrange
             Sejour user = new Sejour
             {
-                IdSejour = 500,
-                IdDestination = 500,
-                IdTheme = 500,
+                IdSejour = 1,
+                IdDestination = 1,
+                IdTheme = 1,
                 TitreSejour = "MegaSejour",
                 PhotoSejour = "https://MegaPhoto.png",
                 PrixSejour = 100,
@@ -183,10 +225,10 @@ namespace Vinodrill_Back.Controllers.Tests
                 NoteMoyenne = null
             };
             var mockRepository = new Mock<ISejourRepository>();
-            mockRepository.Setup(x => x.GetById(500, false, false, false, false, false, false, false).Result).Returns(user);
+            mockRepository.Setup(x => x.GetById(1, false, false, false, false, false, false, false).Result).Returns(user);
             var userController = new SejourController(mockRepository.Object);
             // Act
-            var actionResult = userController.GetSejourById(500).Result;
+            var actionResult = userController.GetSejourById(1).Result;
             // Assert
             Assert.IsNotNull(actionResult);
             Assert.IsNotNull(actionResult.Value);
@@ -200,9 +242,9 @@ namespace Vinodrill_Back.Controllers.Tests
             int chiffre = rnd.Next(1, 1000000000);
             Sejour user = new Sejour
             {
-                IdSejour = 500,
-                IdDestination = 500,
-                IdTheme = 500,
+                IdSejour = 1,
+                IdDestination = 1,
+                IdTheme = 1,
                 TitreSejour = "MegaSejour",
                 PhotoSejour = "https://MegaPhoto.png",
                 PrixSejour = 100,
@@ -230,9 +272,9 @@ namespace Vinodrill_Back.Controllers.Tests
             // Arrange
             Sejour user = new Sejour
             {
-                IdSejour = 500,
-                IdDestination = 500,
-                IdTheme = 500,
+                IdSejour = 1,
+                IdDestination = 1,
+                IdTheme = 1,
                 TitreSejour = "MegaSejour",
                 PhotoSejour = "https://MegaPhoto.png",
                 PrixSejour = 100,
@@ -244,11 +286,11 @@ namespace Vinodrill_Back.Controllers.Tests
             };
 
             var mockRepository = new Mock<ISejourRepository>();
-            mockRepository.Setup(x => x.GetById(500, false, false, false, false, false, false, false).Result).Returns(user);
+            mockRepository.Setup(x => x.GetById(1, false, false, false, false, false, false, false).Result).Returns(user);
             var userController = new SejourController(mockRepository.Object);
 
             // Act
-            var actionResult = userController.DeleteSejour(500).Result;
+            var actionResult = userController.DeleteSejour(1).Result;
 
             // Assert
             Assert.IsInstanceOfType(actionResult, typeof(NoContentResult), "Pas un NoContentResult"); // Test du type de retour
