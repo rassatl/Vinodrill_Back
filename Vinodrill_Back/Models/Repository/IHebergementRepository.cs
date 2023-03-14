@@ -5,7 +5,8 @@ namespace Vinodrill_Back.Models.Repository
 {
     public interface IHebergementRepository : IDataRepository<Hebergement>
     {
-        Task<ActionResult<Hebergement>> GetAllSpecificWithEtapeAndHotel(string idsEtape = "notImplemented", int idHotel = 0);
+        Task Add(Hebergement entity, Hotel hotel);
+        Task<ActionResult<IEnumerable<Hebergement>>> GetAllSpecificWithHotel(int? idHotel);
 
     }
 }
