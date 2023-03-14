@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Vinodrill_Back.Models.DataManager
 {
-    public class BonCommandeManager : IDataRepository<BonCommande>
+    public class BonCommandeManager : IBonCommandeRepository
     {
         readonly VinodrillDBContext? dbContext;
 
@@ -13,38 +13,34 @@ namespace Vinodrill_Back.Models.DataManager
 
         public BonCommandeManager(VinodrillDBContext context) { dbContext = context; }
 
-        public async Task Add(BonCommande entity)
+        public Task Add(BonCommande entity)
         {
-            await dbContext.BonCommandes.AddAsync(entity);
-            await dbContext.SaveChangesAsync();
+            return null;
         }
 
-        public async Task Update(BonCommande entityToUpdate, BonCommande entity)
+        public Task Delete(BonCommande entity)
         {
-            dbContext.Entry(entityToUpdate).State = EntityState.Modified;
-            entityToUpdate.IdBonCommande = entity.IdBonCommande;
-            entityToUpdate.RefCommande = entity.RefCommande;
-            entityToUpdate.CodeBonCommande = entity.CodeBonCommande;
-            entityToUpdate.DateValidite = entity.DateValidite;
-            entityToUpdate.EstValide = entity.EstValide;
-
-            await dbContext.SaveChangesAsync();
+            return null;
         }
 
-        public async Task Delete(BonCommande entity)
+        public Task<ActionResult<IEnumerable<BonCommande>>> GetAll()
         {
-            dbContext.BonCommandes.Remove(entity);
-            await dbContext.SaveChangesAsync();
+            return null;
         }
 
-        public async Task<ActionResult<IEnumerable<BonCommande>>> GetAll()
+        public async Task<ActionResult<BonCommande>> GetById(int refcommande)
         {
-            return await dbContext.BonCommandes.ToListAsync();
+            return null;
         }
 
-        public async Task<ActionResult<BonCommande>> GetById(int id)
+        public async Task<ActionResult<BonCommande>> GetByRefCommande(int refcommande)
         {
-            return await dbContext.BonCommandes.FirstOrDefaultAsync(a => a.IdBonCommande == id);
+            return await dbContext.BonCommandes.FirstOrDefaultAsync(a => a.RefCommande == refcommande);
+        }
+
+        public Task Update(BonCommande entityToUpdate, BonCommande entity)
+        {
+            return null;
         }
     }
 }
