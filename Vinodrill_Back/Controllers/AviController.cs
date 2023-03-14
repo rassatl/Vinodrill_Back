@@ -24,7 +24,7 @@ namespace Vinodrill_Back.Controllers
         // GET: api/Avis
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Avis>))]
-        public async Task<ActionResult<IEnumerable<Avis>>> GetAdresses()
+        public async Task<ActionResult<IEnumerable<Avis>>> GetAvis()
         {
             return await dataRepository.GetAll();
         }
@@ -61,7 +61,7 @@ namespace Vinodrill_Back.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PutAdresse(int id, Avis avi)
+        public async Task<IActionResult> PutAvi(int id, Avis avi)
         {
 
             if (id != avi.IdAvis)
@@ -86,7 +86,7 @@ namespace Vinodrill_Back.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Avis))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Avis>> PostAdresse(Avis avi)
+        public async Task<ActionResult<Avis>> PostAvi(Avis avi)
         {
             if (!ModelState.IsValid)
             {
