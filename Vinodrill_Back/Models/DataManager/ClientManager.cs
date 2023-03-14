@@ -5,7 +5,7 @@ using Vinodrill_Back.Models.Repository;
 
 namespace Vinodrill_Back.Models.DataManager
 {
-    public class ClientManager : IDataRepository<Client>
+    public class ClientManager : IDataRepository<User>
     {
         readonly VinodrillDBContext? dbContext;
 
@@ -13,13 +13,13 @@ namespace Vinodrill_Back.Models.DataManager
 
         public ClientManager(VinodrillDBContext context) { dbContext = context; }
 
-        public async Task Add(Client entity)
+        public async Task Add(User entity)
         {
             await dbContext.Clients.AddAsync(entity);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task Update(Client entityToUpdate, Client entity)
+        public async Task Update(User entityToUpdate, User entity)
         {
             dbContext.Entry(entityToUpdate).State = EntityState.Modified;
             entityToUpdate.IdClient = entity.IdClient;
@@ -35,18 +35,18 @@ namespace Vinodrill_Back.Models.DataManager
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task Delete(Client entity)
+        public async Task Delete(User entity)
         {
             dbContext.Clients.Remove(entity);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<ActionResult<IEnumerable<Client>>> GetAll()
+        public async Task<ActionResult<IEnumerable<User>>> GetAll()
         {
             return await dbContext.Clients.ToListAsync();
         }
 
-        public async Task<ActionResult<Client>> GetById(int id)
+        public async Task<ActionResult<User>> GetById(int id)
         {
             return await dbContext.Clients.FirstOrDefaultAsync(a => a.IdClient == id);
         }
