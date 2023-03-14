@@ -22,7 +22,7 @@ namespace Vinodrill_Back.Controllers
             dataRepository = dataRepo;
         }
 
-        // GET: api/Avis
+        // GET: api/Sejour
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Sejour>))]
         public async Task<ActionResult<IEnumerable<Sejour>>> GetSejours([FromQuery] string? idstheme = null, [FromQuery] string? idsSejour = null, [FromQuery] string? idsDestination = null,[FromQuery]  string? idsCatParticipant = null, [FromQuery] int? limit = null, [FromQuery] int? idSejour = null)
@@ -30,7 +30,7 @@ namespace Vinodrill_Back.Controllers
             return await dataRepository.GetAllWithParams(idsSejour, idsDestination, idstheme, idsCatParticipant, limit, idSejour);
         }
 
-        // GET: api/Avis/GetAvisById/5
+        // GET: api/Sejour/GetSejourById/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Sejour))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -76,7 +76,7 @@ namespace Vinodrill_Back.Controllers
             }
         }
 
-        // POST: api/Avis
+        // POST: api/Sejour
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Sejour))]
@@ -89,14 +89,14 @@ namespace Vinodrill_Back.Controllers
             }
             await dataRepository.Add(sejour);
 
-            return CreatedAtAction("GetAvisById", new { id = sejour.IdSejour }, sejour);
+            return CreatedAtAction("GetSejourById", new { id = sejour.IdSejour }, sejour);
         }
 
-        // DELETE: api/Avis/5
+        // DELETE: api/Sejour/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteAvis(int id)
+        public async Task<IActionResult> DeleteSejour(int id)
         {
             var sejour = await dataRepository.GetById(id);
             if (sejour == null)
