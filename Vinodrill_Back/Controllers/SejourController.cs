@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace Vinodrill_Back.Controllers
 
         // GET: api/Avis
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Avis>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Sejour>))]
         public async Task<ActionResult<IEnumerable<Sejour>>> GetSejours([FromQuery] string? idstheme = null, [FromQuery] string? idsSejour = null, [FromQuery] string? idsDestination = null,[FromQuery]  string? idsCatParticipant = null, [FromQuery] int? limit = null, [FromQuery] int? idSejour = null)
         {
             return await dataRepository.GetAllWithParams(idsSejour, idsDestination, idstheme, idsCatParticipant, limit, idSejour);
@@ -31,9 +32,9 @@ namespace Vinodrill_Back.Controllers
 
         // GET: api/Avis/GetAvisById/5
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Avis))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Sejour))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Sejour>> GetAvisById(int id, [FromQuery] bool includeVisite = false, [FromQuery] bool includeDestination = false, [FromQuery] bool includeTheme = false, [FromQuery] bool includeCatParticipant = false, [FromQuery] bool includaAvis = false, [FromQuery] bool includeEtape = false, [FromQuery] bool includeHebergement = false)
+        public async Task<ActionResult<Sejour>> GetSejourById(int id, [FromQuery] bool includeVisite = false, [FromQuery] bool includeDestination = false, [FromQuery] bool includeTheme = false, [FromQuery] bool includeCatParticipant = false, [FromQuery] bool includaAvis = false, [FromQuery] bool includeEtape = false, [FromQuery] bool includeHebergement = false)
         {
             // initialisation de la variable qui va contenir l'avis à retourner, null par défaut, de type inconu
 
@@ -55,7 +56,7 @@ namespace Vinodrill_Back.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PutAdresse(int id, Sejour sejour)
+        public async Task<IActionResult> PutSejour(int id, Sejour sejour)
         {
 
             if (id != sejour.IdSejour)
@@ -63,14 +64,14 @@ namespace Vinodrill_Back.Controllers
                 return BadRequest();
             }
 
-            var userToUpdate = await dataRepository.GetById(id);
-            if (userToUpdate == null)
+            var sejourToUpdate = await dataRepository.GetById(id);
+            if (sejourToUpdate == null)
             {
                 return NotFound();
             }
             else
             {
-                await dataRepository.Update(userToUpdate.Value, sejour);
+                await dataRepository.Update(sejourToUpdate.Value, sejour);
                 return NoContent();
             }
         }
@@ -78,17 +79,17 @@ namespace Vinodrill_Back.Controllers
         // POST: api/Avis
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Avis))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Sejour))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Avis>> PostAdresse(Avis avi)
+        public async Task<ActionResult<Sejour>> PostSejour(Sejour sejour)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await dataRepository.Add(avi);
+            await dataRepository.Add(sejour);
 
-            return CreatedAtAction("GetAvisById", new { id = avi.IdAvis }, avi);
+            return CreatedAtAction("GetAvisById", new { id = sejour.IdSejour }, sejour);
         }
 
         // DELETE: api/Avis/5
@@ -97,13 +98,13 @@ namespace Vinodrill_Back.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAvis(int id)
         {
-            var avi = await dataRepository.GetById(id);
-            if (avi == null)
+            var sejour = await dataRepository.GetById(id);
+            if (sejour == null)
             {
                 return NotFound();
             }
 
-            await dataRepository.Delete(avi.Value);
+            await dataRepository.Delete(sejour.Value);
 
             return NoContent();
         }

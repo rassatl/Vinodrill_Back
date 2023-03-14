@@ -5,9 +5,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Vinodrill_Back.Auth;
 using Microsoft.AspNetCore.Authorization;
 using NuGet.Protocol.Plugins;
+using Vinodrill_Back.Models.Repository;
+using System.Configuration;
 
 namespace Vinodrill_Back.Controllers
 {
@@ -15,27 +16,23 @@ namespace Vinodrill_Back.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUserRepository dataRepository;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
 
-        public AuthenticateController(
-            UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration)
+        public AuthenticateController(IUserRepository dataRepo, IConfiguration configuration)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            dataRepository = dataRepo;
             _configuration = configuration;
         }
 
         [HttpPost]
         [AllowAnonymous]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] Auth.User model)
+        public async Task<IActionResult> Login([FromBody] User login)
         {
             IActionResult response = Unauthorized();
-            Auth.User user = AuthenticateUser(login);
+            User user = AuthenticateUser(login);
             if (user != null)
             {
                 var tokenString = GenerateJwtToken(user);
@@ -48,10 +45,9 @@ namespace Vinodrill_Back.Controllers
             return response;
         }
 
-        private Auth.User AuthenticateUser(Auth.User user)
+        private User AuthenticateUser(User user)
         {
-            return appUsers.SingleOrDefault(x => x.UserName.ToUpper() == user.UserName.ToUpper() &&
-            x.Password == user.Password);
+            return dataRepository.GetAuthUser(user);
         }
 
         private string GenerateJwtToken(User userInfo)
@@ -61,8 +57,8 @@ namespace Vinodrill_Back.Controllers
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
-                new Claim("fullName", userInfo.FullName.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, userInfo.EmailClient),
+                new Claim("email", userInfo.EmailClient.ToString()),
                 new Claim("role",userInfo.UserRole),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
@@ -78,13 +74,13 @@ namespace Vinodrill_Back.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        public async Task<IActionResult> Register(User model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.Username);
+            var userExists = await dataRepository.FindByEmail(model.EmailClient);
             if (userExists != null)
                 return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
 
-            IdentityUser user = new()
+            User user = new()
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
