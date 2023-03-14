@@ -14,36 +14,29 @@ namespace Vinodrill_Back.Models.DataManager
 
             public DestinationManager(VinodrillDBContext context) { dbContext = context; }
 
-            public async Task Add(Destination entity)
-            {
-                await dbContext.Destination.AddAsync(entity);
-                await dbContext.SaveChangesAsync();
-            }
+        public Task Add(Destination entity)
+        {
+            return null;
+        }
 
-            public async Task Update(Destination entityToUpdate, Destination entity)
-            {
-                dbContext.Entry(entityToUpdate).State = EntityState.Modified;
-                entityToUpdate.IdDestination = entity.IdDestination;
-                entityToUpdate.LibelleDestination = entity.LibelleDestination;
-                entityToUpdate.DescriptionDestination = entity.DescriptionDestination;
+        public Task Delete(Destination entity)
+        {
+            return null;
+        }
 
-                await dbContext.SaveChangesAsync();
-            }
-
-            public async Task Delete(Destination entity)
-            {
-                dbContext.Destination.Remove(entity);
-                await dbContext.SaveChangesAsync();
-            }
-
-            public async Task<ActionResult<IEnumerable<Destination>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Destination>>> GetAll()
             {
                 return await dbContext.Destination.ToListAsync();
             }
 
-            public async Task<ActionResult<Destination>> GetById(int id)
-            {
-                return await dbContext.Destination.FirstOrDefaultAsync(a => a.IdDestination == id);
-            }
+        public Task<ActionResult<Destination>> GetById(int id)
+        {
+            return null;
         }
+
+        public Task Update(Destination entityToUpdate, Destination entity)
+        {
+            return null;
+        }
+    }
     }

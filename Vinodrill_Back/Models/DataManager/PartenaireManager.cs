@@ -13,32 +13,14 @@ namespace Vinodrill_Back.Models.DataManager
 
         public PartenaireManager(VinodrillDBContext context) { dbContext = context; }
 
-        public async Task Add(Partenaire entity)
+        public Task Add(Partenaire entity)
         {
-            await dbContext.Partenaires.AddAsync(entity);
-            await dbContext.SaveChangesAsync();
+            return null;
         }
 
-        public async Task Update(Partenaire entityToUpdate, Partenaire entity)
+        public Task Delete(Partenaire entity)
         {
-            dbContext.Entry(entityToUpdate).State = EntityState.Modified;
-            entityToUpdate.IdPartenaire = entity.IdPartenaire;
-            entityToUpdate.NomPartenaire = entity.NomPartenaire;
-            entityToUpdate.RuePartenaire = entity.RuePartenaire;
-            entityToUpdate.CpPartenaire = entity.CpPartenaire;
-            entityToUpdate.VillePartenaire = entity.VillePartenaire ;
-            entityToUpdate.PhotoPartenaire = entity.PhotoPartenaire;
-            entityToUpdate.EmailPartenaire = entity.EmailPartenaire;
-            entityToUpdate.Contact = entity.Contact;
-            entityToUpdate.DetailPartenaire = entity.DetailPartenaire;
-
-            await dbContext.SaveChangesAsync();
-        }
-
-        public async Task Delete(Partenaire entity)
-        {
-            dbContext.Partenaires.Remove(entity);
-            await dbContext.SaveChangesAsync();
+            return null;
         }
 
         public async Task<ActionResult<IEnumerable<Partenaire>>> GetAll()
@@ -49,6 +31,11 @@ namespace Vinodrill_Back.Models.DataManager
         public async Task<ActionResult<Partenaire>> GetById(int id)
         {
             return await dbContext.Partenaires.FirstOrDefaultAsync(a => a.IdPartenaire == id);
+        }
+
+        public Task Update(Partenaire entityToUpdate, Partenaire entity)
+        {
+            return null;
         }
     }
 }

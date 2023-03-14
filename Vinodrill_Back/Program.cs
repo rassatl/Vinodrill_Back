@@ -65,6 +65,7 @@ namespace Vinodrill_Back
             builder.Services.AddScoped<IDataRepository<Partenaire>,PartenaireManager>();
             builder.Services.AddScoped<IDataRepository<Destination>, DestinationManager>();
             builder.Services.AddScoped<IDataRepository<Restaurant>, RestaurentManager>();
+            builder.Services.AddScoped<IDataRepository<Cave>, CaveManager>();
             builder.Services.AddScoped<IDataRepository<Effectue>, EffectueManager>();
             builder.Services.AddScoped<IAvisRepository, AviManager>();
             builder.Services.AddScoped<ISejourRepository, SejourManager>();
