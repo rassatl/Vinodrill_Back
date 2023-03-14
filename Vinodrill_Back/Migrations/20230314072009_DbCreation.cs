@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Vinodrill_Back.Migrations
 {
-    public partial class VinoDrillDBCreation : Migration
+    public partial class DbCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,7 +46,7 @@ namespace Vinodrill_Back.Migrations
                     dst_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     dst_libelle = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    dst_description = table.Column<string>(type: "text", nullable: false)
+                    dst_description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,6 +64,18 @@ namespace Vinodrill_Back.Migrations
                 {
                     table.PrimaryKey("PK_t_e_etoilehotel_eth", x => x.eth_nb);
                     table.CheckConstraint("ck_eth_nb", "eth_nb between 0 and 5");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "t_e_etoilerestaurant_etr",
+                columns: table => new
+                {
+                    etr_nb = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_t_e_etoilerestaurant_etr", x => x.etr_nb);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,12 +118,25 @@ namespace Vinodrill_Back.Migrations
                     thm_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     thm_libelle = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
-                    thm_imgthemepage = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    thm_contenuthemepage = table.Column<string>(type: "text", nullable: false)
+                    thm_imgthemepage = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    thm_contenuthemepage = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_t_e_theme_thm", x => x.thm_id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "t_e_type_cuisine_tcu",
+                columns: table => new
+                {
+                    tcu_id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    tcu_libelle = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_t_e_type_cuisine_tcu", x => x.tcu_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -144,8 +169,8 @@ namespace Vinodrill_Back.Migrations
                 name: "t_e_client_clt",
                 columns: table => new
                 {
-                    avi_idavis = table.Column<int>(type: "integer", nullable: false),
-                    cb_idcb = table.Column<int>(type: "integer", nullable: false),
+                    avi_idavis = table.Column<int>(type: "integer", nullable: true),
+                    cb_idcb = table.Column<int>(type: "integer", nullable: true),
                     clt_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     clt_nom = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
@@ -162,8 +187,7 @@ namespace Vinodrill_Back.Migrations
                         name: "FK_t_e_client_clt_t_e_cb_cb_cb_idcb",
                         column: x => x.cb_idcb,
                         principalTable: "t_e_cb_cb",
-                        principalColumn: "cb_idcb",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "cb_idcb");
                 });
 
             migrationBuilder.CreateTable(
@@ -216,10 +240,10 @@ namespace Vinodrill_Back.Migrations
                     sjr_photo = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     sjr_prix = table.Column<decimal>(type: "numeric", nullable: false),
                     sjr_description = table.Column<string>(type: "text", nullable: false),
-                    sjr_nbjour = table.Column<int>(type: "integer", nullable: false),
-                    sjr_nbnuit = table.Column<int>(type: "integer", nullable: false),
-                    sjr_libelletemps = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    sjr_notemoyenne = table.Column<decimal>(type: "numeric", nullable: false)
+                    sjr_nbjour = table.Column<int>(type: "integer", nullable: true),
+                    sjr_nbnuit = table.Column<int>(type: "integer", nullable: true),
+                    sjr_libelletemps = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    sjr_notemoyenne = table.Column<decimal>(type: "numeric", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -234,6 +258,36 @@ namespace Vinodrill_Back.Migrations
                         column: x => x.thm_id,
                         principalTable: "t_e_theme_thm",
                         principalColumn: "thm_id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "t_h_restaurant_res",
+                columns: table => new
+                {
+                    prt_id = table.Column<int>(type: "integer", nullable: false),
+                    tcu_id = table.Column<int>(type: "integer", nullable: false),
+                    etr_nb = table.Column<int>(type: "integer", nullable: false),
+                    res_specialite = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_t_h_restaurant_res", x => x.prt_id);
+                    table.ForeignKey(
+                        name: "fk_etr_res",
+                        column: x => x.etr_nb,
+                        principalTable: "t_e_etoilerestaurant_etr",
+                        principalColumn: "etr_nb");
+                    table.ForeignKey(
+                        name: "FK_t_h_restaurant_res_t_e_partenaire_prt_prt_id",
+                        column: x => x.prt_id,
+                        principalTable: "t_e_partenaire_prt",
+                        principalColumn: "prt_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_tcu_res",
+                        column: x => x.tcu_id,
+                        principalTable: "t_e_type_cuisine_tcu",
+                        principalColumn: "tcu_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -279,6 +333,34 @@ namespace Vinodrill_Back.Migrations
                         column: x => x.clt_idclient,
                         principalTable: "t_e_client_clt",
                         principalColumn: "clt_id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "t_e_avispartenaire_apr",
+                columns: table => new
+                {
+                    clt_id = table.Column<int>(type: "integer", nullable: false),
+                    par_id = table.Column<int>(type: "integer", nullable: false),
+                    apr_id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    apr_commentaire = table.Column<string>(type: "text", maxLength: 255, nullable: false),
+                    apr_dateavis = table.Column<DateTime>(type: "date", nullable: false),
+                    avi_avissignale = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    avi_typesignalement = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_t_e_avispartenaire_apr", x => x.apr_id);
+                    table.ForeignKey(
+                        name: "fk_clt_avp",
+                        column: x => x.clt_id,
+                        principalTable: "t_e_client_clt",
+                        principalColumn: "clt_id");
+                    table.ForeignKey(
+                        name: "fk_prt_avp",
+                        column: x => x.par_id,
+                        principalTable: "t_e_partenaire_prt",
+                        principalColumn: "prt_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -360,10 +442,10 @@ namespace Vinodrill_Back.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     avi_note = table.Column<int>(type: "integer", nullable: false),
                     avi_commentaire = table.Column<string>(type: "text", nullable: false),
-                    avi_titreavis = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    avi_titreavis = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     avi_dateavis = table.Column<DateTime>(type: "date", nullable: false),
-                    avi_avissignale = table.Column<bool>(type: "boolean", nullable: false),
-                    avi_typesignalement = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                    avi_avissignale = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    avi_typesignalement = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -430,8 +512,8 @@ namespace Vinodrill_Back.Migrations
                 name: "t_e_commande_cmd",
                 columns: table => new
                 {
-                    cmd_idclient = table.Column<int>(type: "integer", nullable: false),
-                    cmd_idpaiement = table.Column<int>(type: "integer", nullable: false),
+                    clt_idclient = table.Column<int>(type: "integer", nullable: false),
+                    cmd_idpaiement = table.Column<int>(type: "integer", nullable: true),
                     cmd_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     cmd_datecommande = table.Column<DateTime>(type: "date", nullable: false),
@@ -439,7 +521,7 @@ namespace Vinodrill_Back.Migrations
                     cmd_quantite = table.Column<int>(type: "integer", nullable: false),
                     cmd_message = table.Column<string>(type: "text", nullable: false),
                     cmd_cheminfacture = table.Column<string>(type: "text", nullable: false),
-                    cmd_estcheque = table.Column<bool>(type: "boolean", nullable: false)
+                    cmd_estcheque = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -447,7 +529,7 @@ namespace Vinodrill_Back.Migrations
                     table.CheckConstraint("ck_cmd_prix", "cmd_quantite > 0");
                     table.ForeignKey(
                         name: "fk_clt_cmd",
-                        column: x => x.cmd_idclient,
+                        column: x => x.clt_idclient,
                         principalTable: "t_e_client_clt",
                         principalColumn: "clt_id");
                     table.ForeignKey(
@@ -468,8 +550,8 @@ namespace Vinodrill_Back.Migrations
                     etp_titre = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     etp_description = table.Column<string>(type: "text", nullable: false),
                     etp_photo = table.Column<string>(type: "text", nullable: false),
-                    etp_url = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    etp_video = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                    etp_url = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    etp_video = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -655,6 +737,16 @@ namespace Vinodrill_Back.Migrations
                 column: "clt_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_t_e_avispartenaire_apr_clt_id",
+                table: "t_e_avispartenaire_apr",
+                column: "clt_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_t_e_avispartenaire_apr_par_id",
+                table: "t_e_avispartenaire_apr",
+                column: "par_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_t_e_bonreduction_brd_cmd_id",
                 table: "t_e_bonreduction_brd",
                 column: "cmd_id");
@@ -671,9 +763,9 @@ namespace Vinodrill_Back.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_t_e_commande_cmd_cmd_idclient",
+                name: "IX_t_e_commande_cmd_clt_idclient",
                 table: "t_e_commande_cmd",
-                column: "cmd_idclient");
+                column: "clt_idclient");
 
             migrationBuilder.CreateIndex(
                 name: "IX_t_e_commande_cmd_cmd_idpaiement",
@@ -731,6 +823,16 @@ namespace Vinodrill_Back.Migrations
                 column: "ect_nb");
 
             migrationBuilder.CreateIndex(
+                name: "IX_t_h_restaurant_res_etr_nb",
+                table: "t_h_restaurant_res",
+                column: "etr_nb");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_t_h_restaurant_res_tcu_id",
+                table: "t_h_restaurant_res",
+                column: "tcu_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_t_h_societe_sct_tac_id",
                 table: "t_h_societe_sct",
                 column: "tac_id");
@@ -767,6 +869,9 @@ namespace Vinodrill_Back.Migrations
                 name: "t_e_adresse_adr");
 
             migrationBuilder.DropTable(
+                name: "t_e_avispartenaire_apr");
+
+            migrationBuilder.DropTable(
                 name: "t_e_boncommande_bcm");
 
             migrationBuilder.DropTable(
@@ -774,6 +879,9 @@ namespace Vinodrill_Back.Migrations
 
             migrationBuilder.DropTable(
                 name: "t_e_reponseavis_rav");
+
+            migrationBuilder.DropTable(
+                name: "t_h_restaurant_res");
 
             migrationBuilder.DropTable(
                 name: "t_j_effectue_efc");
@@ -789,6 +897,12 @@ namespace Vinodrill_Back.Migrations
 
             migrationBuilder.DropTable(
                 name: "t_j_reservation_rsv");
+
+            migrationBuilder.DropTable(
+                name: "t_e_etoilerestaurant_etr");
+
+            migrationBuilder.DropTable(
+                name: "t_e_type_cuisine_tcu");
 
             migrationBuilder.DropTable(
                 name: "t_e_activite_act");
