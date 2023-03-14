@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Vinodrill_Back.Auth;
 using Vinodrill_Back.Models;
 
 namespace Vinodrill_Back
@@ -26,12 +25,12 @@ namespace Vinodrill_Back
 
             // For Entity Framework
             builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
-            builder.Services.AddDbContext<AuthDbContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
+            //builder.Services.AddDbContext<AuthDbContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
 
-            // For Identity
-            builder.Services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<AuthDbContext>()
-                .AddDefaultTokenProviders();
+            //// For Identity
+            //builder.Services.AddIdentity<User, IdentityRole>()
+            //    .AddEntityFrameworkStores<AuthDbContext>()
+            //    .AddDefaultTokenProviders();
 
             // Adding Authentication
             builder.Services.AddAuthentication(options =>
@@ -81,9 +80,9 @@ namespace Vinodrill_Back
             builder.Services.AddScoped<IBonCommandeRepository, BonCommandeManager>();
             builder.Services.AddScoped<IAvisRepository, AviManager>();
             builder.Services.AddScoped<ISejourRepository, SejourManager>();
+            builder.Services.AddScoped<IUserRepository, UserManager>();
 
-
-             var app = builder.Build();
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
