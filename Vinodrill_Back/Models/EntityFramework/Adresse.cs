@@ -42,8 +42,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string PaysAdresse { get; set; }
 
-        [InverseProperty(nameof(Client.AdresseClientNavigation))]
-        public virtual Client ClientAdresseNavigation { get; set; } = null!;
+        [InverseProperty(nameof(User.AdresseClientNavigation))]
+        public virtual User ClientAdresseNavigation { get; set; } = null!;
 
 
     }
