@@ -51,7 +51,7 @@ namespace Vinodrill_Back.Controllers
             }
             await dataRepository.Add(hebergement, hotel);
 
-            return CreatedAtAction("GetHebergement", new { id = hebergement.IdHebergement }, hebergement);
+            return CreatedAtAction("GetHebergementById", new { id = hebergement.IdHebergement }, hebergement);
         }
 
         // GET: api/Activites/GetVisiteById/5
