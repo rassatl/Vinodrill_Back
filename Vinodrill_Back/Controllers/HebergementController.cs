@@ -14,9 +14,9 @@ namespace Vinodrill_Back.Controllers
     [ApiController]
     public class HebergementController : ControllerBase
     {
-        private readonly IDataRepository<Hebergement> dataRepository;
+        private readonly IHebergementRepository dataRepository;
 
-        public HebergementController(IDataRepository<Hebergement> dataRepo)
+        public HebergementController(IHebergementRepository dataRepo)
         {
             dataRepository = dataRepo;
         }
@@ -28,20 +28,47 @@ namespace Vinodrill_Back.Controllers
         {
             return await dataRepository.GetAll();
         }
+
+        // GET: api/Hebergement
+        [HttpGet("{idHotel}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Hebergement>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<Hebergement>>> GetHebergementByHotel(int? idHotel)
+        {
+            return await dataRepository.GetAllSpecificWithHotel(idHotel);
+        }
+
         // POST: api/Hebergement
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Hebergement))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Hebergement>> PostAdresse(Hebergement heb)
+        public async Task<ActionResult<Hebergement>> PostAdresse(Hebergement hebergement, Hotel hotel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await dataRepository.Add(heb);
+            await dataRepository.Add(hebergement, hotel);
 
-            return CreatedAtAction("GetCatParticipantById", new { id = heb.IdHebergement }, heb);
+            return CreatedAtAction("GetHebergement", new { id = hebergement.IdHebergement }, hebergement);
+        }
+
+        // GET: api/Activites/GetVisiteById/5
+        [HttpGet("GetHebergementById/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Hebergement))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Hebergement>> GetHebergementById(int id)
+        {
+            var hebergement = await dataRepository.GetById(id);
+
+            if (hebergement == null)
+            {
+                return NotFound();
+            }
+
+            return hebergement;
+
         }
     }
 }

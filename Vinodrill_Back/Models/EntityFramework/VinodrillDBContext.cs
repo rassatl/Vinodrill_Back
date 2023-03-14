@@ -28,7 +28,6 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual DbSet<Commande> Commandes { get; set; } = null!;
         public virtual DbSet<Sejour> Sejours { get; set; } = null!;
         public virtual DbSet<BonCommande> BonCommandes { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
