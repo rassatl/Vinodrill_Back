@@ -545,18 +545,18 @@ INSERT INTO t_e_type_cuisine_tcu VALUES (7,'Cuisine japonaise');
 
 /* 19 */
 /* Table RESTAURANT(idpartenaire,idtypedegustation,nompartenaire,ruepartenaire,cppartenaire,villepartenaire,photopartenaire,emailpartenaire,contact) */
-INSERT INTO t_e_restaurant_res VALUES (1,1,0,'Pizza');
-INSERT INTO t_e_restaurant_res VALUES (2,7,2,'Poisson');
-INSERT INTO t_e_restaurant_res VALUES (3,6,0,'Viande');
-INSERT INTO t_e_restaurant_res VALUES (4,3,1,'Poisson');
-INSERT INTO t_e_restaurant_res VALUES (5,5,3,'Végetarien');
-INSERT INTO t_e_restaurant_res VALUES (6,5,0,'Pizza');
-INSERT INTO t_e_restaurant_res VALUES (7,4,1,'Tapas');
-INSERT INTO t_e_restaurant_res VALUES (8,7,2,'Diététique');
-INSERT INTO t_e_restaurant_res VALUES (9,7,2,'Bio');
-INSERT INTO t_e_restaurant_res VALUES (10,2,2,'Caviar');
+INSERT INTO t_h_restaurant_res VALUES (1,1,0,'Pizza');
+INSERT INTO t_h_restaurant_res VALUES (2,7,2,'Poisson');
+INSERT INTO t_h_restaurant_res VALUES (3,6,0,'Viande');
+INSERT INTO t_h_restaurant_res VALUES (4,3,1,'Poisson');
+INSERT INTO t_h_restaurant_res VALUES (5,5,3,'Végetarien');
+INSERT INTO t_h_restaurant_res VALUES (6,5,0,'Pizza');
+INSERT INTO t_h_restaurant_res VALUES (7,4,1,'Tapas');
+INSERT INTO t_h_restaurant_res VALUES (8,7,2,'Diététique');
+INSERT INTO t_h_restaurant_res VALUES (9,7,2,'Bio');
+INSERT INTO t_h_restaurant_res VALUES (10,2,2,'Caviar');
 
--- rename table t_e_restaurant_res to t_h_restaurant_res;
+-- rename table t_h_restaurant_res to t_h_restaurant_res;
 
 
 /* 14 */

@@ -6,6 +6,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Vinodrill_Back.Auth;
+using Microsoft.AspNetCore.Authorization;
+using NuGet.Protocol.Plugins;
 
 namespace Vinodrill_Back.Controllers
 {
@@ -28,34 +30,50 @@ namespace Vinodrill_Back.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] Auth.User model)
         {
-            var user = await _userManager.FindByNameAsync(model.Username);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            IActionResult response = Unauthorized();
+            Auth.User user = AuthenticateUser(login);
+            if (user != null)
             {
-                var userRoles = await _userManager.GetRolesAsync(user);
-
-                var authClaims = new List<Claim>
+                var tokenString = GenerateJwtToken(user);
+                response = Ok(new
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
-
-                foreach (var userRole in userRoles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-                }
-
-                var token = GetToken(authClaims);
-
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
+                    token = tokenString,
+                    userDetails = user,
                 });
             }
-            return Unauthorized();
+            return response;
+        }
+
+        private Auth.User AuthenticateUser(Auth.User user)
+        {
+            return appUsers.SingleOrDefault(x => x.UserName.ToUpper() == user.UserName.ToUpper() &&
+            x.Password == user.Password);
+        }
+
+        private string GenerateJwtToken(User userInfo)
+        {
+            var securityKey = new
+            SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
+                new Claim("fullName", userInfo.FullName.ToString()),
+                new Claim("role",userInfo.UserRole),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: credentials
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         [HttpPost]
@@ -64,7 +82,7 @@ namespace Vinodrill_Back.Controllers
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
             if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+                return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
 
             IdentityUser user = new()
             {

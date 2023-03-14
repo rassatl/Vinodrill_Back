@@ -26,8 +26,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public bool PreferencePaiement { get; set; } = false;
 
-        [InverseProperty(nameof(Client.PaiementClientNavigation))]
-        public virtual Client ClientPaiementNavigation { get; set; } = null!;
+        [InverseProperty(nameof(User.PaiementClientNavigation))]
+        public virtual User ClientPaiementNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Commande.PaiementCommandeNavigation))]
         public virtual ICollection<Commande> CommandePaiementNavigation { get; set; } = new List<Commande>();

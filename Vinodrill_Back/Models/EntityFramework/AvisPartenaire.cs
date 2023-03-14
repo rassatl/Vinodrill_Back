@@ -35,8 +35,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [StringLength(255, ErrorMessage = "type signalement lenght must be 255 maximum")]
         public string? TypeSignalement { get; set; }
 
-        [InverseProperty(nameof(Client.AvisPartenaireClientNavigation))]
-        public virtual Client ClientAvisPartenaireNavigation { get; set; } = null!;
+        [InverseProperty(nameof(User.AvisPartenaireClientNavigation))]
+        public virtual User ClientAvisPartenaireNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(Partenaire.AvisPartenairePartenaireNavigation))]
         public virtual Partenaire PartenaireAvisPartenaireNavigation { get; set; } = null!;
