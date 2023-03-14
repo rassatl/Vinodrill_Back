@@ -8,23 +8,23 @@ using Microsoft.EntityFrameworkCore;
 using Vinodrill_Back.Models.EntityFramework;
 using Vinodrill_Back.Models.Repository;
 
-namespace Vinodrill_Back.Controllers //PROBLEM 
+namespace Vinodrill_Back.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DestinationController : ControllerBase
+    public class CaveController : ControllerBase
     {
-        private readonly IDataRepository<Destination> dataRepository;
+        private readonly IDataRepository<Cave> dataRepository;
 
-        public DestinationController(IDataRepository<Destination> dataRepo)
+        public CaveController(IDataRepository<Cave> dataRepo)
         {
             dataRepository = dataRepo;
         }
 
-        // GET: api/Destination
+        // GET: api/Cave
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Destination>))]
-        public async Task<ActionResult<IEnumerable<Destination>>> GetDestination()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Cave>))]
+        public async Task<ActionResult<IEnumerable<Cave>>> GetCave()
         {
             return await dataRepository.GetAll();
         }
