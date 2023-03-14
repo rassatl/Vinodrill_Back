@@ -36,9 +36,22 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public void GetActiviteByIdTest()
+        public async Task GetActiviteByIdTest_OK()
         {
-            Assert.Fail();
+            ActionResult<Activite> activite = await _controller.GetActiviteById(1);
+            Assert.AreEqual(_context.Activites.Where(c => c.IdActivite == 1).FirstOrDefault(), activite.Value, "Adresses différent");
+        }
+
+        [TestMethod()]
+        public async Task GetAdresseByIdTest_HttpResponse404()
+        {
+            // Act
+            ActionResult<Activite> activite = await _controller.GetActiviteById(-1);
+
+            // Assert
+            Assert.IsInstanceOfType(activite, typeof(ActionResult<Activite>));
+            Assert.IsNull(activite.Value);
+            Assert.IsInstanceOfType(activite.Result, typeof(NotFoundResult));
         }
 
 
@@ -75,6 +88,30 @@ namespace Vinodrill_Back.Controllers.Tests
             Assert.AreEqual(activite, (Activite)result, "Activitees pas identiques");
             */
         }
+        [TestMethod()]
+        public void PutActiviteTest_HttpResponse204()
+        {
+            // Arrange
+            Activite activite = _context.Activites.FirstOrDefault(u => u.IdActivite == 1);
+
+            var result = _controller.PutActivite(1, activite).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NoContentResult));
+        }
+
+        [TestMethod()]
+        public void PutUtilisateurTest_HttpResponse400()
+        {
+            // Arrange
+            Activite activite = _context.Activites.FirstOrDefault(u => u.IdActivite == 1);
+
+            // Act
+            var result = _controller.PutActivite(2, activite).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+        }
 
         [TestMethod()]
         public async Task PostActiviteTest_AvecMoq()
@@ -103,6 +140,30 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
+        public void PostActiviteTest_HttpResponse400()
+        {
+            // Arrange
+            Activite activite = new Activite()
+            {
+                IdActivite = 1,
+                LibelleActivite = "Activite de follie",
+                DescriptionActivite = "Activite cool où on s'amuse",
+                RueRdv = "9 Rue de l'arc-en-ciel",
+                CpRdv = "74000",
+                VilleRdv = "Annecy",
+                HoraireActivite = new TimeOnly()
+            };
+
+            // Act
+            var result = _controller.PostActivite(activite).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ActionResult<Activite>));
+            Assert.IsNull(result.Value);
+            Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
+        }
+
+        [TestMethod()]
         public async Task DeleteActiviteTest_AvecMoq()
         {
             Activite activite = new Activite()
@@ -120,6 +181,47 @@ namespace Vinodrill_Back.Controllers.Tests
             var userController = new ActiviteController(mockRepository.Object);
             var actionResult = userController.DeleteActivite(1).Result;
             Assert.IsInstanceOfType(actionResult, typeof(NoContentResult), "Pas un NoContentResult");
+        }
+
+        [TestMethod()]
+        public void DeleteActiviteTest_HttpResponse204()
+        {
+            // Arrange
+            Activite activite = new Activite()
+            {
+                IdActivite = 1,
+                LibelleActivite = "Activite de follie",
+                DescriptionActivite = "Activite cool où on s'amuse",
+                RueRdv = "9 Rue de l'arc-en-ciel",
+                CpRdv = "74000",
+                VilleRdv = "Annecy",
+                HoraireActivite = new TimeOnly()
+            };
+
+            _context.Activites.Add(activite);
+            _context.SaveChanges();
+
+            // Act
+            var result = _controller.DeleteActivite(activite.IdActivite).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NoContentResult));
+
+            // Act
+            var verif = _context.Activites.FirstOrDefault(u => u.IdActivite == activite.IdActivite);
+
+            // Assert
+            Assert.IsNull(verif);
+        }
+
+        [TestMethod()]
+        public void DeleteActiviteTest_HttpResponse404()
+        {
+            // Act
+            var result = _controller.DeleteActivite(-1).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
     }
 }
