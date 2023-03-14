@@ -9,26 +9,26 @@ namespace Vinodrill_Back.Controllers
     public class ClientController: ControllerBase
     {
         //private readonly FilmRatingDBContexts dataRepository;
-        private readonly IDataRepository<Client> dataRepository;
+        private readonly IDataRepository<User> dataRepository;
 
-        public ClientController(IDataRepository<Client> dataRepo)
+        public ClientController(IDataRepository<User> dataRepo)
         {
             dataRepository = dataRepo;
         }
 
         // GET: api/Clients
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Client>))]
-        public async Task<ActionResult<IEnumerable<Client>>> GetClients()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<User>))]
+        public async Task<ActionResult<IEnumerable<User>>> GetClients()
         {
             return await dataRepository.GetAll();
         }
 
         // GET: api/Clients/GetClientById/5
         [HttpGet("GetClientById/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Client))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Client>> GetClientById(int id)
+        public async Task<ActionResult<User>> GetClientById(int id)
         {
             var client = await dataRepository.GetById(id);
 
@@ -46,7 +46,7 @@ namespace Vinodrill_Back.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PutClient(int id, Client client)
+        public async Task<IActionResult> PutClient(int id, User client)
         {
 
             if (id != client.IdClient)

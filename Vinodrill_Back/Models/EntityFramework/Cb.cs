@@ -32,8 +32,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Required]
         public string MoisExpCb { get; set; }
 
-        [InverseProperty(nameof(Client.CbClientNavigation))]
-        public virtual ICollection<Client> ClientCbNavigation { get; set; } = new List<Client>();
+        [InverseProperty(nameof(User.CbClientNavigation))]
+        public virtual ICollection<User> ClientCbNavigation { get; set; } = new List<User>();
 
     }
 }

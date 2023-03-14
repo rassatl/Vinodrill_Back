@@ -18,7 +18,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string LibelleCookie { get; set; }
 
         [InverseProperty("ClientAdresse")]
-        public virtual ICollection<Client>? ClientNavigation { get; set; } = null!;
+        public virtual ICollection<User>? ClientNavigation { get; set; } = null!;
 
     }
 }

@@ -22,12 +22,13 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual DbSet<Avis> Avis { get; set; } = null!;
         public virtual DbSet<CatParticipant> Catparticipants { get; set; } = null!;
         public virtual DbSet<Cave> Caves { get; set; } = null!;
-        public virtual DbSet<Client> Clients { get; set; } = null!;
+        public virtual DbSet<User> Clients { get; set; } = null!;
         public virtual DbSet<Hotel> Hotels { get; set; }
         public virtual DbSet<Partenaire> Partenaires { get; set; } = null!;
         public virtual DbSet<Commande> Commandes { get; set; } = null!;
         public virtual DbSet<Sejour> Sejours { get; set; } = null!;
         public virtual DbSet<BonCommande> BonCommandes { get; set; } = null!;
+        public virtual DbSet<Hebergement> Hebergements { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -155,7 +156,7 @@ namespace Vinodrill_Back.Models.EntityFramework
                 //   .HasDatabaseName("uq_prt_email");
             });
 
-            modelBuilder.Entity<Client>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
                 entity
                    .HasIndex(e => e.EmailClient)

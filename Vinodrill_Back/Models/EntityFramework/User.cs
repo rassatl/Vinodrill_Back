@@ -4,52 +4,50 @@ using System.Runtime.InteropServices;
 
 namespace Vinodrill_Back.Models.EntityFramework
 {
-    [Table("t_e_client_clt")]
-    public partial class Client
+    [Table("t_e_user_usr")]
+    public partial class User
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("clt_id")]
+        [Column("usr_id")]
         [Required]
         public int IdClient { get; set; }
-
-        [ForeignKey("fk_avi_clt")]
-        [Column("avi_idavis", Order = 0)]
-        public int? IdAvisClient { get; set; }
 
         [ForeignKey("CbClientNavigation")]
         [Column("cb_idcb", Order = 1)]
         public int? IdCbClient { get; set; }
 
-        [Column("clt_nom")]
+        [Column("usr_nom")]
         [StringLength(255, ErrorMessage = "the client name must be 255 maximum")]
         [Required]
         public string NomClient { get; set; }
 
-        [Column("clt_prenom")]
+        [Column("usr_prenom")]
         [StringLength(255, ErrorMessage = "the client first name must be 255 maximum")]
         [Required]
         public string PrenomClient { get; set; }
 
-        [Column("clt_datenaissance", TypeName = "date")]
+        [Column("usr_datenaissance", TypeName = "date")]
         [Required]
         public DateTime DateNaissanceClient { get; set; }
 
-        [Column("clt_sexe")]
+        [Column("usr_sexe")]
         [RegularExpression(@"^[0-9]{1}$", ErrorMessage = "sexe length must be 1 maximum")]
         [Required]
         public string SexeClient { get; set; }
 
-        [Column("clt_motdepasse")]
-        [StringLength(255, ErrorMessage = "motdepasse length must be 255 maximum")]
-        [Required]
-        public string? MotDePasseClient { get; set; }
-
-        [Column("clt_email")]
+        [Column("usr_email")]
         [EmailAddress]
         [StringLength(255, MinimumLength = 6, ErrorMessage = " email lenght must be 255 maximum")]
         [Required]
         public string EmailClient { get; set; }
+
+        [Column("usr_motdepasse")]
+        [Required]
+        public string MotDePasse { get; set; }
+
+        [Column("usr_role")]
+        public string? UserRole { get; set; }
 
         [InverseProperty(nameof(Cb.ClientCbNavigation))]
         public virtual Cb CbClientNavigation { get; set; } = null;
