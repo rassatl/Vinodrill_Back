@@ -30,8 +30,5 @@ namespace Vinodrill_Back.Controllers
         {
             return await dataRepository.GetAll();
         }
-
-        
-
     }
 }
