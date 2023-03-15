@@ -6,9 +6,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using NuGet.Protocol.Plugins;
 using Vinodrill_Back.Models.Repository;
-using System.Configuration;
+using Vinodrill_Back.Models.Auth;
+using System.Text.RegularExpressions;
+using System.Security.Cryptography;
 
 namespace Vinodrill_Back.Controllers
 {
@@ -29,10 +30,10 @@ namespace Vinodrill_Back.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] User login)
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             IActionResult response = Unauthorized();
-            User user = AuthenticateUser(login);
+            User user = AuthenticateUser(model);
             if (user != null)
             {
                 var tokenString = GenerateJwtToken(user);
@@ -45,7 +46,7 @@ namespace Vinodrill_Back.Controllers
             return response;
         }
 
-        private User AuthenticateUser(User user)
+        private User AuthenticateUser(LoginModel user)
         {
             return dataRepository.GetAuthUser(user);
         }
@@ -53,7 +54,7 @@ namespace Vinodrill_Back.Controllers
         private string GenerateJwtToken(User userInfo)
         {
             var securityKey = new
-            SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
+            SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
@@ -63,8 +64,8 @@ namespace Vinodrill_Back.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: _configuration["Jwt:ValidIssuer"],
+                audience: _configuration["Jwt:ValidAudience"],
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: credentials
@@ -74,88 +75,60 @@ namespace Vinodrill_Back.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register(User model)
+        public async Task<IActionResult> Register(RegisterModel model)
         {
-            var userExists = await dataRepository.FindByEmail(model.EmailClient);
-            if (userExists != null)
-                return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
+            var userExists = await dataRepository.FindByEmail(model.Email);
+            if (userExists.Result != null)
+                return StatusCode(StatusCodes.Status409Conflict, new { Status = "Error", Message = "User already exists!" });
+
+            if (!Regex.IsMatch(model.Password, @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$"))
+                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = "Password is not valid!" });
+
+            if (model.DateOfBirth.AddYears(18) > DateTime.Now)
+                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = "You must be 18 years old to register!" });
 
             User user = new()
             {
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
+                EmailClient = model.Email,
+                PrenomClient = model.FirstName,
+                NomClient = model.LastName,
+                DateNaissanceClient = model.DateOfBirth,
+                UserRole = "Client",
+                SexeClient = model.Gender,
+                MotDePasse = BCrypt.Net.BCrypt.HashPassword(model.Password)
             };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-            {
-                var errorMessage = "User creation failed! Please check user details and try again.";
 
-                // Check if the password is too short
-                if (result.Errors.Any(e => e.Code == "PasswordTooShort"))
-                {
-                    errorMessage = "Password is too short. Please choose a password that is at least 6 characters long.";
-                }
+            await dataRepository.Add(user);
 
-                // Check if the password does not contain a non-alphanumeric character
-                if (result.Errors.Any(e => e.Code == "PasswordRequiresNonAlphanumeric"))
-                {
-                    errorMessage = "Password should contain at least one non-alphanumeric character.";
-                }
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = errorMessage });
-            }
-
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            return Ok(new { Status = "Success", Message = "User created successfully!" });
         }
 
-        [HttpPost]
-        [Route("register-admin")]
-        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
+        [HttpGet]
+        [Route("get-user")]
+        [Authorize]
+        public async Task<IActionResult> GetUser()
         {
-            var userExists = await _userManager.FindByNameAsync(model.Username);
-            if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+            var email = User.Claims.FirstOrDefault(c => c.Type == "email").Value;
+            var user = await dataRepository.FindByEmail(email);
+            if (user.Result == null)
+                return StatusCode(StatusCodes.Status404NotFound, new { Status = "Error", Message = "User does not exist!" });
 
-            IdentityUser user = new()
-            {
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
-
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-            if (!await _roleManager.RoleExistsAsync(UserRoles.User))
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
-
-            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            {
-                await _userManager.AddToRoleAsync(user, UserRoles.Admin);
-            }
-            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            {
-                await _userManager.AddToRoleAsync(user, UserRoles.User);
-            }
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            return Ok(new { Status = "Success", Message = "User found!", User = user.Result });
         }
 
-        private JwtSecurityToken GetToken(List<Claim> authClaims)
-        {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(3),
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                );
+        // [HttpPost]
+        // [Route("forgotpassword")]
+        // public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
+        // {
+        //     var user = await dataRepository.FindByEmail(model.Email);
+        //     if (user.Result == null)
+        //         return StatusCode(StatusCodes.Status404NotFound, new { Status = "Error", Message = "User does not exist!" });
 
-            return token;
-        }
+        //     var token = GeneratePasswordResetToken(user.Result);
+        //     var link = Url.Action("ResetPassword", "Authenticate", new { token = token, email = user.Result.EmailClient }, Request.Scheme);
+
+        //     return Ok(new { Status = "Success", Message = "Password reset link sent to your email!", Link = link });
+        // }
     }
 }
