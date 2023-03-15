@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Vinodrill_Back.Migrations
 {
-    public partial class DbCreation : Migration
+    public partial class RenameClientToUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -166,28 +166,29 @@ namespace Vinodrill_Back.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "t_e_client_clt",
+                name: "t_e_user_usr",
                 columns: table => new
                 {
-                    avi_idavis = table.Column<int>(type: "integer", nullable: true),
-                    cb_idcb = table.Column<int>(type: "integer", nullable: true),
-                    clt_id = table.Column<int>(type: "integer", nullable: false)
+                    usr_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    clt_nom = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    clt_prenom = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    clt_datenaissance = table.Column<DateTime>(type: "date", nullable: false),
-                    clt_sexe = table.Column<string>(type: "text", nullable: false),
-                    clt_motdepasse = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    clt_email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                    usr_nom = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    usr_prenom = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    usr_datenaissance = table.Column<DateTime>(type: "date", nullable: false),
+                    usr_sexe = table.Column<string>(type: "text", nullable: false),
+                    usr_email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    usr_motdepasse = table.Column<string>(type: "text", nullable: false),
+                    usr_role = table.Column<string>(type: "text", nullable: true),
+                    CbClientNavigationIdCb = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_t_e_client_clt", x => x.clt_id);
+                    table.PrimaryKey("PK_t_e_user_usr", x => x.usr_id);
                     table.ForeignKey(
-                        name: "FK_t_e_client_clt_t_e_cb_cb_cb_idcb",
-                        column: x => x.cb_idcb,
+                        name: "FK_t_e_user_usr_t_e_cb_cb_CbClientNavigationIdCb",
+                        column: x => x.CbClientNavigationIdCb,
                         principalTable: "t_e_cb_cb",
-                        principalColumn: "cb_idcb");
+                        principalColumn: "cb_idcb",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -331,8 +332,8 @@ namespace Vinodrill_Back.Migrations
                     table.ForeignKey(
                         name: "fk_clt_adr",
                         column: x => x.clt_idclient,
-                        principalTable: "t_e_client_clt",
-                        principalColumn: "clt_id");
+                        principalTable: "t_e_user_usr",
+                        principalColumn: "usr_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -354,8 +355,8 @@ namespace Vinodrill_Back.Migrations
                     table.ForeignKey(
                         name: "fk_clt_avp",
                         column: x => x.clt_id,
-                        principalTable: "t_e_client_clt",
-                        principalColumn: "clt_id");
+                        principalTable: "t_e_user_usr",
+                        principalColumn: "usr_id");
                     table.ForeignKey(
                         name: "fk_prt_avp",
                         column: x => x.par_id,
@@ -379,8 +380,8 @@ namespace Vinodrill_Back.Migrations
                     table.ForeignKey(
                         name: "fk_clt_pmt",
                         column: x => x.clt_idclient,
-                        principalTable: "t_e_client_clt",
-                        principalColumn: "clt_id");
+                        principalTable: "t_e_user_usr",
+                        principalColumn: "usr_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -453,8 +454,8 @@ namespace Vinodrill_Back.Migrations
                     table.ForeignKey(
                         name: "fk_clt_avi",
                         column: x => x.clt_id,
-                        principalTable: "t_e_client_clt",
-                        principalColumn: "clt_id");
+                        principalTable: "t_e_user_usr",
+                        principalColumn: "usr_id");
                     table.ForeignKey(
                         name: "fk_sej_avi",
                         column: x => x.clt_id,
@@ -530,8 +531,8 @@ namespace Vinodrill_Back.Migrations
                     table.ForeignKey(
                         name: "fk_clt_cmd",
                         column: x => x.clt_idclient,
-                        principalTable: "t_e_client_clt",
-                        principalColumn: "clt_id");
+                        principalTable: "t_e_user_usr",
+                        principalColumn: "usr_id");
                     table.ForeignKey(
                         name: "fk_pmt_cmd",
                         column: x => x.cmd_idpaiement,
@@ -752,17 +753,6 @@ namespace Vinodrill_Back.Migrations
                 column: "cmd_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_t_e_client_clt_cb_idcb",
-                table: "t_e_client_clt",
-                column: "cb_idcb");
-
-            migrationBuilder.CreateIndex(
-                name: "uq_clt_email",
-                table: "t_e_client_clt",
-                column: "clt_email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_t_e_commande_cmd_clt_idclient",
                 table: "t_e_commande_cmd",
                 column: "clt_idclient");
@@ -806,6 +796,17 @@ namespace Vinodrill_Back.Migrations
                 name: "IX_t_e_sejour_sjr_thm_id",
                 table: "t_e_sejour_sjr",
                 column: "thm_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_t_e_user_usr_CbClientNavigationIdCb",
+                table: "t_e_user_usr",
+                column: "CbClientNavigationIdCb");
+
+            migrationBuilder.CreateIndex(
+                name: "uq_clt_email",
+                table: "t_e_user_usr",
+                column: "usr_email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_t_e_visite_vst_cav_id",
@@ -956,7 +957,7 @@ namespace Vinodrill_Back.Migrations
                 name: "t_e_theme_thm");
 
             migrationBuilder.DropTable(
-                name: "t_e_client_clt");
+                name: "t_e_user_usr");
 
             migrationBuilder.DropTable(
                 name: "t_e_etoilehotel_eth");

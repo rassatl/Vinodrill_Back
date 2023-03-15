@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Vinodrill_Back.Models.Auth;
 using Vinodrill_Back.Models.EntityFramework;
 using Vinodrill_Back.Models.Repository;
 
@@ -56,6 +58,7 @@ namespace Vinodrill_Back.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Policy = Policies.Admin)]
         public async Task<IActionResult> PutSejour(int id, Sejour sejour)
         {
 
@@ -81,6 +84,7 @@ namespace Vinodrill_Back.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Sejour))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Policy = Policies.Admin)]
         public async Task<ActionResult<Sejour>> PostSejour(Sejour sejour)
         {
             if (!ModelState.IsValid)
@@ -96,6 +100,7 @@ namespace Vinodrill_Back.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> DeleteAvis(int id)
         {
             var sejour = await dataRepository.GetById(id);

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Vinodrill_Back.Models.EntityFramework;
@@ -11,9 +12,10 @@ using Vinodrill_Back.Models.EntityFramework;
 namespace Vinodrill_Back.Migrations
 {
     [DbContext(typeof(VinodrillDBContext))]
-    partial class VinodrillDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230314132529_RenameClientToUser")]
+    partial class RenameClientToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,7 +92,7 @@ namespace Vinodrill_Back.Migrations
 
                     b.Property<int>("IdClient")
                         .HasColumnType("integer")
-                        .HasColumnName("usr_id");
+                        .HasColumnName("clt_idclient");
 
                     b.Property<string>("LibelleAdresse")
                         .IsRequired()
@@ -149,7 +151,7 @@ namespace Vinodrill_Back.Migrations
 
                     b.Property<int>("IdClient")
                         .HasColumnType("integer")
-                        .HasColumnName("usr_id")
+                        .HasColumnName("clt_id")
                         .HasColumnOrder(0);
 
                     b.Property<int>("IdSejour")
@@ -205,7 +207,7 @@ namespace Vinodrill_Back.Migrations
 
                     b.Property<int>("IdClient")
                         .HasColumnType("integer")
-                        .HasColumnName("usr_id")
+                        .HasColumnName("clt_id")
                         .HasColumnOrder(0);
 
                     b.Property<int>("IdPartenaire")
@@ -375,7 +377,7 @@ namespace Vinodrill_Back.Migrations
 
                     b.Property<int>("IdClient")
                         .HasColumnType("integer")
-                        .HasColumnName("usr_id")
+                        .HasColumnName("clt_idclient")
                         .HasColumnOrder(0);
 
                     b.Property<int?>("IdPaiement")
@@ -653,7 +655,7 @@ namespace Vinodrill_Back.Migrations
 
                     b.Property<int>("IdClientPaiement")
                         .HasColumnType("integer")
-                        .HasColumnName("usr_id");
+                        .HasColumnName("clt_idclient");
 
                     b.Property<string>("LibellePaiement")
                         .IsRequired()
@@ -987,6 +989,9 @@ namespace Vinodrill_Back.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdClient"));
 
+                    b.Property<int>("CbClientNavigationIdCb")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("DateNaissanceClient")
                         .HasColumnType("date")
                         .HasColumnName("usr_datenaissance");
@@ -996,11 +1001,6 @@ namespace Vinodrill_Back.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("usr_email");
-
-                    b.Property<int?>("IdCbClient")
-                        .HasColumnType("integer")
-                        .HasColumnName("cb_idcb")
-                        .HasColumnOrder(1);
 
                     b.Property<string>("MotDePasse")
                         .IsRequired()
@@ -1019,11 +1019,6 @@ namespace Vinodrill_Back.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("usr_prenom");
 
-                    b.Property<string>("Salt")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("usr_sel");
-
                     b.Property<string>("SexeClient")
                         .IsRequired()
                         .HasColumnType("text")
@@ -1035,11 +1030,11 @@ namespace Vinodrill_Back.Migrations
 
                     b.HasKey("IdClient");
 
+                    b.HasIndex("CbClientNavigationIdCb");
+
                     b.HasIndex("EmailClient")
                         .IsUnique()
                         .HasDatabaseName("uq_clt_email");
-
-                    b.HasIndex("IdCbClient");
 
                     b.ToTable("t_e_user_usr");
                 });
@@ -1416,7 +1411,9 @@ namespace Vinodrill_Back.Migrations
                 {
                     b.HasOne("Vinodrill_Back.Models.EntityFramework.Cb", "CbClientNavigation")
                         .WithMany("ClientCbNavigation")
-                        .HasForeignKey("IdCbClient");
+                        .HasForeignKey("CbClientNavigationIdCb")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CbClientNavigation");
                 });

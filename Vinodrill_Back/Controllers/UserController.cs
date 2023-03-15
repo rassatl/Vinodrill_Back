@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Vinodrill_Back.Models;
+using Vinodrill_Back.Models.Auth;
 
 namespace Vinodrill_Back.Controllers
 {
@@ -10,11 +10,12 @@ namespace Vinodrill_Back.Controllers
     {
         [HttpGet]
         [Route("GetUserData")]
-        [Authorize(Policy = Policies.User)]
+        [Authorize(Policy = Policies.Client)]
         public IActionResult GetUserData()
         {
             return Ok("This is a response from user method");
         }
+        
         [HttpGet]
         [Route("GetAdminData")]
         [Authorize(Policy = Policies.Admin)]

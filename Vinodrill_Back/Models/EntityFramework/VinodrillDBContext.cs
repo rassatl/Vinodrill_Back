@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using System.Runtime.Intrinsics.X86;
 using Vinodrill_Back.Models.EntityFramework;
 
@@ -28,6 +29,10 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual DbSet<Commande> Commandes { get; set; } = null!;
         public virtual DbSet<Sejour> Sejours { get; set; } = null!;
         public virtual DbSet<BonCommande> BonCommandes { get; set; } = null!;
+        public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Hebergement> Hebergements { get; set; } = null!;
+        public virtual DbSet<Reservation> Reservations { get; set; } = null!;
+        public virtual DbSet<BonReduction> BonReductions { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +44,16 @@ namespace Vinodrill_Back.Models.EntityFramework
             //        .OnDelete(DeleteBehavior.ClientSetNull)
             //        .HasConstraintName("fk_clt_adt");
             //});
+
+            // // Use reflection to get all the entity types in the assembly
+            // var entityTypes = Assembly.GetExecutingAssembly().GetTypes()
+            //     .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof()));
+
+            // // Dynamically create the DbSet properties for each entity type
+            // foreach (var entityType in entityTypes)
+            // {
+            //     modelBuilder.Entity(entityType);
+            // }
 
             modelBuilder.Entity<Restaurant>(entity =>
             {

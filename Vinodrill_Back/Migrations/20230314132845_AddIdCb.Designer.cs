@@ -12,8 +12,8 @@ using Vinodrill_Back.Models.EntityFramework;
 namespace Vinodrill_Back.Migrations
 {
     [DbContext(typeof(VinodrillDBContext))]
-    [Migration("20230314072009_DbCreation")]
-    partial class DbCreation
+    [Migration("20230314132845_AddIdCb")]
+    partial class AddIdCb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -349,69 +349,6 @@ namespace Vinodrill_Back.Migrations
                     b.HasKey("IdCb");
 
                     b.ToTable("t_e_cb_cb");
-                });
-
-            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Client", b =>
-                {
-                    b.Property<int>("IdClient")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("clt_id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdClient"));
-
-                    b.Property<DateTime>("DateNaissanceClient")
-                        .HasColumnType("date")
-                        .HasColumnName("clt_datenaissance");
-
-                    b.Property<string>("EmailClient")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("clt_email");
-
-                    b.Property<int?>("IdAvisClient")
-                        .HasColumnType("integer")
-                        .HasColumnName("avi_idavis")
-                        .HasColumnOrder(0);
-
-                    b.Property<int?>("IdCbClient")
-                        .HasColumnType("integer")
-                        .HasColumnName("cb_idcb")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("MotDePasseClient")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("clt_motdepasse");
-
-                    b.Property<string>("NomClient")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("clt_nom");
-
-                    b.Property<string>("PrenomClient")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("clt_prenom");
-
-                    b.Property<string>("SexeClient")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("clt_sexe");
-
-                    b.HasKey("IdClient");
-
-                    b.HasIndex("EmailClient")
-                        .IsUnique()
-                        .HasDatabaseName("uq_clt_email");
-
-                    b.HasIndex("IdCbClient");
-
-                    b.ToTable("t_e_client_clt");
                 });
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Commande", b =>
@@ -1043,6 +980,67 @@ namespace Vinodrill_Back.Migrations
                     b.ToTable("t_e_typevisite_tvs");
                 });
 
+            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.User", b =>
+                {
+                    b.Property<int>("IdClient")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("usr_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdClient"));
+
+                    b.Property<DateTime>("DateNaissanceClient")
+                        .HasColumnType("date")
+                        .HasColumnName("usr_datenaissance");
+
+                    b.Property<string>("EmailClient")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("usr_email");
+
+                    b.Property<int?>("IdCbClient")
+                        .HasColumnType("integer")
+                        .HasColumnName("cb_idcb")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("MotDePasse")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("usr_motdepasse");
+
+                    b.Property<string>("NomClient")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("usr_nom");
+
+                    b.Property<string>("PrenomClient")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("usr_prenom");
+
+                    b.Property<string>("SexeClient")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("usr_sexe");
+
+                    b.Property<string>("UserRole")
+                        .HasColumnType("text")
+                        .HasColumnName("usr_role");
+
+                    b.HasKey("IdClient");
+
+                    b.HasIndex("EmailClient")
+                        .IsUnique()
+                        .HasDatabaseName("uq_clt_email");
+
+                    b.HasIndex("IdCbClient");
+
+                    b.ToTable("t_e_user_usr");
+                });
+
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Visite", b =>
                 {
                     b.Property<int>("IdVisite")
@@ -1158,7 +1156,7 @@ namespace Vinodrill_Back.Migrations
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Adresse", b =>
                 {
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Client", "ClientAdresseNavigation")
+                    b.HasOne("Vinodrill_Back.Models.EntityFramework.User", "ClientAdresseNavigation")
                         .WithMany("AdresseClientNavigation")
                         .HasForeignKey("IdClient")
                         .IsRequired()
@@ -1169,7 +1167,7 @@ namespace Vinodrill_Back.Migrations
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Avis", b =>
                 {
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Client", "ClientAvisNavigation")
+                    b.HasOne("Vinodrill_Back.Models.EntityFramework.User", "ClientAvisNavigation")
                         .WithMany("AvisClientNavigation")
                         .HasForeignKey("IdClient")
                         .IsRequired()
@@ -1188,7 +1186,7 @@ namespace Vinodrill_Back.Migrations
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.AvisPartenaire", b =>
                 {
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Client", "ClientAvisPartenaireNavigation")
+                    b.HasOne("Vinodrill_Back.Models.EntityFramework.User", "ClientAvisPartenaireNavigation")
                         .WithMany("AvisPartenaireClientNavigation")
                         .HasForeignKey("IdClient")
                         .IsRequired()
@@ -1227,18 +1225,9 @@ namespace Vinodrill_Back.Migrations
                     b.Navigation("CommandeBonReductionNavigation");
                 });
 
-            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Client", b =>
-                {
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Cb", "CbClientNavigation")
-                        .WithMany("ClientCbNavigation")
-                        .HasForeignKey("IdCbClient");
-
-                    b.Navigation("CbClientNavigation");
-                });
-
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Commande", b =>
                 {
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Client", "ClientCommandeNavigation")
+                    b.HasOne("Vinodrill_Back.Models.EntityFramework.User", "ClientCommandeNavigation")
                         .WithMany("CommandeClientNavigation")
                         .HasForeignKey("IdClient")
                         .IsRequired()
@@ -1343,7 +1332,7 @@ namespace Vinodrill_Back.Migrations
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Paiement", b =>
                 {
-                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Client", "ClientPaiementNavigation")
+                    b.HasOne("Vinodrill_Back.Models.EntityFramework.User", "ClientPaiementNavigation")
                         .WithMany("PaiementClientNavigation")
                         .HasForeignKey("IdClientPaiement")
                         .IsRequired()
@@ -1418,6 +1407,15 @@ namespace Vinodrill_Back.Migrations
                     b.Navigation("DestinationSejourNavigation");
 
                     b.Navigation("ThemeSejourNavigation");
+                });
+
+            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.User", b =>
+                {
+                    b.HasOne("Vinodrill_Back.Models.EntityFramework.Cb", "CbClientNavigation")
+                        .WithMany("ClientCbNavigation")
+                        .HasForeignKey("IdCbClient");
+
+                    b.Navigation("CbClientNavigation");
                 });
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Visite", b =>
@@ -1535,19 +1533,6 @@ namespace Vinodrill_Back.Migrations
                     b.Navigation("ClientCbNavigation");
                 });
 
-            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Client", b =>
-                {
-                    b.Navigation("AdresseClientNavigation");
-
-                    b.Navigation("AvisClientNavigation");
-
-                    b.Navigation("AvisPartenaireClientNavigation");
-
-                    b.Navigation("CommandeClientNavigation");
-
-                    b.Navigation("PaiementClientNavigation");
-                });
-
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Commande", b =>
                 {
                     b.Navigation("BonCommandeCommandeNavigation");
@@ -1634,6 +1619,19 @@ namespace Vinodrill_Back.Migrations
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.TypeVisite", b =>
                 {
                     b.Navigation("VisiteTypeVisiteNavigation");
+                });
+
+            modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.User", b =>
+                {
+                    b.Navigation("AdresseClientNavigation");
+
+                    b.Navigation("AvisClientNavigation");
+
+                    b.Navigation("AvisPartenaireClientNavigation");
+
+                    b.Navigation("CommandeClientNavigation");
+
+                    b.Navigation("PaiementClientNavigation");
                 });
 
             modelBuilder.Entity("Vinodrill_Back.Models.EntityFramework.Visite", b =>

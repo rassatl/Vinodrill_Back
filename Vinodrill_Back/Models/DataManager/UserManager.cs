@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Vinodrill_Back.Models.Auth;
 using Vinodrill_Back.Models.EntityFramework;
 using Vinodrill_Back.Models.Repository;
 
@@ -23,7 +24,6 @@ namespace Vinodrill_Back.Models.DataManager
         {
             dbContext.Entry(entityToUpdate).State = EntityState.Modified;
             entityToUpdate.IdClient = entity.IdClient;
-            entityToUpdate.IdCbClient = entity.IdCbClient;
             entityToUpdate.EmailClient = entity.EmailClient;
             entityToUpdate.SexeClient = entity.SexeClient;
             entityToUpdate.NomClient = entity.NomClient;
@@ -50,10 +50,17 @@ namespace Vinodrill_Back.Models.DataManager
             return await dbContext.Clients.FirstOrDefaultAsync(a => a.IdClient == id);
         }
 
-        public User GetAuthUser(User user)
+        public User GetAuthUser(LoginModel user)
         {
-            return dbContext.Users.SingleOrDefault(x => x.EmailClient.ToUpper() == user.EmailClient.ToUpper() &&
-                x.MotDePasse == user.MotDePasse);
+            //return dbContext.Users.SingleOrDefault(x => x.EmailClient.ToUpper() == user.Email.ToUpper() && BCrypt.Net.BCrypt.Verify(user.Password, x.MotDePasse, false, BCrypt.Net.HashType.SHA256));
+            // check if user email and password hash match with a record in the database
+            var userFromDb = dbContext.Users.SingleOrDefault(x => x.EmailClient.ToUpper() == user.Email.ToUpper());
+            if (userFromDb != null && BCrypt.Net.BCrypt.Verify(user.Password, userFromDb.MotDePasse, false, BCrypt.Net.HashType.SHA256))
+            {
+                // authentication successful so return user details without password
+                return userFromDb;
+            }
+            return null;
         }
 
         public async Task<ActionResult<User>> FindByEmail(string email)

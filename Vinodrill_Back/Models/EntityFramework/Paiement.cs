@@ -13,7 +13,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int IdPaiement { get; set; }
 
         [ForeignKey("IdClientPaiement")]
-        [Column("clt_idclient")]
+        [Column("usr_id")]
         [Required]
         public int IdClientPaiement { get; set; }
 

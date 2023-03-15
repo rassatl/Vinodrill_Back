@@ -12,7 +12,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public int RefCommande { get; set; }
 
         [ForeignKey("IdClient")]
-        [Column("clt_idclient", Order = 0)]
+        [Column("usr_id", Order = 0)]
         [Required]
         public int IdClient { get; set; }
 

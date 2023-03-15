@@ -9,7 +9,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ForeignKey("fk_clt_adt")]
-        [Column("clt_id", Order = 0)]
+        [Column("usr_id", Order = 0)]
         public int IdClient { get; set; }
 
         [Key]
