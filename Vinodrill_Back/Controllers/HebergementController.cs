@@ -38,21 +38,21 @@ namespace Vinodrill_Back.Controllers
             return await dataRepository.GetAllSpecificWithHotel(idHotel);
         }
 
-        // POST: api/Hebergement
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Hebergement))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Hebergement>> PostAdresse(Hebergement hebergement, Hotel hotel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await dataRepository.Add(hebergement, hotel);
+        // // POST: api/Hebergement
+        // // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // [HttpPost]
+        // [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Hebergement))]
+        // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        // public async Task<ActionResult<Hebergement>> PostAdresse(Hebergement hebergement, Hotel hotel)
+        // {
+        //     if (!ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
+        //     await dataRepository.Add(hebergement, hotel);
 
-            return CreatedAtAction("GetHebergement", new { id = hebergement.IdHebergement }, hebergement);
-        }
+        //     return CreatedAtAction("GetHebergement", new { id = hebergement.IdHebergement }, hebergement);
+        // }
 
         // GET: api/Activites/GetVisiteById/5
         [HttpGet("GetHebergementById/{id}")]
