@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Vinodrill_Back.Models;
+using Vinodrill_Back.Models.Auth;
 
 namespace Vinodrill_Back
 {
@@ -61,7 +61,7 @@ namespace Vinodrill_Back
             builder.Services.AddAuthorization(config =>
             {
                 config.AddPolicy(Policies.Admin, Policies.AdminPolicy());
-                config.AddPolicy(Policies.User, Policies.UserPolicy());
+                config.AddPolicy(Policies.Client, Policies.UserPolicy());
             });
 
             builder.Services.AddControllers();
