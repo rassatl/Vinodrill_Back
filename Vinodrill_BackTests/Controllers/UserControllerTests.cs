@@ -43,16 +43,6 @@ namespace Vinodrill_Back.Controllers.Tests
             Assert.AreNotEqual(_context.Users.Where(c => c.IdClient == 2).FirstOrDefault(), user.Value, "Client différent");
         }
 
-        [TestMethod()]
-        public async Task PutUserTest()
-        {
-            User user = await _context.Users.FindAsync(1);
-            user.NomClient += "a";
-            await _controller.PutUser(user.IdClient, user);
-            User modifie = await _context.Users.FindAsync(1);
-            Assert.AreEqual(user, modifie, "pas les memes");
-        }
-
         [TestMethod]
         public void PutUserTest_AvecMoq()
         {
@@ -62,7 +52,7 @@ namespace Vinodrill_Back.Controllers.Tests
                 IdCbClient = 1,
                 NomClient = "MEGANOM",
                 PrenomClient = "Megaprenom",
-                DateNaissanceClient = new DateTime(12,10,2000),
+                DateNaissanceClient = new DateTime(2000,10,12),
                 SexeClient = "M",
                 EmailClient = "mega@email.mega",
                 MotDePasse = "MegaMDP",
