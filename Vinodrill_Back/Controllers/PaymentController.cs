@@ -34,7 +34,7 @@ namespace Vinodrill_Back.Controllers
         [HttpPost]
         //[Authorize]
         [Route("checkout")]
-        public async Task<IActionResult> Checkout( [FromQuery] List<Article> articles, bool saveCredentials, int idAdresse, bool estCheque, string emailClient, List<ReservationModel> reservations, string noteCommande = "", string? coupon = null)
+        public async Task<IActionResult> Checkout( [FromBody] RequestBody articlesAndReservations, bool saveCredentials, int idAdresse, bool estCheque, string emailClient, string noteCommande = "", string? coupon = null)
         {
             HttpContextAccessor httpContextAccessor = new HttpContextAccessor();
 
@@ -87,7 +87,7 @@ namespace Vinodrill_Back.Controllers
 
             //create lineItems List
             List<SessionLineItemOptions> lineItems = new List<SessionLineItemOptions>();
-            foreach(Article article in articles) {
+            foreach(Article article in articlesAndReservations.Articles) {
                 lineItems.Add(new SessionLineItemOptions {
                     PriceData = new SessionLineItemPriceDataOptions {
                         UnitAmount = article.Price * 100,
@@ -155,7 +155,7 @@ namespace Vinodrill_Back.Controllers
                 EstCadeau = false,
                 IdClient = 1,
                 SaveCredentials = saveCredentials,
-                Reservations = reservations,
+                Reservations = articlesAndReservations.Reservations,
                 NoteCommande = noteCommande,
                 StripeCustomerId = customer.Id,
                 Coupon = coupon,
@@ -167,7 +167,7 @@ namespace Vinodrill_Back.Controllers
 
             httpContextAccessor.HttpContext.Session.SetString("additional_data", additionalDataJson);
 
-            return Ok(new { id = session.Id });
+            return Ok(new { url = session.Url });
         }
 
         [HttpPost]
@@ -262,5 +262,11 @@ namespace Vinodrill_Back.Controllers
         public int Price { get; set; }
         public int Quantity { get; set; }
         public string Image { get; set; }
+    }
+
+    public class RequestBody
+    {
+        public List<ReservationModel> Reservations { get; set; }
+        public List<Article> Articles { get; set; }
     }
 }
