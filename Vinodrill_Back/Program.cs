@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Vinodrill_Back.Models.Auth;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Features;
+using Stripe;
 
 namespace Vinodrill_Back
 {
@@ -28,8 +29,12 @@ namespace Vinodrill_Back
             builder.Services.Configure<StripeOptions>(builder.Configuration.GetSection("Stripe"));
 
             // For Entity Framework
-            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContextRemote")));
+            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
             //builder.Services.AddDbContext<AuthDbContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
+
+            // Add http context
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddDistributedMemoryCache();
 
             //// For Identity
             //builder.Services.AddIdentity<User, IdentityRole>()
@@ -111,6 +116,8 @@ namespace Vinodrill_Back
             });
 
             app.UseHttpsRedirection();
+
+            //app.UseSession();
 
             // Authentication & Authorization
             app.UseAuthentication();
