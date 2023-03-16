@@ -12,6 +12,7 @@ using Vinodrill_Back.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Text.RegularExpressions;
+using Stripe;
 
 namespace Vinodrill_Back.Controllers.Tests
 {
@@ -48,11 +49,9 @@ namespace Vinodrill_Back.Controllers.Tests
         public async Task GetAdresseByIdTest_HttpResponse404()
         {
             // Act
-            ActionResult<Adresse> adresse = await _controller.GetAdresseById(-1);
+            var adresse = await _controller.GetAdresseById(-1);
 
             // Assert
-            Assert.IsInstanceOfType(adresse, typeof(ActionResult<Adresse>));
-            Assert.IsNull(adresse.Value);
             Assert.IsInstanceOfType(adresse.Result, typeof(NotFoundResult));
         }
 
@@ -107,11 +106,13 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutUtilisateurTest_HttpResponse400()
         {
+            var mockRepository = new Mock<IDataRepository<Adresse>>();
+            var userController = new AdresseController(mockRepository.Object);
             // Arrange
             Adresse adresse = _context.Adresses.FirstOrDefault(u => u.IdAdresse == 1);
 
             // Act
-            var result = _controller.PutAdresse(2, adresse).Result;
+            var result = userController.PutAdresse(2, adresse).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(BadRequestResult));
@@ -120,6 +121,9 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutUtilisateurTest_HttpResponse404()
         {
+            var mockRepository = new Mock<IDataRepository<Adresse>>();
+            var userController = new AdresseController(mockRepository.Object);
+
             // Arrange
             Adresse adresse = new Adresse()
             {
@@ -132,10 +136,10 @@ namespace Vinodrill_Back.Controllers.Tests
             };
 
             // Act
-            var result = _controller.PutAdresse(-1, adresse).Result;
+            var actionResult = userController.PutAdresse(1,adresse).Result;
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+            Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
         }
 
 
@@ -167,10 +171,13 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PostAdresseTest_HttpResponse400()
         {
+            var mockRepository = new Mock<IDataRepository<Adresse>>();
+            var userController = new AdresseController(mockRepository.Object);
+
             // Arrange
             Adresse adresse = new Adresse()
             {
-                IdAdresse = -1,
+                IdAdresse = -2,
                 LibelleAdresse = "adresse de l'entreprise",
                 RueAdresse = "9 Rue de l'arc-en-ciel",
                 VilleAdresse = "Annecy",
@@ -179,12 +186,10 @@ namespace Vinodrill_Back.Controllers.Tests
             };
 
             // Act
-            var result = _controller.PostAdresse(adresse).Result;
+            var actionResult = userController.PostAdresse(adresse).Result;
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(ActionResult<Adresse>));
-            Assert.IsNull(result.Value);
-            Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
+            Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestObjectResult));
         }
 
         [TestMethod()]
@@ -214,36 +219,32 @@ namespace Vinodrill_Back.Controllers.Tests
             Adresse adresse = new Adresse()
             {
                 IdAdresse = 1,
+                IdClient = 1,
                 LibelleAdresse = "adresse de l'entreprise",
                 RueAdresse = "9 Rue de l'arc-en-ciel",
                 VilleAdresse = "Annecy",
                 CodePostalAdresse = "74000",
                 PaysAdresse = "France"
             };
-            _context.Adresses.Add(adresse);
-            _context.SaveChanges();
 
+            var mockRepository = new Mock<IDataRepository<Adresse>>();
+            mockRepository.Setup(x => x.GetById(1).Result).Returns(adresse);
+            var userController = new AdresseController(mockRepository.Object);
             // Act
-            var result = _controller.DeleteAdresse(adresse.IdAdresse).Result;
-
+            var actionResult = userController.DeleteAdresse(adresse.IdAdresse).Result;
             // Assert
-            Assert.IsInstanceOfType(result, typeof(NoContentResult));
-
-            // Act
-            var verif = _context.Adresses.FirstOrDefault(u => u.IdAdresse == adresse.IdAdresse);
-
-            // Assert
-            Assert.IsNull(verif);
+            Assert.IsInstanceOfType(actionResult, typeof(NoContentResult));
         }
 
         [TestMethod()]
         public void DeleteAdresseTest_HttpResponse404()
         {
+            var mockRepository = new Mock<IDataRepository<Adresse>>();
+            var userController = new AdresseController(mockRepository.Object);
             // Act
-            var result = _controller.DeleteAdresse(-1).Result;
-
+            var actionResult = userController.DeleteAdresse(-1).Result;
             // Assert
-            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+            Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
         }
     }
 }

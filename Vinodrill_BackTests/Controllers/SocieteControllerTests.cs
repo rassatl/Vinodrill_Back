@@ -32,7 +32,7 @@ namespace Vinodrill_Back.Controllers.Tests
         public async Task GetSocietesTestAsync()
         {
             ActionResult<IEnumerable<Societe>> users = await _controller.GetSocietes();
-            CollectionAssert.AreEqual(_context.Themes.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
+            CollectionAssert.AreEqual(_context.Societes.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
         }
     }
 }
