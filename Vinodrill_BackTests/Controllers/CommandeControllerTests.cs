@@ -18,7 +18,7 @@ namespace Vinodrill_Back.Controllers.Tests
     {
         private readonly VinodrillDBContext _context;
         private readonly CommandeController _controller;
-        private IDataRepository<Commande> _dataRepository;
+        private IcommandeRepository _dataRepository;
         public CommandeControllerTests()
         {
             var builder = new DbContextOptionsBuilder<VinodrillDBContext>().UseNpgsql("Server=postgresql-vinodrill.alwaysdata.net;port=5432;Database=vinodrill_main_db;uid=vinodrill;password=uaK99vfWnq6GLrg;SearchPath=vinodrill;"); // Chaine de connexion à mettre dans les ( )
@@ -27,26 +27,25 @@ namespace Vinodrill_Back.Controllers.Tests
             _controller = new CommandeController(_dataRepository);
 
         }
-
         [TestMethod()]
-        public async Task GetCommandesTestAsync()
+        public async Task GetCommandesTest()
         {
-            ActionResult<IEnumerable<Commande>> users = await _controller.GetCommandes();
-            CollectionAssert.AreEqual(_context.Commandes.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
+            ActionResult<IEnumerable<Commande>> com = await _controller.GetCommandes();
+            CollectionAssert.AreEqual(_context.Commandes.ToList(), com.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
         }
 
         [TestMethod()]
         public async Task GetCommandeByIdTest()
         {
-            ActionResult<Commande> user = await _controller.GetCommandeById(1);
-            Assert.AreEqual(_context.Commandes.Where(c => c.IdPaiement == 1).FirstOrDefault(), user.Value, "Commande différent");
+            ActionResult<Commande> avi = await _controller.GetCommandeById(1);
+            Assert.AreEqual(_context.Commandes.Where(c => c.RefCommande == 1).FirstOrDefault(), avi.Value, "Commandes différent");
         }
 
         [TestMethod()]
         public async Task GetCommandeByIdTestFalse()
         {
-            ActionResult<Commande> user = await _controller.GetCommandeById(1);
-            Assert.AreNotEqual(_context.Commandes.Where(c => c.IdPaiement == 2).FirstOrDefault(), user.Value, "Commande différent");
+            ActionResult<Commande> avi = await _controller.GetCommandeById(1);
+            Assert.AreNotEqual(_context.Commandes.Where(c => c.RefCommande == 2).FirstOrDefault(), avi.Value, "Commandes différent");
         }
     }
 }

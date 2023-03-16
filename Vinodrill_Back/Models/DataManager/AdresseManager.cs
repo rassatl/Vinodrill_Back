@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Vinodrill_Back.Models.DataManager
 {
-    public class AdresseManager : IDataRepository<Adresse>
+    public class AdresseManager : IAdresseRepository
     {
         readonly VinodrillDBContext? dbContext;
 
@@ -39,14 +39,14 @@ namespace Vinodrill_Back.Models.DataManager
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<ActionResult<IEnumerable<Adresse>>> GetAll()
-        {
-            return await dbContext.Adresses.ToListAsync();
-        }
-
         public async Task<ActionResult<Adresse>> GetById(int id)
         {
             return await dbContext.Adresses.FirstOrDefaultAsync(a => a.IdAdresse == id);
+        }
+
+        public Task<ActionResult<IEnumerable<Adresse>>> GetAll()
+        {
+            return null;
         }
     }
 }

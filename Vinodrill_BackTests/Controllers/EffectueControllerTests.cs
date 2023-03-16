@@ -58,37 +58,30 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public async Task PutEffectueTest_AvecMoq()
         {
-            //à adapter à la class de test
-
-            /*
-            Activite activite = new Activite()
+            Effectue effectue = new Effectue()
             {
-                LibelleActivite = "Activite de follie",
-                DescriptionActivite = "Activite cool où on s'amuse",
-                RueRdv = "9 Rue de l'arc-en-ciel",
-                CpRdv = "74000",
-                VilleRdv = "Annecy",
-                HoraireActivite = new TimeOnly()
+                IdEtape = 1,
+                IdActivite = 1
             };
 
+
             // Act
-            var mockRepository = new Mock<IDataRepository<Activite>>();
-            mockRepository.Setup(x => x.GetById(1).Result).Returns(activite);
-            var userController = new ActiviteController(mockRepository.Object);
+            var mockRepository = new Mock<IDataRepository<Effectue>>();
+            mockRepository.Setup(x => x.GetById(1).Result).Returns(effectue);
+            var userController = new EffectueController(mockRepository.Object);
 
 
-            activite.LibelleActivite = "a";
-            userController.PutActivite(activite.IdActivite, activite);
+            effectue.IdActivite = 3;
+            userController.PutEffectue(effectue.IdEtape, effectue);
 
-            var actionResult = userController.GetActiviteById(1).Result;
+            var actionResult = userController.GetEffectueById(1).Result;
             // Assert
-            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Activite>), "Pas un ActionResult<Activite>");
+            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Effectue>), "Pas un ActionResult<Effectue>");
             var result = actionResult.Value;
             Console.WriteLine(result.GetType());
-            Assert.IsInstanceOfType(result, typeof(Activite), "Pas une Activite");
-            activite.IdActivite = ((Activite)result).IdActivite;
-            Assert.AreEqual(activite, (Activite)result, "Activitees pas identiques");
-            */
+            Assert.IsInstanceOfType(result, typeof(Effectue), "Pas un Effectue");
+            effectue.IdEtape = ((Effectue)result).IdEtape;
+            Assert.AreEqual(effectue, (Effectue)result, "Effectues pas identiques");
         }
 
         [TestMethod()]

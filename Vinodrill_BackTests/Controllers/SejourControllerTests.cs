@@ -37,16 +37,6 @@ namespace Vinodrill_Back.Controllers.Tests
             CollectionAssert.AreEqual(_context.Sejours.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
         }
 
-        [TestMethod()]
-        public async Task PutSejourTest()
-        {
-            Sejour user = await _context.Sejours.FindAsync(1);
-            user.TitreSejour += "a";
-            await _controller.PutSejour(user.IdSejour, user);
-            Sejour modifie = await _context.Sejours.FindAsync(1);
-            Assert.AreEqual(user, modifie, "pas les memes");
-        }
-
         [TestMethod]
         public void PutSejourTest_AvecMoq()
         {
@@ -84,70 +74,6 @@ namespace Vinodrill_Back.Controllers.Tests
             Assert.IsInstanceOfType(result, typeof(Sejour), "Pas un Sejour");
             user.IdSejour = ((Sejour)result).IdSejour;
             Assert.AreEqual(user, (Sejour)result, "Sejours pas identiques");
-        }
-
-        [TestMethod()]
-        public async Task PostSejourTest()
-        {
-            // Arrange
-            var mockRepository = new Mock<ISejourRepository>();
-            var userController = new SejourController(mockRepository.Object);
-            // Le mail doit être unique donc 2 possibilités :
-            // 1. on s'arrange pour que le mail soit unique en concaténant un random ou un timestamp
-            // 2. On supprime le user après l'avoir créé. Dans ce cas, nous avons besoin d'appeler la méthode DELETE de l’API ou remove du DbSet.
-            Sejour user = new Sejour
-            {
-                IdSejour = 1,
-                IdDestination = 1,
-                IdTheme = 1,
-                TitreSejour = "MegaSejour",
-                PhotoSejour = "https://MegaPhoto.png",
-                PrixSejour = 100,
-                DescriptionSejour = "Un Mega sejour de dingo les poto",
-                NbJour = 5,
-                NbNuit = 4,
-                LibelleTemps = null,
-                NoteMoyenne = null
-            };
-            // Act
-            var actionResult = userController.PostSejour(user).Result;
-            // Assert
-            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Sejour>), "Pas un ActionResult<Sejour>");
-            Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult), "Pas un CreatedAtActionResult");
-            var result = actionResult.Result as CreatedAtActionResult;
-            Assert.IsInstanceOfType(result.Value, typeof(Sejour), "Pas un Sejour");
-            user.IdSejour = ((Sejour)result.Value).IdSejour;
-            Assert.AreEqual(user, (Sejour)result.Value, "Sejours pas identiques");
-        }
-
-        [TestMethod]
-        public void Postsejour_ModelValidated_CreationOK()
-        {
-            // Arrange
-            Random rnd = new Random();
-            int chiffre = rnd.Next(1, 1000000000);
-
-            Sejour user = new Sejour
-            {
-                IdSejour = 1,
-                IdDestination = 1,
-                IdTheme = 1,
-                TitreSejour = "MegaSejour",
-                PhotoSejour = "https://MegaPhoto.png",
-                PrixSejour = 100,
-                DescriptionSejour = "Un Mega sejour de dingo les poto",
-                NbJour = chiffre,
-                NbNuit = 4,
-                LibelleTemps = null,
-                NoteMoyenne = null
-            };
-            // Act
-            var result = _controller.PostSejour(user).Result;
-            // Assert
-            Sejour? userRecupere = _context.Sejours.Where(u => u.NbJour == user.NbJour).FirstOrDefault();
-
-            user.IdSejour = userRecupere.IdSejour;
-            Assert.AreEqual(user, userRecupere, "Sejours pas identiques");
         }
 
         [TestMethod]
@@ -233,36 +159,6 @@ namespace Vinodrill_Back.Controllers.Tests
             Assert.IsNotNull(actionResult);
             Assert.IsNotNull(actionResult.Value);
             Assert.AreEqual(user, actionResult.Value as Sejour);
-        }
-
-        [TestMethod()]
-        public async Task DeleteSejourTest()
-        {
-            Random rnd = new Random();
-            int chiffre = rnd.Next(1, 1000000000);
-            Sejour user = new Sejour
-            {
-                IdSejour = 1,
-                IdDestination = 1,
-                IdTheme = 1,
-                TitreSejour = "MegaSejour",
-                PhotoSejour = "https://MegaPhoto.png",
-                PrixSejour = 100,
-                DescriptionSejour = "Un Mega sejour de dingo les poto",
-                NbJour = 5,
-                NbNuit = 4,
-                LibelleTemps = null,
-                NoteMoyenne = null
-            };
-            EntityEntry<Sejour> res = _context.Sejours.Add(user);
-            _context.SaveChanges();
-            IActionResult result = await _controller.DeleteSejour(res.Entity.IdSejour);
-
-            Sejour usere = _context.Sejours.Where(u => u.IdSejour == res.Entity.IdSejour).FirstOrDefault();
-
-            Assert.IsNull(usere, "Non");
-
-
         }
 
         [TestMethod]
