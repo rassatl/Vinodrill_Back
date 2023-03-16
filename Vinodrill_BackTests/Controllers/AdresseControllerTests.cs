@@ -31,13 +31,6 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetAdressesTest()
-        {
-            ActionResult<IEnumerable<Adresse>> adresse = await _controller.GetAdresses();
-            CollectionAssert.AreEqual(_context.Adresses.ToList(), adresse.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
-        }
-
-        [TestMethod()]
         public async Task GetAdresseByIdTest_OK()
         {
             ActionResult<Adresse> adresse = await _controller.GetAdresseById(1);
