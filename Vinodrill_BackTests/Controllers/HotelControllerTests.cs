@@ -46,7 +46,8 @@ namespace Vinodrill_Back.Controllers.Tests
         public async Task GetHotelByIdTestFalse()
         {
             ActionResult<Hotel> user = await _controller.GetHotelById(1);
-            Assert.AreNotEqual(_context.Hotels.Where(c => c.IdPartenaire == 2).FirstOrDefault(), user.Value, "Hotel différent");
+            //Assert.AreNotEqual(_context.Hotels.Where(c => c.IdPartenaire == 2).FirstOrDefault(), user.Value, "Hotel différent");
+            Assert.IsFalse(_context.Hotels.Where(c => c.IdPartenaire == 2).FirstOrDefault() != user.Value, "Hotel différent");
         }
     }
 }
