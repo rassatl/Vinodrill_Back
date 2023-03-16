@@ -26,7 +26,7 @@ namespace Vinodrill_Back.Models.DataManager
 
         public async Task<ActionResult<IEnumerable<Destination>>> GetAll()
             {
-                return await dbContext.Destination.ToListAsync();
+                return await dbContext.Destinations.ToListAsync();
             }
 
         public Task<ActionResult<Destination>> GetById(int id)

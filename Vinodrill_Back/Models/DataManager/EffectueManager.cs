@@ -16,7 +16,7 @@ namespace Vinodrill_Back.Models.DataManager
 
             public async Task Add(Effectue entity)
             {
-                await dbContext.Effectue.AddAsync(entity);
+                await dbContext.Effectues.AddAsync(entity);
                 await dbContext.SaveChangesAsync();
             }
 
@@ -31,18 +31,18 @@ namespace Vinodrill_Back.Models.DataManager
 
             public async Task Delete(Effectue entity)
             {
-                dbContext.Effectue.Remove(entity);
+                dbContext.Effectues.Remove(entity);
                 await dbContext.SaveChangesAsync();
             }
 
             public async Task<ActionResult<IEnumerable<Effectue>>> GetAll()
             {
-                return await dbContext.Effectue.ToListAsync();
+                return await dbContext.Effectues.ToListAsync();
             }
 
             public async Task<ActionResult<Effectue>> GetById(int id)
             {
-                return await dbContext.Effectue.FirstOrDefaultAsync(a => a.IdEtape == id);
+                return await dbContext.Effectues.FirstOrDefaultAsync(a => a.IdEtape == id);
             }
         }
     }

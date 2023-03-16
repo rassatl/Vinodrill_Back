@@ -73,8 +73,8 @@ namespace Vinodrill_Back
             builder.Services.AddScoped<IDataRepository<Adresse>, AdresseManager>();
             builder.Services.AddScoped<IDataRepository<Partenaire>,PartenaireManager>();
             builder.Services.AddScoped<IDataRepository<Destination>, DestinationManager>();
-            builder.Services.AddScoped<IDataRepository<Restaurant>, RestaurentManager>();
-            builder.Services.AddScoped<IDataRepository<Hebergement>, HebergementManager>();
+            builder.Services.AddScoped<IDataRepository<Restaurant>, RestaurantManager>();
+            builder.Services.AddScoped<IHebergementRepository, HebergementManager>();
             builder.Services.AddScoped<IDataRepository<Cave>, CaveManager>();
             builder.Services.AddScoped<IDataRepository<Effectue>, EffectueManager>();
             builder.Services.AddScoped<IBonCommandeRepository, BonCommandeManager>();

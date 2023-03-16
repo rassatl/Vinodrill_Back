@@ -73,9 +73,9 @@ namespace Vinodrill_Back.Models.DataManager
 
         }
 
-        public Task<ActionResult<Hebergement>> GetById(int id)
+        public async Task<ActionResult<Hebergement>> GetById(int id)
         {
-            return null;
+            return await dbContext.Hebergements.FirstOrDefaultAsync(a => a.IdHebergement == id);
         }
 
         public Task Update(Hebergement entityToUpdate, Hebergement entity)
