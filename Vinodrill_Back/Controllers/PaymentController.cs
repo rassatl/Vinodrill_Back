@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Vinodrill_Back.Models.Repository;
 using Stripe.Checkout;
+using Microsoft.Extensions.Options;
 
 namespace Vinodrill_Back.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class PaymentController : ControllerBase
     {
         private readonly IDataRepository<Adresse> adresseRepository;
@@ -17,24 +20,25 @@ namespace Vinodrill_Back.Controllers
         private readonly IDataRepository<Reservation> reservationRepository;
         private readonly IDataRepository<Paiement> paiementRepository;
         private readonly IBonreductionRepository bonReductionRepository;
-
-        public PaymentController(IDataRepository<Adresse> adresseRepo, IBonreductionRepository bonReductionRepo, IcommandeRepository commandeRepo, IDataRepository<Reservation> reservationRepo, IDataRepository<Paiement> paiementRepo)
+        private readonly StripeOptions _stripeOptions;
+        public PaymentController(IOptions<StripeOptions> stripeOptions, IDataRepository<Adresse> adresseRepo, IBonreductionRepository bonReductionRepo, IcommandeRepository commandeRepo, IDataRepository<Reservation> reservationRepo, IDataRepository<Paiement> paiementRepo)
         {
             adresseRepository = adresseRepo;
             commandeRepository = commandeRepo;
             reservationRepository = reservationRepo;
             paiementRepository = paiementRepo;
             bonReductionRepository = bonReductionRepo;
+            _stripeOptions = stripeOptions.Value;
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         [Route("checkout")]
-        public async Task<IActionResult> Checkout(List<Article> articles, bool saveCredentials, int idAdresse, bool estCheque, string emailClient, List<ReservationModel> reservations, string noteCommande = "", string? coupon = null)
+        public async Task<IActionResult> Checkout( [FromQuery] List<Article> articles, bool saveCredentials, int idAdresse, bool estCheque, string emailClient, List<ReservationModel> reservations, string noteCommande = "", string? coupon = null)
         {
             HttpContextAccessor httpContextAccessor = new HttpContextAccessor();
 
-            StripeConfiguration.ApiKey = "sk_test_4eC39HqLyjWDarjtT1zdp7dc";
+            StripeConfiguration.ApiKey = _stripeOptions.Secret;
 
             // check if a user exists with the email
             Customer customer = new Customer();
@@ -107,8 +111,8 @@ namespace Vinodrill_Back.Controllers
                 // create line items for each article
                 LineItems = lineItems,
                 Mode = "payment",
-                SuccessUrl = "https://example.com/success",
-                CancelUrl = "https://example.com/cancel",
+                SuccessUrl = _stripeOptions.SuccessUrl,
+                CancelUrl = _stripeOptions.CancelUrl,
                 Customer = customer.Id,
             };
 
@@ -223,7 +227,7 @@ namespace Vinodrill_Back.Controllers
                 await bonReductionRepository.Update(coupon.Value, bonReduction);
             }
 
-            return Redirect($"{Environment.GetEnvironmentVariable("FRONTEND_URL")}/paiement/merci?session_id={session.Id}&refcommande={idCommande}");
+            return Redirect($"{_stripeOptions.FrontUrl}/paiement/merci?session_id={session.Id}&refcommande={idCommande}");
         }
     }
 
@@ -254,7 +258,7 @@ namespace Vinodrill_Back.Controllers
     public class Article 
     {
         public string Name { get; set; }
-        public int Description { get; set; }
+        public string Description { get; set; }
         public int Price { get; set; }
         public int Quantity { get; set; }
         public string Image { get; set; }
