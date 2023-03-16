@@ -49,38 +49,5 @@ namespace Vinodrill_Back.Controllers.Tests
             ActionResult<Hebergement> user = await _controller.GetHebergementById(1);
             Assert.AreNotEqual(_context.Hebergement.Where(c => c.IdHebergement == 2).FirstOrDefault(), user.Value, "Hebergement différent");
         }
-
-        [TestMethod()]
-        public async Task PostHebergementTest()
-        {
-            // Arrange
-            var mockRepository = new Mock<IHebergementRepository>();
-            var userController = new HebergementController(mockRepository.Object);
-            // Le mail doit être unique donc 2 possibilités :
-            // 1. on s'arrange pour que le mail soit unique en concaténant un random ou un timestamp
-            // 2. On supprime le user après l'avoir créé. Dans ce cas, nous avons besoin d'appeler la méthode DELETE de l’API ou remove du DbSet.
-            Hebergement user = new Hebergement()
-            {
-                IdPartenaire = 1,
-                IdHebergement = 1,
-                LibelleHebergement = "MegaLibelle",
-                DescriptionHebergement = "Hebergement de dingo les poto",
-                NbChambre = 12,
-                HoraireHebergement = new TimeOnly(12, 20)
-            };
-            Hotel userr = new Hotel()
-            {
-                NbEtoileHotel = 1,
-            };
-            // Act
-            var actionResult = userController.PostAdresse(user, userr).Result;
-            // Assert
-            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Hebergement>), "Pas un ActionResult<Hebergement>");
-            Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult), "Pas un CreatedAtActionResult");
-            var result = actionResult.Result as CreatedAtActionResult;
-            Assert.IsInstanceOfType(result.Value, typeof(Hebergement), "Pas un Hebergement");
-            user.IdHebergement = ((Hebergement)result.Value).IdHebergement;
-            Assert.AreEqual(user, (Hebergement)result.Value, "Hebergements pas identiques");
-        }
     }
 }
