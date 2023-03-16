@@ -97,10 +97,8 @@ namespace Vinodrill_Back.Models.DataManager
                     var idsSejourFromQuery = catParticipant.Select(c => c.IdSejour).ToArray();
 
                     // get all sejour with the id sejour from the previous query
-                    return await dbContext.Sejours
-                        .Where(s => idsSejourFromQuery.Contains(s.IdSejour))
-                        .ToListAsync();
-
+                    sejours
+                        .Where(s => idsSejourFromQuery.Contains(s.IdSejour));
                 } catch (Exception e) {
                     return null;
                 }
