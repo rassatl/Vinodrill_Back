@@ -24,7 +24,7 @@ namespace Vinodrill_Back
                 });
 
             // For Entity Framework
-            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
+            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContextRemote")));
             //builder.Services.AddDbContext<AuthDbContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
 
             //// For Identity
@@ -73,8 +73,8 @@ namespace Vinodrill_Back
             builder.Services.AddScoped<IDataRepository<Adresse>, AdresseManager>();
             builder.Services.AddScoped<IDataRepository<Partenaire>,PartenaireManager>();
             builder.Services.AddScoped<IDataRepository<Destination>, DestinationManager>();
-            builder.Services.AddScoped<IDataRepository<Restaurant>, RestaurentManager>();
-            builder.Services.AddScoped<IDataRepository<Hebergement>, HebergementManager>();
+            builder.Services.AddScoped<IDataRepository<Restaurant>, RestaurantManager>();
+            builder.Services.AddScoped<IHebergementRepository, HebergementManager>();
             builder.Services.AddScoped<IDataRepository<Cave>, CaveManager>();
             builder.Services.AddScoped<IDataRepository<Effectue>, EffectueManager>();
             builder.Services.AddScoped<IBonCommandeRepository, BonCommandeManager>();

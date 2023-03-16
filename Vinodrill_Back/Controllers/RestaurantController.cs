@@ -24,14 +24,14 @@ namespace Vinodrill_Back.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurant()
         {
-            return await _context.Restaurant.ToListAsync();
+            return await _context.Restaurants.ToListAsync();
         }
 
         // GET: api/Restaurants/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Restaurant>> GetRestaurant(int id)
         {
-            var restaurant = await _context.Restaurant.FindAsync(id);
+            var restaurant = await _context.Restaurants.FindAsync(id);
 
             if (restaurant == null)
             {
@@ -77,7 +77,7 @@ namespace Vinodrill_Back.Controllers
         [HttpPost]
         public async Task<ActionResult<Restaurant>> PostRestaurant(Restaurant restaurant)
         {
-            _context.Restaurant.Add(restaurant);
+            _context.Restaurants.Add(restaurant);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRestaurant", new { id = restaurant.IdPartenaire }, restaurant);
@@ -87,13 +87,13 @@ namespace Vinodrill_Back.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRestaurant(int id)
         {
-            var restaurant = await _context.Restaurant.FindAsync(id);
+            var restaurant = await _context.Restaurants.FindAsync(id);
             if (restaurant == null)
             {
                 return NotFound();
             }
 
-            _context.Restaurant.Remove(restaurant);
+            _context.Restaurants.Remove(restaurant);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -101,7 +101,7 @@ namespace Vinodrill_Back.Controllers
 
         private bool RestaurantExists(int id)
         {
-            return _context.Restaurant.Any(e => e.IdPartenaire == id);
+            return _context.Restaurants.Any(e => e.IdPartenaire == id);
         }
     }
 }
