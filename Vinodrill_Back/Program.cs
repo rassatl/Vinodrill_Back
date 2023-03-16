@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Vinodrill_Back.Models.Auth;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Features;
 
 namespace Vinodrill_Back
 {
@@ -23,8 +24,11 @@ namespace Vinodrill_Back
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
 
+            // For stripe
+            builder.Services.Configure<StripeOptions>(builder.Configuration.GetSection("Stripe"));
+
             // For Entity Framework
-            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
+            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContextRemote")));
             //builder.Services.AddDbContext<AuthDbContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
 
             //// For Identity
@@ -81,6 +85,10 @@ namespace Vinodrill_Back
             builder.Services.AddScoped<IAvisRepository, AviManager>();
             builder.Services.AddScoped<ISejourRepository, SejourManager>();
             builder.Services.AddScoped<IUserRepository, UserManager>();
+            builder.Services.AddScoped<IBonreductionRepository, BonReductionManager>();
+            builder.Services.AddScoped<IcommandeRepository, CommandeManager>();
+            builder.Services.AddScoped<IDataRepository<Reservation>, ReservationManager>();
+            builder.Services.AddScoped<IDataRepository<Paiement>, PaiementManager>();
 
             var app = builder.Build();
 
