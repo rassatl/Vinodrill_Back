@@ -235,6 +235,15 @@ namespace Vinodrill_Back.Controllers
             return Redirect($"{_stripeOptions.FrontUrl}/paiement/merci?session_id={session.Id}&refcommande={idCommande}");
         }
 
+        [HttpGet]
+        [Route("checkout/cancel")]
+        public Task<IActionResult> CheckoutCancel(string token)
+        {
+            // revoke the JwtSecurityToken to prevent replay attacks
+
+            return Task.FromResult<IActionResult>(Redirect(_stripeOptions.CancelUrl));
+        }
+
         private string GenerateJwtToken(AdditionnalData additionnalData)
         {
             var securityKey = new
