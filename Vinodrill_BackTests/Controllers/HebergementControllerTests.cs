@@ -33,21 +33,21 @@ namespace Vinodrill_Back.Controllers.Tests
         public async Task GetHebergementsTestAsync()
         {
             ActionResult<IEnumerable<Hebergement>> users = await _controller.GetHebergement();
-            CollectionAssert.AreEqual(_context.Hebergement.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
+            CollectionAssert.AreEqual(_context.Hebergements.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
         }
 
         [TestMethod()]
         public async Task GetHebergementByIdTest()
         {
             ActionResult<Hebergement> user = await _controller.GetHebergementById(1);
-            Assert.AreEqual(_context.Hebergement.Where(c => c.IdHebergement == 1).FirstOrDefault(), user.Value, "Hebergement différent");
+            Assert.AreEqual(_context.Hebergements.Where(c => c.IdHebergement == 1).FirstOrDefault(), user.Value, "Hebergement différent");
         }
 
         [TestMethod()]
         public async Task GetHebergementByIdTestFalse()
         {
             ActionResult<Hebergement> user = await _controller.GetHebergementById(1);
-            Assert.AreNotEqual(_context.Hebergement.Where(c => c.IdHebergement == 2).FirstOrDefault(), user.Value, "Hebergement différent");
+            Assert.AreNotEqual(_context.Hebergements.Where(c => c.IdHebergement == 2).FirstOrDefault(), user.Value, "Hebergement différent");
         }
     }
 }
