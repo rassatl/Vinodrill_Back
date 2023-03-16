@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Vinodrill_Back.Models.EntityFramework;
 using Stripe;
 using Vinodrill_Back.Models.Auth;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Vinodrill_Back.Models.Repository;
 using Stripe.Checkout;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Vinodrill_Back.Controllers
 {
@@ -21,7 +24,9 @@ namespace Vinodrill_Back.Controllers
         private readonly IDataRepository<Paiement> paiementRepository;
         private readonly IBonreductionRepository bonReductionRepository;
         private readonly StripeOptions _stripeOptions;
-        public PaymentController(IOptions<StripeOptions> stripeOptions, IDataRepository<Adresse> adresseRepo, IBonreductionRepository bonReductionRepo, IcommandeRepository commandeRepo, IDataRepository<Reservation> reservationRepo, IDataRepository<Paiement> paiementRepo)
+        private readonly IConfiguration _configuration;
+
+        public PaymentController(IConfiguration configuration, IOptions<StripeOptions> stripeOptions, IDataRepository<Adresse> adresseRepo, IBonreductionRepository bonReductionRepo, IcommandeRepository commandeRepo, IDataRepository<Reservation> reservationRepo, IDataRepository<Paiement> paiementRepo)
         {
             adresseRepository = adresseRepo;
             commandeRepository = commandeRepo;
@@ -29,6 +34,7 @@ namespace Vinodrill_Back.Controllers
             paiementRepository = paiementRepo;
             bonReductionRepository = bonReductionRepo;
             _stripeOptions = stripeOptions.Value;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -114,6 +120,9 @@ namespace Vinodrill_Back.Controllers
                 SuccessUrl = _stripeOptions.SuccessUrl,
                 CancelUrl = _stripeOptions.CancelUrl,
                 Customer = customer.Id,
+                InvoiceCreation = new SessionInvoiceCreationOptions {
+                    Enabled = true,
+                },
             };
 
             if(coupon is not null) {
@@ -145,10 +154,6 @@ namespace Vinodrill_Back.Controllers
                     SetupFutureUsage = "on_session",
                 };
             }
-
-            var service = new SessionService();
-
-            Session session = service.Create(stripe_option);
             
             AdditionnalData additionalData = new AdditionnalData {
                 ChequeCadeau = "true",
@@ -159,31 +164,31 @@ namespace Vinodrill_Back.Controllers
                 NoteCommande = noteCommande,
                 StripeCustomerId = customer.Id,
                 Coupon = coupon,
-                SessionId = session.Id,
                 EstCheque = estCheque,
             };
 
-            string additionalDataJson = JsonConvert.SerializeObject(additionalData);
+            string jwtToken = GenerateJwtToken(additionalData);
 
-            httpContextAccessor.HttpContext.Session.SetString("additional_data", additionalDataJson);
+            stripe_option.SuccessUrl += $"?jwt={jwtToken}";
 
-            return Ok(new { url = session.Url });
+            stripe_option.SuccessUrl += "&session_id={CHECKOUT_SESSION_ID}";
+
+            var service = new SessionService();
+
+            Session session = service.Create(stripe_option);
+
+            return Ok(new { checkoutURL = session.Url });
         }
 
-        [HttpPost]
-        [Authorize]
+        [HttpGet]
         [Route("checkout/success")]
-        public async Task<IActionResult> CheckoutSuccess()
+        public async Task<IActionResult> CheckoutSuccess(string session_id, string jwt)
         {
-            HttpContextAccessor httpContextAccessor = new HttpContextAccessor();
+            StripeConfiguration.ApiKey = _stripeOptions.Secret;
 
-            StripeConfiguration.ApiKey = "sk_test_4eC39HqLyjWDarjtT1zdp7dc";
+            AdditionnalData additionalData = ReadJwtToken(jwt);
 
-            string additionalDataJson = httpContextAccessor.HttpContext.Session.GetString("additional_data");
-
-            AdditionnalData additionalData = JsonConvert.DeserializeObject<AdditionnalData>(additionalDataJson);
-
-            Session session = new SessionService().Get(additionalData.SessionId);
+            Session session = new SessionService().Get(session_id);
 
             PaymentIntent paymentIntent = new PaymentIntentService().Get(session.PaymentIntentId);
 
@@ -196,7 +201,7 @@ namespace Vinodrill_Back.Controllers
                 Message = additionalData.NoteCommande,
                 PrixCommande = paymentIntent.Amount / 100,
                 Quantite = 1,
-                CheminFacture = session.Invoice.HostedInvoiceUrl,
+                CheminFacture = session.InvoiceId,
                 EstCheque = additionalData.EstCheque,
             });
 
@@ -229,6 +234,43 @@ namespace Vinodrill_Back.Controllers
 
             return Redirect($"{_stripeOptions.FrontUrl}/paiement/merci?session_id={session.Id}&refcommande={idCommande}");
         }
+
+        private string GenerateJwtToken(AdditionnalData additionnalData)
+        {
+            var securityKey = new
+            SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claims = new[]
+            {
+                new Claim("additional_data", JsonConvert.SerializeObject(additionnalData)),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:ValidIssuer"],
+                audience: _configuration["Jwt:ValidAudience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: credentials
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private AdditionnalData ReadJwtToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]);
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = false
+            }, out SecurityToken validatedToken);
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var additionalData = jwtToken.Claims.First(x => x.Type == "additional_data").Value;
+            return JsonConvert.DeserializeObject<AdditionnalData>(additionalData);
+        }
     }
 
     internal class AdditionnalData
@@ -242,7 +284,6 @@ namespace Vinodrill_Back.Controllers
         public string NoteCommande { get; set; }
         public string StripeCustomerId { get; set; }
         public string? Coupon { get; set; }
-        public string SessionId { get; set; }
     }
 
     public class ReservationModel 
