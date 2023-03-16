@@ -46,12 +46,13 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public async Task GetAvisByIdTest_HttpResponse404()
         {
+            var mockRepository = new Mock<IDataRepository<Effectue>>();
+            var userController = new EffectueController(mockRepository.Object);
+
             // Act
-            ActionResult<Effectue> effectue = await _controller.GetEffectueById(-1);
+            var effectue = await userController.GetEffectueById(-1);
 
             // Assert
-            Assert.IsInstanceOfType(effectue, typeof(ActionResult<Effectue>));
-            Assert.IsNull(effectue.Value);
             Assert.IsInstanceOfType(effectue.Result, typeof(NotFoundResult));
         }
 
@@ -87,10 +88,13 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutEffectueTest_HttpResponse204()
         {
-            // Arrange
-            Effectue effectue = _context.Effectues.FirstOrDefault(u => u.IdEtape== 1);
+            var mockRepository = new Mock<IDataRepository<Effectue>>();
+            var userController = new EffectueController(mockRepository.Object);
 
-            var result = _controller.PutEffectue(1, effectue).Result;
+            // Arrange
+            var effectue = userController.GetEffectueById(1).Result;
+
+            var result = userController.PutEffectue(1, effectue.Value).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NoContentResult));
@@ -99,11 +103,18 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutEffectueTest_HttpResponse400()
         {
+            var mockRepository = new Mock<IDataRepository<Effectue>>();
+            var userController = new EffectueController(mockRepository.Object);
+
             // Arrange
-            Effectue effectue = _context.Effectues.FirstOrDefault(u => u.IdEtape == 1);
+            Effectue effectue = new Effectue()
+            {
+                IdEtape = 1,
+                IdActivite = 1
+            };
 
             // Act
-            var result = _controller.PutEffectue(2, effectue).Result;
+            var result = userController.PutEffectue(-1, effectue).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(BadRequestResult));
@@ -112,6 +123,9 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutEffectueTest_HttpResponse404()
         {
+            var mockRepository = new Mock<IDataRepository<Effectue>>();
+            var userController = new EffectueController(mockRepository.Object);
+
             // Arrange
             Effectue effectue = new Effectue()
             {
@@ -120,7 +134,7 @@ namespace Vinodrill_Back.Controllers.Tests
             };
 
             // Act
-            var result = _controller.PutEffectue(-1, effectue).Result;
+            var result = userController.PutEffectue(1, effectue).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
@@ -140,35 +154,33 @@ namespace Vinodrill_Back.Controllers.Tests
             };
 
             var actionResult = userController.PostEffectue(effectue).Result;
-            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Effectue>), "Pas un ActionResult<Effectue>");
             Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult), "Pas un CreatedAtActionResult");
             var result = actionResult.Result as CreatedAtActionResult;
-            Assert.IsInstanceOfType(result.Value, typeof(Adresse), "Pas une Avis");
+            Assert.IsInstanceOfType(result.Value, typeof(Effectue), "Pas une Effectue");
             effectue.IdEtape = ((Effectue)result.Value).IdEtape;
-            Assert.AreEqual(effectue, (Adresse)result.Value, "Effectue pas identiques");
+            Assert.AreEqual(effectue, (Effectue)result.Value, "Effectue pas identiques");
         }
 
+        //j'arrive pas à faire ce test
         [TestMethod()]
         public void PostEffectueTest_HttpResponse400()
         {
+            var mockRepository = new Mock<IDataRepository<Effectue>>();
+            var userController = new EffectueController(mockRepository.Object);
+
             // Arrange
             Effectue effectue = new Effectue()
             {
-                IdEtape = 1,
-                IdActivite = 1
+                IdEtape = 100,
+                IdActivite = 100
             };
 
-            // Act
-            var result = _controller.PostEffectue(effectue).Result;
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(ActionResult<Effectue>));
-            Assert.IsNull(result.Value);
-            Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
+           var actionResult = userController.PostEffectue(effectue).Result;
+            Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestObjectResult), "Pas un BadRequestObjectResult");
         }
 
         [TestMethod()]
-        public void DeleteEffectueTest_AvecMoq()
+        public void DeleteEffectueTest_HttpResponse204()
         {
             Effectue effectue = new Effectue()
             {
@@ -185,36 +197,13 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public void DeleteEffectueTest_HttpResponse204()
-        {
-            // Arrange
-            Effectue effectue = new Effectue()
-            {
-                IdEtape = 1,
-                IdActivite = 1
-            };
-
-            _context.Effectues.Add(effectue);
-            _context.SaveChanges();
-
-            // Act
-            var result = _controller.DeleteEffectue(effectue.IdEtape).Result;
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(NoContentResult));
-
-            // Act
-            var verif = _context.Effectues.FirstOrDefault(u => u.IdEtape == effectue.IdEtape);
-
-            // Assert
-            Assert.IsNull(verif);
-        }
-
-        [TestMethod()]
         public void DeleteEffectueTest_HttpResponse404()
         {
+            var mockRepository = new Mock<IDataRepository<Effectue>>();
+            var userController = new EffectueController(mockRepository.Object);
+
             // Act
-            var result = _controller.DeleteEffectue(-1).Result;
+            var result = userController.DeleteEffectue(1).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));

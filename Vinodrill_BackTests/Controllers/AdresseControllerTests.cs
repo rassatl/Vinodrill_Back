@@ -49,7 +49,7 @@ namespace Vinodrill_Back.Controllers.Tests
         public async Task GetAdresseByIdTest_HttpResponse404()
         {
             // Act
-            var adresse = await _controller.GetAdresseById(-1);
+            ActionResult<Adresse> adresse = await _controller.GetAdresseById(-1);
 
             // Assert
             Assert.IsInstanceOfType(adresse.Result, typeof(NotFoundResult));
@@ -94,10 +94,12 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutAdresseTest_HttpResponse204()
         {
+            var mockRepository = new Mock<IDataRepository<Adresse>>();
+            var userController = new AdresseController(mockRepository.Object);
             // Arrange
-            Adresse adresse = _context.Adresses.FirstOrDefault(u => u.IdAdresse == 1);
+            ActionResult<Adresse> adresse = userController.GetAdresseById(1).Result;
 
-            var result = _controller.PutAdresse(1, adresse).Result;
+            var result = userController.PutAdresse(1, adresse.Value).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NoContentResult));

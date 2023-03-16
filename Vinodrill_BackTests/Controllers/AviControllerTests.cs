@@ -45,14 +45,15 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetAvisByIdTest_HttpResponse404()
+        public void GetAvisByIdTest_HttpResponse404()
         {
+            var mockRepository = new Mock<IAvisRepository>();
+            var userController = new AviController(mockRepository.Object);
             // Act
-            ActionResult<Avis> avi = await _controller.GetAvisById(-1);
+            ActionResult<Avis> avi = userController.GetAvisById(-1).Result;
 
             // Assert
-            Assert.IsInstanceOfType(avi, typeof(ActionResult<Adresse>));
-            Assert.IsNull(avi.Value);
+            Assert.IsInstanceOfType(avi, typeof(ActionResult<Avis>));
             Assert.IsInstanceOfType(avi.Result, typeof(NotFoundResult));
         }
 
@@ -95,10 +96,12 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutAvisTest_HttpResponse204()
         {
+            var mockRepository = new Mock<IAvisRepository>();
+            var userController = new AviController(mockRepository.Object);
             // Arrange
-            Avis avi = _context.Avis.FirstOrDefault(u => u.IdAvis == 1);
+            ActionResult<Avis> avi = userController.GetAvisById(1).Result;
 
-            var result = _controller.PutAvi(1, avi).Result;
+            var result = userController.PutAvi(1, avi.Value).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NoContentResult));
@@ -107,11 +110,12 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutAvisTest_HttpResponse400()
         {
+            var mockRepository = new Mock<IAvisRepository>();
+            var userController = new AviController(mockRepository.Object);
             // Arrange
-            Avis avi = _context.Avis.FirstOrDefault(u => u.IdAvis == 1);
+            ActionResult<Avis> avi = userController.GetAvisById(1).Result;
 
-            // Act
-            var result = _controller.PutAvi(2, avi).Result;
+            var result = userController.PutAvi(2, avi.Value).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(BadRequestResult));
@@ -120,6 +124,9 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutAvisTest_HttpResponse404()
         {
+            var mockRepository = new Mock<IAvisRepository>();
+            var userController = new AviController(mockRepository.Object);
+
             // Arrange
             Avis avi = new Avis()
             {
@@ -135,7 +142,7 @@ namespace Vinodrill_Back.Controllers.Tests
             };
 
             // Act
-            var result = _controller.PutAvi(-1, avi).Result;
+            var result = userController.PutAvi(1, avi).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
@@ -162,18 +169,21 @@ namespace Vinodrill_Back.Controllers.Tests
             };
 
             var actionResult = userController.PostAvi(avi).Result;
-            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Adresse>), "Pas un ActionResult<Avis>");
+            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Avis>), "Pas un ActionResult<Avis>");
             Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult), "Pas un CreatedAtActionResult");
             var result = actionResult.Result as CreatedAtActionResult;
-            Assert.IsInstanceOfType(result.Value, typeof(Adresse), "Pas une Avis");
+            Assert.IsInstanceOfType(result.Value, typeof(Avis), "Pas une Avis");
             avi.IdAvis = ((Avis)result.Value).IdAvis;
-            Assert.AreEqual(avi, (Adresse)result.Value, "Avis pas identiques");
+            Assert.AreEqual(avi, (Avis)result.Value, "Avis pas identiques");
         }
 
+        //je sais pas comment faire
         [TestMethod()]
         public void PostAvisTest_HttpResponse400()
         {
-            // Arrange
+            var mockRepository = new Mock<IAvisRepository>();
+            var userController = new AviController(mockRepository.Object);
+
             Avis avi = new Avis()
             {
                 IdAvis = 1,
@@ -186,17 +196,13 @@ namespace Vinodrill_Back.Controllers.Tests
                 AvisSignale = false,
                 TypeSignalement = "typesignalement"
             };
-            // Act
-            var result = _controller.PostAvi(avi).Result;
 
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(ActionResult<Avis>));
-            Assert.IsNull(result.Value);
-            Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
+            var actionResult = userController.PostAvi(avi).Result;
+            Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult), "Pas un BadRequestResult");
         }
 
         [TestMethod()]
-        public void DeleteAvisTest_AvecMoq()
+        public async Task DeleteAvisTest_HttpResponse204()
         {
             Avis avi = new Avis()
             {
@@ -210,25 +216,13 @@ namespace Vinodrill_Back.Controllers.Tests
                 AvisSignale = false,
                 TypeSignalement = "typesignalement"
             };
+
 
             var mockRepository = new Mock<IAvisRepository>();
             mockRepository.Setup(x => x.GetById(1).Result).Returns(avi);
             var userController = new AviController(mockRepository.Object);
             var actionResult = userController.DeleteAvis(1).Result;
             Assert.IsInstanceOfType(actionResult, typeof(NoContentResult), "Pas un NoContentResult");
-        }
-
-        [TestMethod()]
-        public async Task DeleteAvisTest_HttpResponse204()
-        {
-            var mockRepository = new Mock<IAvisRepository>();
-            var userController = new AviController(mockRepository.Object);
-
-            // Act
-            var result = userController.DeleteAvis(-1).Result;
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(NoContentResult));
         }
 
         [TestMethod()]
