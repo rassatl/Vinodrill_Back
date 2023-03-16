@@ -81,6 +81,9 @@ namespace Vinodrill_Back
             builder.Services.AddScoped<IAvisRepository, AviManager>();
             builder.Services.AddScoped<ISejourRepository, SejourManager>();
             builder.Services.AddScoped<IUserRepository, UserManager>();
+            builder.Services.AddScoped<IDataRepository<CatParticipant>, CatparticipantManager>();
+            builder.Services.AddScoped<IDataRepository<Theme>, ThemeManager>();
+            builder.Services.AddScoped<IDataRepository<Participe>, ParticipeManager>();
 
             var app = builder.Build();
 
