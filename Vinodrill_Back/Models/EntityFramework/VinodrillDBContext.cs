@@ -33,6 +33,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual DbSet<Hebergement> Hebergements { get; set; } = null!;
         public virtual DbSet<Reservation> Reservations { get; set; } = null!;
         public virtual DbSet<BonReduction> BonReductions { get; set; } = null!;
+        public virtual DbSet<Paiement> Paiements { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
