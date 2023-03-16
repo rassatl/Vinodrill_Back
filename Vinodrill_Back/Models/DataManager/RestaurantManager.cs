@@ -5,17 +5,17 @@ using Vinodrill_Back.Models.Repository;
 
 namespace Vinodrill_Back.Models.DataManager
 {
-        public class RestaurentManager : IDataRepository<Restaurant>
+        public class RestaurantManager : IDataRepository<Restaurant>
         {
             readonly VinodrillDBContext? dbContext;
 
-            public RestaurentManager() { }
+            public RestaurantManager() { }
 
-            public RestaurentManager(VinodrillDBContext context) { dbContext = context; }
+            public RestaurantManager(VinodrillDBContext context) { dbContext = context; }
 
             public async Task Add(Restaurant entity)
             {
-                await dbContext.Restaurant.AddAsync(entity);
+                await dbContext.Restaurants.AddAsync(entity);
                 await dbContext.SaveChangesAsync();
             }
 
@@ -37,18 +37,18 @@ namespace Vinodrill_Back.Models.DataManager
 
             public async Task Delete(Restaurant entity)
             {
-                dbContext.Restaurant.Remove(entity);
+                dbContext.Restaurants.Remove(entity);
                 await dbContext.SaveChangesAsync();
             }
 
             public async Task<ActionResult<IEnumerable<Restaurant>>> GetAll()
             {
-                return await dbContext.Restaurant.ToListAsync();
+                return await dbContext.Restaurants.ToListAsync();
             }
 
             public async Task<ActionResult<Restaurant>> GetById(int id)
             {
-                return await dbContext.Restaurant.FirstOrDefaultAsync(a => a.IdPartenaire == id);
+                return await dbContext.Restaurants.FirstOrDefaultAsync(a => a.IdPartenaire == id);
             }
         }
     }
