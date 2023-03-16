@@ -64,11 +64,7 @@ namespace Vinodrill_Back.Models.DataManager
             if(idsDestination is not null) {
                 try {
                     var ids = idsDestination.Split(',').Select(int.Parse).ToArray();
-                    return await dbContext.Sejours
-                        .Where(s => ids.Contains(s.IdDestination))
-                        .Include(s => s.ThemeSejourNavigation)
-                        .Include(s => s.DestinationSejourNavigation)
-                        .ToListAsync();
+                    sejours = sejours.Where(s => ids.Contains(s.IdDestination));
                 } catch (Exception e) {
                     return null;
                 }
@@ -97,8 +93,8 @@ namespace Vinodrill_Back.Models.DataManager
                     var idsSejourFromQuery = catParticipant.Select(c => c.IdSejour).ToArray();
 
                     // get all sejour with the id sejour from the previous query
-                    sejours
-                        .Where(s => idsSejourFromQuery.Contains(s.IdSejour));
+                    sejours = sejours.Where(s => idsSejourFromQuery.Contains(s.IdSejour));
+
                 } catch (Exception e) {
                     return null;
                 }

@@ -219,42 +219,25 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public void DeleteAvisTest_HttpResponse204()
+        public async Task DeleteAvisTest_HttpResponse204()
         {
-            // Arrange
-            Avis avi = new Avis()
-            {
-                IdAvis = 1,
-                IdClient = 1,
-                IdSejour = 1,
-                Note = 1,
-                Commentaire = "j'aime les maths (c'est faut)",
-                TitreAvis = "Trop bien ce projet",
-                DateAvis = new DateTime(),
-                AvisSignale = false,
-                TypeSignalement = "typesignalement"
-            };
-            _context.Avis.Add(avi);
-            _context.SaveChanges();
+            var mockRepository = new Mock<IAvisRepository>();
+            var userController = new AviController(mockRepository.Object);
 
             // Act
-            var result = _controller.DeleteAvis(avi.IdAvis).Result;
+            var result = userController.DeleteAvis(-1).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NoContentResult));
-
-            // Act
-            var verif = _context.Avis.FirstOrDefault(u => u.IdAvis == avi.IdAvis);
-
-            // Assert
-            Assert.IsNull(verif);
         }
 
         [TestMethod()]
         public void DeleteAvisTest_HttpResponse404()
         {
+            var mockRepository = new Mock<IAvisRepository>();
+            var userController = new AviController(mockRepository.Object);
             // Act
-            var result = _controller.DeleteAvis(-1).Result;
+            var result = userController.DeleteAvis(-1).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));

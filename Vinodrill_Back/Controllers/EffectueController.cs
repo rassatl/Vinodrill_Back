@@ -24,7 +24,7 @@ namespace Vinodrill_Back.Controllers
         // GET: api/Effectue
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Effectue>))]
-        public async Task<ActionResult<IEnumerable<Effectue>>> GetDestination()
+        public async Task<ActionResult<IEnumerable<Effectue>>> GetEffectue()
         {
             return await dataRepository.GetAll();
         }
@@ -52,7 +52,7 @@ namespace Vinodrill_Back.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PutDestination(int id, Effectue Effectue)
+        public async Task<IActionResult> PutEffectue(int id, Effectue Effectue)
         {
 
             if (id != Effectue.IdEtape)
@@ -93,7 +93,7 @@ namespace Vinodrill_Back.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeletEffectue(int id)
+        public async Task<IActionResult> DeleteEffectue(int id)
         {
             var Effectue = await dataRepository.GetById(id);
             if (Effectue == null)

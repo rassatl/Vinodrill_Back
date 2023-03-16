@@ -8,10 +8,9 @@ namespace Vinodrill_Back.Controllers
     [ApiController]
     public class CommandeController: ControllerBase
     {
-        //private readonly FilmRatingDBContexts dataRepository;
-        private readonly IDataRepository<Commande> dataRepository;
+        private readonly IcommandeRepository dataRepository;
 
-        public CommandeController(IDataRepository<Commande> dataRepo)
+        public CommandeController(IcommandeRepository dataRepo)
         {
             dataRepository = dataRepo;
         }
@@ -30,14 +29,14 @@ namespace Vinodrill_Back.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Commande>> GetCommandeById(int id)
         {
-            var commande = await dataRepository.GetById(id);
+            var Commande = await dataRepository.GetById(id);
 
-            if (commande == null)
+            if (Commande == null)
             {
                 return NotFound();
             }
 
-            return commande;
+            return Commande;
         }
     }
 }

@@ -32,6 +32,9 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<Hebergement> Hebergements { get; set; } = null!;
         public virtual DbSet<Reservation> Reservations { get; set; } = null!;
+        public virtual DbSet<Destination> Destinations { get; set; }
+        public virtual DbSet<Effectue> Effectues { get; set; }
+        public virtual DbSet<Restaurant> Restaurants { get; set; }
         public virtual DbSet<BonReduction> BonReductions { get; set; } = null!;
         public virtual DbSet<Paiement> Paiements { get; set; } = null!;
 
@@ -428,10 +431,7 @@ namespace Vinodrill_Back.Models.EntityFramework
             });
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-        public DbSet<Vinodrill_Back.Models.EntityFramework.Destination> Destination { get; set; }
-        public DbSet<Vinodrill_Back.Models.EntityFramework.Effectue> Effectue { get; set; }
-        public DbSet<Vinodrill_Back.Models.EntityFramework.Restaurant> Restaurant { get; set; }
-        public DbSet<Vinodrill_Back.Models.EntityFramework.Hebergement> Hebergement { get; set; }
+        
 
     }
 }

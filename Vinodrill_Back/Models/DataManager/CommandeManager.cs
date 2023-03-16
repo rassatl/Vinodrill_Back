@@ -48,14 +48,20 @@ namespace Vinodrill_Back.Models.DataManager
             return await dbContext.Commandes.ToListAsync();
         }
 
-        public async Task<ActionResult<Commande>> GetById(int id)
-        {
-            return await dbContext.Commandes.FirstOrDefaultAsync(a => a.RefCommande == id);
-        }
 
         Task IDataRepository<Commande>.Add(Commande entity)
         {
             throw new System.NotImplementedException();
+        }
+
+        public async  Task<ActionResult<Commande>> GetById(int id)
+        {
+            return await dbContext.Commandes.FirstOrDefaultAsync(a => a.RefCommande == id);
+        }
+
+        public Task<ActionResult<Commande>> GetCommandeById(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
