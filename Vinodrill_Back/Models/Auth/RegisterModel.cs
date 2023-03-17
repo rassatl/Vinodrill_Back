@@ -2,6 +2,7 @@
 
 namespace Vinodrill_Back.Models.Auth
 {
+    public enum Gender { M, F }
     public class RegisterModel
     {
         [EmailAddress]
@@ -26,6 +27,6 @@ namespace Vinodrill_Back.Models.Auth
 
         [Required(ErrorMessage = "Gender is required")]
         [StringLength(1, ErrorMessage = "Gender can be either M or F")]
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
     }
 }

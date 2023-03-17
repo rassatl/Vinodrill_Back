@@ -118,7 +118,7 @@ namespace Vinodrill_Back.Controllers
                 LineItems = lineItems,
                 Mode = "payment",
                 SuccessUrl = _stripeOptions.SuccessUrl,
-                CancelUrl = _stripeOptions.CancelUrl,
+                CancelUrl = _stripeOptions.CancelUrl + "?session_id={CHECKOUT_SESSION_ID}",
                 Customer = customer.Id,
                 InvoiceCreation = new SessionInvoiceCreationOptions {
                     Enabled = true,
@@ -164,7 +164,7 @@ namespace Vinodrill_Back.Controllers
                 NoteCommande = noteCommande,
                 StripeCustomerId = customer.Id,
                 Coupon = coupon,
-                EstCheque = estCheque,
+                EstCheque = estCheque
             };
 
             string jwtToken = GenerateJwtToken(additionalData);
@@ -237,11 +237,13 @@ namespace Vinodrill_Back.Controllers
 
         [HttpGet]
         [Route("checkout/cancel")]
-        public Task<IActionResult> CheckoutCancel(string token)
+        public RedirectResult CheckoutCancel(string session_id)
         {
-            // revoke the JwtSecurityToken to prevent replay attacks
+            StripeConfiguration.ApiKey = _stripeOptions.Secret;
 
-            return Task.FromResult<IActionResult>(Redirect(_stripeOptions.CancelUrl));
+            var service = new SessionService();
+            service.Expire(session_id);
+            return Redirect($"{_stripeOptions.FrontUrl}/paiement?error=cancel");
         }
 
         private string GenerateJwtToken(AdditionnalData additionnalData)

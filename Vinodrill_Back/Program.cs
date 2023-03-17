@@ -97,6 +97,7 @@ namespace Vinodrill_Back
             builder.Services.AddScoped<IcommandeRepository, CommandeManager>();
             builder.Services.AddScoped<IDataRepository<Reservation>, ReservationManager>();
             builder.Services.AddScoped<IDataRepository<Paiement>, PaiementManager>();
+            builder.Services.AddScoped<IDataRepository<User>, UserManager>();
 
             var app = builder.Build();
 

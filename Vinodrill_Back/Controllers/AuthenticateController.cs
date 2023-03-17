@@ -94,7 +94,7 @@ namespace Vinodrill_Back.Controllers
                 NomClient = model.LastName,
                 DateNaissanceClient = model.DateOfBirth,
                 UserRole = "Client",
-                SexeClient = model.Gender,
+                SexeClient = model.Gender.ToString(),
                 MotDePasse = BCrypt.Net.BCrypt.HashPassword(model.Password)
             };
 
