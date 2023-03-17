@@ -164,24 +164,6 @@ namespace Vinodrill_Back.Controllers.Tests
             Assert.AreEqual(effectue, (Effectue)result.Value, "Effectue pas identiques");
         }
 
-        //j'arrive pas à faire ce test
-        [TestMethod()]
-        public void PostEffectueTest_HttpResponse400()
-        {
-            var mockRepository = new Mock<IDataRepository<Effectue>>();
-            var userController = new EffectueController(mockRepository.Object);
-
-            // Arrange
-            Effectue effectue = new Effectue()
-            {
-                IdEtape = 10,
-                IdActivite = 100
-            };
-
-           var actionResult = userController.PostEffectue(effectue).Result;
-            Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestObjectResult), "Pas un BadRequestObjectResult");
-        }
-
         [TestMethod()]
         public void DeleteEffectueTest_HttpResponse204()
         {

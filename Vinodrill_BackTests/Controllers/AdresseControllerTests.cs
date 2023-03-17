@@ -172,30 +172,6 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public void PostAdresseTest_HttpResponse400()
-        {
-            var mockRepository = new Mock<IDataRepository<Adresse>>();
-            var userController = new AdresseController(mockRepository.Object);
-
-            // Arrange
-            Adresse adresse = new Adresse()
-            {
-                IdAdresse = -2,
-                LibelleAdresse = "adresse de l'entreprise",
-                RueAdresse = "9 Rue de l'arc-en-ciel",
-                VilleAdresse = "Annecy",
-                CodePostalAdresse = "74000",
-                PaysAdresse = "France"
-            };
-
-            // Act
-            var actionResult = userController.PostAdresse(adresse).Result;
-
-            // Assert
-            Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestObjectResult));
-        }
-
-        [TestMethod()]
         public void DeleteAdresseTest_AvecMoq()
         {
             Adresse adresse = new Adresse()

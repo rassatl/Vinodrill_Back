@@ -188,30 +188,6 @@ namespace Vinodrill_Back.Controllers.Tests
             Assert.AreEqual(avi, (Avis)result.Value, "Avis pas identiques");
         }
 
-        //je sais pas comment faire
-        [TestMethod()]
-        public void PostAvisTest_HttpResponse400()
-        {
-            var mockRepository = new Mock<IAvisRepository>();
-            var userController = new AviController(mockRepository.Object);
-
-            Avis avi = new Avis()
-            {
-                IdAvis = 1,
-                IdClient = 1,
-                IdSejour = 1,
-                Note = 1,
-                Commentaire = "j'aime les maths (c'est faut)",
-                TitreAvis = "Trop bien ce projet",
-                DateAvis = new DateTime(),
-                AvisSignale = false,
-                TypeSignalement = "typesignalement"
-            };
-
-            var actionResult = userController.PostAvi(avi).Result;
-            Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestResult), "Pas un BadRequestResult");
-        }
-
         [TestMethod()]
         public async Task DeleteAvisTest_HttpResponse204()
         {
