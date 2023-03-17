@@ -30,7 +30,7 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetUserByIdTest()
+        public async Task GetUserByIdTest_OK()
         {
             ActionResult<User> user = await _controller.GetUserById(1);
             Assert.AreEqual(_context.Users.Where(c => c.IdClient == 1).FirstOrDefault(), user.Value, "Client différent");
@@ -41,6 +41,19 @@ namespace Vinodrill_Back.Controllers.Tests
         {
             ActionResult<User> user = await _controller.GetUserById(1);
             Assert.AreNotEqual(_context.Users.Where(c => c.IdClient == 2).FirstOrDefault(), user.Value, "Client différent");
+        }
+
+        [TestMethod()]
+        public void GetUserByIdTest_HttpResponse404()
+        {
+            var mockRepository = new Mock<IDataRepository<User>>();
+            var userController = new UserController(mockRepository.Object);
+            // Act
+            ActionResult<User> avi = userController.GetUserById(-1).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(avi, typeof(ActionResult<User>));
+            Assert.IsInstanceOfType(avi.Result, typeof(NotFoundResult));
         }
 
         [TestMethod]
@@ -78,5 +91,85 @@ namespace Vinodrill_Back.Controllers.Tests
             user.IdClient = ((User)result).IdClient;
             Assert.AreEqual(user, (User)result, "Clients pas identiques");
         }
+
+        [TestMethod()]
+        public void PutUserTest_HttpResponse204()
+        {
+            // Arrange
+            User user = new User
+            {
+                IdClient = 1,
+                IdCbClient = 1,
+                NomClient = "MEGANOM",
+                PrenomClient = "Megaprenom",
+                DateNaissanceClient = new DateTime(2000, 10, 12),
+                SexeClient = "M",
+                EmailClient = "mega@email.mega",
+                MotDePasse = "MegaMDP",
+                UserRole = "Admin"
+            };
+
+
+            var mockRepository = new Mock<IDataRepository<User>>();
+            mockRepository.Setup(x => x.GetById(1).Result).Returns(user);
+            var userController = new UserController(mockRepository.Object);
+            var actionResult = userController.PutUser(1, user).Result;
+            Assert.IsInstanceOfType(actionResult, typeof(NoContentResult), "Pas un NoContentResult");
+        }
+
+        [TestMethod()]
+        public void PutUserTest_HttpResponse400()
+        {
+            var mockRepository = new Mock<IDataRepository<User>>();
+            var userController = new UserController(mockRepository.Object);
+
+            // Arrange
+            User user = new User
+            {
+                IdClient = 1,
+                IdCbClient = 1,
+                NomClient = "MEGANOM",
+                PrenomClient = "Megaprenom",
+                DateNaissanceClient = new DateTime(2000, 10, 12),
+                SexeClient = "M",
+                EmailClient = "mega@email.mega",
+                MotDePasse = "MegaMDP",
+                UserRole = "Admin"
+            };
+
+            // Act
+            var result = userController.PutUser(-1, user).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+        }
+
+        [TestMethod()]
+        public void PutUserTest_HttpResponse404()
+        {
+            var mockRepository = new Mock<IDataRepository<User>>();
+            var userController = new UserController(mockRepository.Object);
+
+            // Arrange
+            User user = new User
+            {
+                IdClient = 1,
+                IdCbClient = 1,
+                NomClient = "MEGANOM",
+                PrenomClient = "Megaprenom",
+                DateNaissanceClient = new DateTime(2000, 10, 12),
+                SexeClient = "M",
+                EmailClient = "mega@email.mega",
+                MotDePasse = "MegaMDP",
+                UserRole = "Admin"
+            };
+
+            // Act
+            var result = userController.PutUser(1, user).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
     }
 }

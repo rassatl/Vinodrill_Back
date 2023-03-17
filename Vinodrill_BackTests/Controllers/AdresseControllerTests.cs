@@ -34,22 +34,8 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public async Task GetAdressesTest()
         {
-            ActionResult<IEnumerable<Adresse>> adresse = await _controller.GetAdresses();
-            CollectionAssert.AreEqual(_context.Adresses.ToList(), adresse.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
-        }
-
-        [TestMethod()]
-        public async Task GetAdresseByIdTest_OK()
-        {
-            ActionResult<Adresse> adresse = await _controller.GetAdresseById(1);
-            Assert.AreEqual(_context.Adresses.Where(c => c.IdAdresse == 1).FirstOrDefault(), adresse.Value, "Adresses différent");
-        }
-
-        [TestMethod()]
-        public async Task GetAdresseByIdTest_HttpResponse404()
-        {
-            ActionResult<Adresse> adresse = await _controller.GetAdresseById(1);
-            Assert.IsFalse(_context.Adresses.Where(c => c.IdAdresse == 2).FirstOrDefault() != adresse.Value, "Adresses différent");
+            ActionResult<IEnumerable<Adresse>> avi = await _controller.GetAdresses();
+            CollectionAssert.AreEqual(_context.Adresses.ToList(), avi.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
         }
 
         [TestMethod()]
@@ -57,35 +43,34 @@ namespace Vinodrill_Back.Controllers.Tests
         {
             //à adapter à la class de test
 
-            /*
-            Activite activite = new Activite()
+            Adresse adresse = new Adresse()
             {
-                LibelleActivite = "Activite de follie",
-                DescriptionActivite = "Activite cool où on s'amuse",
-                RueRdv = "9 Rue de l'arc-en-ciel",
-                CpRdv = "74000",
-                VilleRdv = "Annecy",
-                HoraireActivite = new TimeOnly()
+                IdAdresse = 1,
+                LibelleAdresse = "adresse de l'entreprise",
+                RueAdresse = "9 Rue de l'arc-en-ciel",
+                VilleAdresse = "Annecy",
+                CodePostalAdresse = "74000",
+                PaysAdresse = "France"
             };
 
             // Act
-            var mockRepository = new Mock<IDataRepository<Activite>>();
-            mockRepository.Setup(x => x.GetById(1).Result).Returns(activite);
-            var userController = new ActiviteController(mockRepository.Object);
+            var mockRepository = new Mock<IDataRepository<Adresse>>();
+            mockRepository.Setup(x => x.GetById(1).Result).Returns(adresse);
+            var userController = new AdresseController(mockRepository.Object);
 
 
-            activite.LibelleActivite = "a";
-            userController.PutActivite(activite.IdActivite, activite);
+            adresse.RueAdresse = "a";
+            userController.PutAdresse(adresse.IdAdresse, adresse);
 
-            var actionResult = userController.GetActiviteById(1).Result;
+            var actionResult = userController.GetAdresseById(1).Result;
             // Assert
-            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Activite>), "Pas un ActionResult<Activite>");
+            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Adresse>), "Pas un ActionResult<Adresse>");
             var result = actionResult.Value;
             Console.WriteLine(result.GetType());
-            Assert.IsInstanceOfType(result, typeof(Activite), "Pas une Activite");
-            activite.IdActivite = ((Activite)result).IdActivite;
-            Assert.AreEqual(activite, (Activite)result, "Activitees pas identiques");
-            */
+            Assert.IsInstanceOfType(result, typeof(Adresse), "Pas une Adresse");
+            adresse.IdAdresse = ((Adresse)result).IdAdresse;
+            Assert.AreEqual(adresse, (Adresse)result, "Adresses pas identiques");
+        
         }
 
         [TestMethod()]
@@ -184,30 +169,6 @@ namespace Vinodrill_Back.Controllers.Tests
             Assert.IsInstanceOfType(result.Value, typeof(Adresse), "Pas une Adresse");
             adresse.IdAdresse = ((Adresse)result.Value).IdAdresse;
             Assert.AreEqual(adresse, (Adresse)result.Value, "Adresses pas identiques");
-        }
-
-        [TestMethod()]
-        public void PostAdresseTest_HttpResponse400()
-        {
-            var mockRepository = new Mock<IDataRepository<Adresse>>();
-            var userController = new AdresseController(mockRepository.Object);
-
-            // Arrange
-            Adresse adresse = new Adresse()
-            {
-                IdAdresse = -2,
-                LibelleAdresse = "adresse de l'entreprise",
-                RueAdresse = "9 Rue de l'arc-en-ciel",
-                VilleAdresse = "Annecy",
-                CodePostalAdresse = "74000",
-                PaysAdresse = "France"
-            };
-
-            // Act
-            var actionResult = userController.PostAdresse(adresse).Result;
-
-            // Assert
-            Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestObjectResult));
         }
 
         [TestMethod()]

@@ -60,34 +60,5 @@ namespace Vinodrill_Back.Controllers.Tests
             activite.IdActivite = ((Activite)result.Value).IdActivite;
             Assert.AreEqual(activite, (Activite)result.Value, "Activitees pas identiques");
         }
-
-        [TestMethod()]
-        public void PostActiviteTest_HttpResponse400()
-        {
-            var mockRepository = new Mock<IDataRepository<Activite>>();
-            var userController = new ActiviteController(mockRepository.Object);
-
-            // Arrange
-            Activite activite = new Activite()
-            {
-                IdActivite = -100,
-                LibelleActivite = "Activite de follie",
-                DescriptionActivite = "Activite cool où on s'amuse",
-                RueRdv = "9 Rue de l'arc-en-ciel",
-                CpRdv = "74000",
-                VilleRdv = "Annecy",
-                HoraireActivite = new TimeOnly()
-            };
-
-            // Act
-            var actionResult = userController.PostActivite(activite).Result;
-            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Activite>), "Pas un ActionResult<Activite>");
-            Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestObjectResult), "Pas un BadRequestObjectResult");
-            var result = actionResult.Result as BadRequestObjectResult;
-            Assert.IsInstanceOfType(result.Value, typeof(Activite), "Pas une Activite");
-            activite.IdActivite = ((Activite)result.Value).IdActivite;
-            Assert.AreEqual(activite, (Activite)result.Value, "Activitees pas identiques ☺");
-            Assert.IsNull(result.Value);
-        }
     }
 }

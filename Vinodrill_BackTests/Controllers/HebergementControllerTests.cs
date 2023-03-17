@@ -30,14 +30,14 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetHebergementsTestAsync()
+        public async Task GetHebergementsTest_OK()
         {
             ActionResult<IEnumerable<Hebergement>> users = await _controller.GetHebergement();
             CollectionAssert.AreEqual(_context.Hebergements.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
         }
 
         [TestMethod()]
-        public async Task GetHebergementByIdTest()
+        public async Task GetHebergementByIdTest_OK()
         {
             ActionResult<Hebergement> user = await _controller.GetHebergementById(1);
             Assert.AreEqual(_context.Hebergements.Where(c => c.IdHebergement == 1).FirstOrDefault(), user.Value, "Hebergement différent");
@@ -48,6 +48,19 @@ namespace Vinodrill_Back.Controllers.Tests
         {
             ActionResult<Hebergement> user = await _controller.GetHebergementById(1);
             Assert.AreNotEqual(_context.Hebergements.Where(c => c.IdHebergement == 2).FirstOrDefault(), user.Value, "Hebergement différent");
+        }
+
+        [TestMethod()]
+        public void GetHebergementByIdTest_HttpResponse404()
+        {
+            var mockRepository = new Mock<IHebergementRepository>();
+            var userController = new HebergementController(mockRepository.Object);
+            // Act
+            ActionResult<Hebergement> avi = userController.GetHebergementById(-1).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(avi, typeof(ActionResult<Hebergement>));
+            Assert.IsInstanceOfType(avi.Result, typeof(NotFoundResult));
         }
     }
 }

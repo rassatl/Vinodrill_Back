@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Vinodrill_Back.Models.DataManager;
 using Vinodrill_Back.Models.EntityFramework;
 using Vinodrill_Back.Models.Repository;
+using Moq;
 
 namespace Vinodrill_Back.Controllers.Tests
 {
@@ -29,14 +30,14 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetTypeVisitesTestAsync()
+        public async Task GetTypeVisitesTest_OK()
         {
             ActionResult<IEnumerable<TypeVisite>> users = await _controller.GetTypeVisites();
             CollectionAssert.AreEqual(_context.TypeVisites.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
         }
 
         [TestMethod()]
-        public async Task GetTypeVisiteByIdTest()
+        public async Task GetTypeVisiteByIdTest_OK()
         {
             ActionResult<TypeVisite> user = await _controller.GetTypeVisiteById(1);
             Assert.AreEqual(_context.TypeVisites.Where(c => c.IdTypeVisite == 1).FirstOrDefault(), user.Value, "TypeVisite différent");
@@ -47,6 +48,19 @@ namespace Vinodrill_Back.Controllers.Tests
         {
             ActionResult<TypeVisite> user = await _controller.GetTypeVisiteById(1);
             Assert.AreNotEqual(_context.TypeVisites.Where(c => c.IdTypeVisite == 2).FirstOrDefault(), user.Value, "TypeVisite différent");
+        }
+
+        [TestMethod()]
+        public void GetTypeVisiteByIdTest_HttpResponse404()
+        {
+            var mockRepository = new Mock<IDataRepository<TypeVisite>>();
+            var userController = new TypeVisiteController(mockRepository.Object);
+            // Act
+            ActionResult<TypeVisite> avi = userController.GetTypeVisiteById(-1).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(avi, typeof(ActionResult<TypeVisite>));
+            Assert.IsInstanceOfType(avi.Result, typeof(NotFoundResult));
         }
     }
 }

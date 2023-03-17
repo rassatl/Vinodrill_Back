@@ -31,7 +31,7 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetSejourTestAsync()
+        public async Task GetSejourTest_OK()
         {
             ActionResult<IEnumerable<Sejour>> users = await _controller.GetSejours();
             CollectionAssert.AreEqual(_context.Sejours.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
@@ -76,6 +76,91 @@ namespace Vinodrill_Back.Controllers.Tests
             Assert.AreEqual(user, (Sejour)result, "Sejours pas identiques");
         }
 
+        [TestMethod()]
+        public void PutSejourTest_HttpResponse204()
+        {
+            // Arrange
+            Sejour sej = new Sejour
+            {
+                IdSejour = 1,
+                IdDestination = 1,
+                IdTheme = 1,
+                TitreSejour = "MegaSejour",
+                PhotoSejour = "https://MegaPhoto.png",
+                PrixSejour = 100,
+                DescriptionSejour = "Un Mega sejour de dingo les poto",
+                NbJour = 5,
+                NbNuit = 4,
+                LibelleTemps = null,
+                NoteMoyenne = null
+            };
+
+
+            var mockRepository = new Mock<ISejourRepository>();
+            mockRepository.Setup(x => x.GetById(1, false, false, false, false, false, false, false).Result).Returns(sej);
+            var userController = new SejourController(mockRepository.Object);
+            var actionResult = userController.PutSejour(1, sej).Result;
+            Assert.IsInstanceOfType(actionResult, typeof(NoContentResult), "Pas un NoContentResult");
+        }
+
+        [TestMethod()]
+        public void PutEffectueTest_HttpResponse400()
+        {
+            var mockRepository = new Mock<ISejourRepository>();
+            var userController = new SejourController(mockRepository.Object);
+
+            // Arrange
+            Sejour sej = new Sejour
+            {
+                IdSejour = 1,
+                IdDestination = 1,
+                IdTheme = 1,
+                TitreSejour = "MegaSejour",
+                PhotoSejour = "https://MegaPhoto.png",
+                PrixSejour = 100,
+                DescriptionSejour = "Un Mega sejour de dingo les poto",
+                NbJour = 5,
+                NbNuit = 4,
+                LibelleTemps = null,
+                NoteMoyenne = null
+            };
+
+            // Act
+            var result = userController.PutSejour(-1, sej).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+        }
+
+        [TestMethod()]
+        public void PutEffectueTest_HttpResponse404()
+        {
+            var mockRepository = new Mock<ISejourRepository>();
+            var userController = new SejourController(mockRepository.Object);
+
+            // Arrange
+            Sejour sej = new Sejour
+            {
+                IdSejour = 1,
+                IdDestination = 1,
+                IdTheme = 1,
+                TitreSejour = "MegaSejour",
+                PhotoSejour = "https://MegaPhoto.png",
+                PrixSejour = 100,
+                DescriptionSejour = "Un Mega sejour de dingo les poto",
+                NbJour = 5,
+                NbNuit = 4,
+                LibelleTemps = null,
+                NoteMoyenne = null
+            };
+
+            // Act
+            var result = userController.PutSejour(1, sej).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
         [TestMethod]
         public void Postsejour_ModelValidated_CreationOK_AvecMoq()
         {
@@ -108,7 +193,7 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetSejourByIdTest()
+        public async Task GetSejourByIdTest_OK()
         {
             ActionResult<Sejour> user = await _controller.GetSejourById(1);
             Assert.AreEqual(_context.Sejours.Where(c => c.IdSejour == 1).FirstOrDefault(), user.Value, "Sejour différent");
@@ -161,6 +246,19 @@ namespace Vinodrill_Back.Controllers.Tests
             Assert.AreEqual(user, actionResult.Value as Sejour);
         }
 
+        [TestMethod()]
+        public void GetSejourByIdTest_HttpResponse404()
+        {
+            var mockRepository = new Mock<ISejourRepository>();
+            var userController = new SejourController(mockRepository.Object);
+            // Act
+            ActionResult<Sejour> avi = userController.GetSejourById(-1).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(avi, typeof(ActionResult<Sejour>));
+            Assert.IsInstanceOfType(avi.Result, typeof(NotFoundResult));
+        }
+
         [TestMethod]
         public void DeleteSejourTest_AvecMoq()
         {
@@ -191,6 +289,45 @@ namespace Vinodrill_Back.Controllers.Tests
             // Assert
             Assert.IsInstanceOfType(actionResult, typeof(NoContentResult), "Pas un NoContentResult"); // Test du type de retour
         }
+   [TestMethod()]
+    public void DeleteSejourTest_HttpResponse204()
+    {
+        // Arrange
+        Sejour sej = new Sejour
+        {
+            IdSejour = 1,
+            IdDestination = 1,
+            IdTheme = 1,
+            TitreSejour = "MegaSejour",
+            PhotoSejour = "https://MegaPhoto.png",
+            PrixSejour = 100,
+            DescriptionSejour = "Un Mega sejour de dingo les poto",
+            NbJour = 5,
+            NbNuit = 4,
+            LibelleTemps = null,
+            NoteMoyenne = null
+        };
 
+        var mockRepository = new Mock<ISejourRepository>();
+        mockRepository.Setup(x => x.GetById(1, false, false, false, false, false, false, false).Result).Returns(sej);
+        var userController = new SejourController(mockRepository.Object);
+        // Act
+        var actionResult = userController.DeleteSejour(sej.IdSejour).Result;
+        // Assert
+        Assert.IsInstanceOfType(actionResult, typeof(NoContentResult));
     }
+
+    [TestMethod()]
+    public void DeleteSejourTest_HttpResponse404()
+    {
+        var mockRepository = new Mock<ISejourRepository>();
+        var userController = new SejourController(mockRepository.Object);
+        // Act
+        var actionResult = userController.DeleteSejour(-1).Result;
+        // Assert
+        Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
+    }
+    }
+
+ 
 }
