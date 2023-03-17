@@ -99,9 +99,10 @@ namespace Vinodrill_Back.Controllers.Tests
             var mockRepository = new Mock<IAvisRepository>();
             var userController = new AviController(mockRepository.Object);
             // Arrange
-            ActionResult<Avis> avi = userController.GetAvisById(1).Result;
+            Avis avi = _context.Avis.FirstOrDefault(u => u.IdAvis == 1);
 
-            var result = userController.PutAvi(1, avi.Value).Result;
+
+            var result = userController.PutAvi(1, avi).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NoContentResult));
@@ -113,9 +114,9 @@ namespace Vinodrill_Back.Controllers.Tests
             var mockRepository = new Mock<IAvisRepository>();
             var userController = new AviController(mockRepository.Object);
             // Arrange
-            ActionResult<Avis> avi = userController.GetAvisById(1).Result;
+            Avis avi = _context.Avis.FirstOrDefault(u => u.IdAvis == 1);
 
-            var result = userController.PutAvi(2, avi.Value).Result;
+            var result = userController.PutAvi(2, avi).Result;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(BadRequestResult));

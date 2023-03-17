@@ -44,9 +44,9 @@ namespace Vinodrill_Back.Models.DataManager
             return await dbContext.Adresses.FirstOrDefaultAsync(a => a.IdAdresse == id);
         }
 
-        public Task<ActionResult<IEnumerable<Adresse>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Adresse>>> GetAll()
         {
-            return null;
+            return await dbContext.Adresses.ToListAsync();
         }
     }
 }

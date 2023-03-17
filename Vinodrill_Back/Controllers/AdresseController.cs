@@ -37,7 +37,14 @@ namespace Vinodrill_Back.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Adresse>> GetAdresseById(int id)
         {
-            return StatusCode(StatusCodes.Status405MethodNotAllowed);
+            var hotel = await dataRepository.GetById(id);
+
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+
+            return hotel;
         }
 
         //PUT: api/Adresse/5

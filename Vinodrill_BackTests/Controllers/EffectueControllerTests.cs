@@ -171,7 +171,7 @@ namespace Vinodrill_Back.Controllers.Tests
             // Arrange
             Effectue effectue = new Effectue()
             {
-                IdEtape = 100,
+                IdEtape = 10,
                 IdActivite = 100
             };
 
