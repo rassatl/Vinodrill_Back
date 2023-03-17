@@ -10,6 +10,7 @@ using Vinodrill_Back.Models.Repository;
 using Vinodrill_Back.Models.EntityFramework;
 using Vinodrill_Back.Models.DataManager;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 
 namespace Vinodrill_Back.Controllers.Tests
 {
@@ -36,7 +37,7 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetVisiteByIdTest()
+        public async Task GetVisiteByIdTest_OK()
         {
             ActionResult<Visite> user = await _controller.GetVisiteById(1);
             Assert.AreEqual(_context.Visites.Where(c => c.IdVisite == 1).FirstOrDefault(), user.Value, "Visite différent");
@@ -47,6 +48,19 @@ namespace Vinodrill_Back.Controllers.Tests
         {
             ActionResult<Visite> user = await _controller.GetVisiteById(1);
             Assert.AreNotEqual(_context.Visites.Where(c => c.IdVisite == 2).FirstOrDefault(), user.Value, "Visite différent");
+        }
+
+        [TestMethod()]
+        public void GetVisiteByIdTest_HttpResponse404()
+        {
+            var mockRepository = new Mock<IDataRepository<Visite>>();
+            var userController = new VisiteController(mockRepository.Object);
+            // Act
+            ActionResult<Visite> avi = userController.GetVisiteById(-1).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(avi, typeof(ActionResult<Visite>));
+            Assert.IsInstanceOfType(avi.Result, typeof(NotFoundResult));
         }
     }
 }
