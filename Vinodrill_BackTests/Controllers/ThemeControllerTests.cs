@@ -29,7 +29,7 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetThemesTestAsync()
+        public async Task GetThemesTest_OK()
         {
             ActionResult<IEnumerable<Theme>> users = await _controller.GetThemes();
             CollectionAssert.AreEqual(_context.Themes.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");

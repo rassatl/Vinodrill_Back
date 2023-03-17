@@ -29,7 +29,7 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetSocietesTestAsync()
+        public async Task GetSocietesTest_OK()
         {
             ActionResult<IEnumerable<Societe>> users = await _controller.GetSocietes();
             CollectionAssert.AreEqual(_context.Societes.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");

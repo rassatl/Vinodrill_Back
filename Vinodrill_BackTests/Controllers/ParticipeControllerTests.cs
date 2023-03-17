@@ -29,7 +29,7 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetParticipesTestAsync()
+        public async Task GetParticipesTest_OK()
         {
             ActionResult<IEnumerable<Participe>> users = await _controller.GetParticipes();
             CollectionAssert.AreEqual(_context.Participes.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");

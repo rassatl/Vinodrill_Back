@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Vinodrill_Back.Models.DataManager;
 using Vinodrill_Back.Models.EntityFramework;
 using Vinodrill_Back.Models.Repository;
+using Moq;
 
 namespace Vinodrill_Back.Controllers.Tests
 {
@@ -29,14 +30,14 @@ namespace Vinodrill_Back.Controllers.Tests
         }
 
         [TestMethod()]
-        public async Task GetPartenairesTestAsync()
+        public async Task GetPartenairesTest_OK()
         {
             ActionResult<IEnumerable<Partenaire>> users = await _controller.GetPartenaires();
             CollectionAssert.AreEqual(_context.Partenaires.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
         }
 
         [TestMethod()]
-        public async Task GetPartenaireByIdTest()
+        public async Task GetPartenaireById_OK()
         {
             ActionResult<Partenaire> user = await _controller.GetPartenaireById(1);
             Assert.AreEqual(_context.Partenaires.Where(c => c.IdPartenaire == 1).FirstOrDefault(), user.Value, "Partenaire différent");
@@ -47,6 +48,19 @@ namespace Vinodrill_Back.Controllers.Tests
         {
             ActionResult<Partenaire> user = await _controller.GetPartenaireById(1);
             Assert.AreNotEqual(_context.Partenaires.Where(c => c.IdPartenaire == 2).FirstOrDefault(), user.Value, "Partenaire différent");
+        }
+
+        [TestMethod()]
+        public void GetPartenaireByIdTest_HttpResponse404()
+        {
+            var mockRepository = new Mock<IDataRepository<Partenaire>>();
+            var userController = new PartenaireController(mockRepository.Object);
+            // Act
+            ActionResult<Partenaire> avi = userController.GetPartenaireById(-1).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(avi, typeof(ActionResult<Partenaire>));
+            Assert.IsInstanceOfType(avi.Result, typeof(NotFoundResult));
         }
     }
 }
