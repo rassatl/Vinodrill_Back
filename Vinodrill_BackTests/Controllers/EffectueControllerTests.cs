@@ -88,16 +88,19 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutEffectueTest_HttpResponse204()
         {
-            var mockRepository = new Mock<IDataRepository<Effectue>>();
-            var userController = new EffectueController(mockRepository.Object);
-
             // Arrange
-            var effectue = userController.GetEffectueById(1).Result;
+            Effectue effectue = new Effectue()
+            {
+                IdEtape = 1,
+                IdActivite = 1
+            };
 
-            var result = userController.PutEffectue(1, effectue.Value).Result;
 
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(NoContentResult));
+            var mockRepository = new Mock<IDataRepository<Effectue>>();
+            mockRepository.Setup(x => x.GetById(1).Result).Returns(effectue);
+            var userController = new EffectueController(mockRepository.Object);
+            var actionResult = userController.PutEffectue(1, effectue).Result;
+            Assert.IsInstanceOfType(actionResult, typeof(NoContentResult), "Pas un NoContentResult");
         }
 
         [TestMethod()]

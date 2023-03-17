@@ -96,16 +96,26 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutAvisTest_HttpResponse204()
         {
-            var mockRepository = new Mock<IAvisRepository>();
-            var userController = new AviController(mockRepository.Object);
             // Arrange
-            Avis avi = _context.Avis.FirstOrDefault(u => u.IdAvis == 1);
+            Avis avi = new Avis()
+            {
+                IdAvis = 1,
+                IdClient = 1,
+                IdSejour = 1,
+                Note = 1,
+                Commentaire = "j'aime les maths (c'est faut)",
+                TitreAvis = "Trop bien ce projet",
+                DateAvis = new DateTime(),
+                AvisSignale = false,
+                TypeSignalement = "typesignalement"
+            };
 
 
-            var result = userController.PutAvi(1, avi).Result;
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(NoContentResult));
+            var mockRepository = new Mock<IAvisRepository>();
+            mockRepository.Setup(x => x.GetById(1).Result).Returns(avi);
+            var userController = new AviController(mockRepository.Object);
+            var actionResult = userController.PutAvi(1, avi).Result;
+            Assert.IsInstanceOfType(actionResult, typeof(NoContentResult), "Pas un NoContentResult");
         }
 
         [TestMethod()]
