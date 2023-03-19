@@ -16,10 +16,10 @@ namespace Vinodrill_Back.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IDataRepository<User> dataRepository;
+        private readonly IUserRepository dataRepository;
         private readonly IConfiguration _configuration;
 
-        public UserController(IDataRepository<User> dataRepo, IConfiguration configuration)
+        public UserController(IUserRepository dataRepo, IConfiguration configuration)
         {
             dataRepository = dataRepo;
             _configuration = configuration;
@@ -29,9 +29,9 @@ namespace Vinodrill_Back.Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<User>> GetUserById(int id)
+        public async Task<ActionResult<User>> GetUserById(int id, bool withAdresse = false)
         {
-            var client = await dataRepository.GetById(id);
+            var client = await dataRepository.GetById(id, withAdresse);
 
             if (client == null)
             {
@@ -55,10 +55,12 @@ namespace Vinodrill_Back.Controllers
             }
 
             var userToUpdate = await dataRepository.GetById(id);
+
             if (userToUpdate == null)
             {
                 return NotFound();
             }
+
             else
             {
                 await dataRepository.Update(userToUpdate.Value, client);
@@ -66,12 +68,45 @@ namespace Vinodrill_Back.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize(Policy = Policies.Admin)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<User>> PostUser(User client)
+        {
+            await dataRepository.Add(client);
+            return CreatedAtAction(nameof(GetUserById), new { id = client.IdClient }, client);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Policy = Policies.Admin)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var client = await dataRepository.GetById(id);
+            if (client == null)
+            {
+                return NotFound();
+            }
+
+            await dataRepository.Delete(client.Value);
+            return NoContent();
+        }
+
         [HttpGet]
         [Route("GetUserData")]
         [Authorize(Policy = Policies.Client)]
-        public IActionResult GetUserData()
+        public async Task<ActionResult<User>> GetUserData( [FromQuery] int id)
         {
-            return Ok("This is a response from user method");
+            var user = await dataRepository.GetAllUserData(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
         }
         
         [HttpGet]

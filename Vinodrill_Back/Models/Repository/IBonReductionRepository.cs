@@ -5,6 +5,8 @@ namespace Vinodrill_Back.Models.Repository
 {
     public interface IBonreductionRepository : IDataRepository<BonReduction>
     {
-        Task<ActionResult<BonReduction>> GetByCode(string codeCoupon);
+        Task<ActionResult<BonReduction>> check(string codeCoupon);
+        Task<ActionResult<BonReduction>> getByCode(string codeCoupon);
+        Task<ActionResult<decimal>> getAmount(BonReduction bonReduction);
     }
 }

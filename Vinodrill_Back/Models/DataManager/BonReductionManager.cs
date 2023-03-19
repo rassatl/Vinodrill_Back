@@ -28,9 +28,11 @@ namespace Vinodrill_Back.Models.DataManager
             throw new NotImplementedException();
         }
 
-        public async Task<ActionResult<BonReduction>> GetByCode(string codeCoupon)
+        public async Task<ActionResult<BonReduction>> check(string codeCoupon)
         {
-            return await dbContext.BonReductions.Where(b => b.CodeBonReduction == codeCoupon).FirstOrDefaultAsync();
+            var bonReduction = await dbContext.BonReductions.FirstOrDefaultAsync(b => b.CodeBonReduction == codeCoupon);
+
+            return bonReduction;
         }
 
         public async Task<ActionResult<BonReduction>> GetById(int id)
@@ -47,6 +49,21 @@ namespace Vinodrill_Back.Models.DataManager
             entityToUpdate.EstValide = entity.EstValide;
 
             return dbContext.SaveChangesAsync();
+        }
+
+        public async Task<ActionResult<BonReduction>> getByCode(string codeCoupon)
+        {
+            var bonReduction = await dbContext.BonReductions.FirstOrDefaultAsync(b => b.CodeBonReduction == codeCoupon);
+
+            return bonReduction;
+        }
+
+        public async Task<ActionResult<decimal>> getAmount(BonReduction bonReduction)
+        {
+            var commande = await dbContext.Commandes.FindAsync(bonReduction.RefCommande);
+            var montant = commande.PrixCommande;
+
+            return montant;
         }
     }
 }

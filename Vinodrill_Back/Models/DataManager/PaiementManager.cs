@@ -5,7 +5,7 @@ using Vinodrill_Back.Models.Repository;
 
 namespace Vinodrill_Back.Models.DataManager
 {
-    public class PaiementManager : IDataRepository<Paiement>
+    public class PaiementManager : IPaiementRepository
     {
         readonly VinodrillDBContext? dbContext;
 
@@ -13,10 +13,12 @@ namespace Vinodrill_Back.Models.DataManager
 
         public PaiementManager(VinodrillDBContext context) { dbContext = context; }
 
-        public async Task Add(Paiement entity)
+        public async Task<ActionResult<Paiement>> Add(Paiement entity)
         {
-            dbContext.Paiements.Add(entity);
+            await dbContext.Paiements.AddAsync(entity);
             await dbContext.SaveChangesAsync();
+
+            return entity;
         }
 
         public async Task Update(Paiement entityToUpdate, Paiement entity)
@@ -44,6 +46,11 @@ namespace Vinodrill_Back.Models.DataManager
         public async Task<ActionResult<Paiement>> GetById(int id)
         {
             return await dbContext.Paiements.FirstOrDefaultAsync(a => a.IdPaiement == id);
+        }
+
+        Task IDataRepository<Paiement>.Add(Paiement entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

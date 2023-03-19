@@ -87,6 +87,9 @@ namespace Vinodrill_Back.Controllers
             if (model.DateOfBirth.AddYears(18) > DateTime.Now)
                 return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = "You must be 18 years old to register!" });
 
+            if(model.Gender.ToUpper() != "M" && model.Gender.ToUpper() != "F")
+                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = $"'{model.Gender}' is not a valid value for gender. The only valid values are 'M' for male and 'F' for female" });
+
             User user = new()
             {
                 EmailClient = model.Email,
@@ -94,7 +97,7 @@ namespace Vinodrill_Back.Controllers
                 NomClient = model.LastName,
                 DateNaissanceClient = model.DateOfBirth,
                 UserRole = "Client",
-                SexeClient = model.Gender.ToString(),
+                SexeClient = model.Gender.ToUpper(),
                 MotDePasse = BCrypt.Net.BCrypt.HashPassword(model.Password)
             };
 

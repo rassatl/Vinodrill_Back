@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Vinodrill_Back.Controllers
 {
@@ -21,12 +22,12 @@ namespace Vinodrill_Back.Controllers
         private readonly IDataRepository<Adresse> adresseRepository;
         private readonly IcommandeRepository commandeRepository;
         private readonly IDataRepository<Reservation> reservationRepository;
-        private readonly IDataRepository<Paiement> paiementRepository;
+        private readonly IPaiementRepository paiementRepository;
         private readonly IBonreductionRepository bonReductionRepository;
         private readonly StripeOptions _stripeOptions;
         private readonly IConfiguration _configuration;
 
-        public PaymentController(IConfiguration configuration, IOptions<StripeOptions> stripeOptions, IDataRepository<Adresse> adresseRepo, IBonreductionRepository bonReductionRepo, IcommandeRepository commandeRepo, IDataRepository<Reservation> reservationRepo, IDataRepository<Paiement> paiementRepo)
+        public PaymentController(IConfiguration configuration, IOptions<StripeOptions> stripeOptions, IDataRepository<Adresse> adresseRepo, IBonreductionRepository bonReductionRepo, IcommandeRepository commandeRepo, IDataRepository<Reservation> reservationRepo, IPaiementRepository paiementRepo)
         {
             adresseRepository = adresseRepo;
             commandeRepository = commandeRepo;
@@ -40,7 +41,7 @@ namespace Vinodrill_Back.Controllers
         [HttpPost]
         //[Authorize]
         [Route("checkout")]
-        public async Task<IActionResult> Checkout( [FromBody] RequestBody articlesAndReservations, bool saveCredentials, int idAdresse, bool estCheque, string emailClient, string noteCommande = "", string? coupon = null)
+        public async Task<IActionResult> Checkout( [FromBody] RequestBody requestBody)
         {
             HttpContextAccessor httpContextAccessor = new HttpContextAccessor();
 
@@ -51,18 +52,18 @@ namespace Vinodrill_Back.Controllers
             CustomerService customerService = new CustomerService();
             StripeList<Customer> customers = customerService.List(new CustomerListOptions
             {
-                Email = emailClient
+                Email = requestBody.EmailClient
             });
 
-            var adresse = await adresseRepository.GetById(idAdresse);
+            var adresse = await adresseRepository.GetById(requestBody.IdAdresse);
 
             // if the user doesn't exist, create a new one
             if (customers.Data.Count == 0)
             {
                 customer = customerService.Create(new CustomerCreateOptions
                 {
-                    Email = emailClient,
-                    Name = "Jenny Rosen",
+                    Email = requestBody.EmailClient,
+                    Name = requestBody.NomClient,
                     PreferredLocales = new List<string> { "fr" },
                     Address = new AddressOptions
                     {
@@ -93,16 +94,17 @@ namespace Vinodrill_Back.Controllers
 
             //create lineItems List
             List<SessionLineItemOptions> lineItems = new List<SessionLineItemOptions>();
-            foreach(Article article in articlesAndReservations.Articles) {
+            foreach(Article article in requestBody.Articles) {
                 lineItems.Add(new SessionLineItemOptions {
                     PriceData = new SessionLineItemPriceDataOptions {
-                        UnitAmount = article.Price * 100,
+                        UnitAmount = article.Price,
                         Currency = "eur",
                         ProductData = new SessionLineItemPriceDataProductDataOptions {
                             Name = article.Name,
                             Images = new List<string> {
                                 article.Image,
                             },
+                            Description = article.Description,
                         },
                     },
                     Quantity = article.Quantity,
@@ -125,18 +127,21 @@ namespace Vinodrill_Back.Controllers
                 },
             };
 
-            if(coupon is not null) {
+            if(requestBody.Coupon is not null) {
                 // check if the coupon already exists in stripe
                 var couponService = new CouponService();
                 try {
-                    var couponStripe = couponService.Get(coupon);
+                    var couponStripe = couponService.Get(requestBody.Coupon);
                 } catch (StripeException e) {
                     // if the coupon doesn't exist, create it
                     if (e.StripeError.Code == "resource_missing") {
+                        var bonReduction = await bonReductionRepository.getByCode(requestBody.Coupon);
+                        var amountOff = await bonReductionRepository.getAmount(bonReduction.Value);
                         couponService.Create(new CouponCreateOptions {
-                            Id = coupon,
+                            Id = requestBody.Coupon,
                             Duration = "once",
-                            AmountOff = 1000,
+                            AmountOff = (long)amountOff.Value * 100,
+                            Currency = "eur",
                         });
                     }
                 }
@@ -144,12 +149,12 @@ namespace Vinodrill_Back.Controllers
                 // apply the coupon to the payment intent
                 stripe_option.Discounts = new List<SessionDiscountOptions> {
                     new SessionDiscountOptions {
-                        Coupon = coupon,
+                        Coupon = requestBody.Coupon,
                     },
                 };
             }
 
-            if(saveCredentials) {
+            if(requestBody.SaveCredentials) {
                 stripe_option.PaymentIntentData = new SessionPaymentIntentDataOptions {
                     SetupFutureUsage = "on_session",
                 };
@@ -158,21 +163,24 @@ namespace Vinodrill_Back.Controllers
             AdditionnalData additionalData = new AdditionnalData {
                 ChequeCadeau = "true",
                 EstCadeau = false,
-                IdClient = 1,
-                SaveCredentials = saveCredentials,
-                Reservations = articlesAndReservations.Reservations,
-                NoteCommande = noteCommande,
+                IdClient = requestBody.IdClient,
+                SaveCredentials = requestBody.SaveCredentials,
+                Reservations = requestBody.Reservations,
+                NoteCommande = requestBody.NoteCommande,
                 StripeCustomerId = customer.Id,
-                Coupon = coupon,
-                EstCheque = estCheque
+                Coupon = requestBody.Coupon,
+                EstCheque = requestBody.EstCheque,
             };
 
             string jwtToken = GenerateJwtToken(additionalData);
 
-            stripe_option.SuccessUrl += $"?jwt={jwtToken}";
+            // encode the jwt token to be url safe
+            jwtToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(jwtToken));
 
-            stripe_option.SuccessUrl += "&session_id={CHECKOUT_SESSION_ID}";
+            stripe_option.SuccessUrl += "/{CHECKOUT_SESSION_ID}";
 
+            stripe_option.SuccessUrl += $"/{jwtToken}";
+            
             var service = new SessionService();
 
             Session session = service.Create(stripe_option);
@@ -181,12 +189,20 @@ namespace Vinodrill_Back.Controllers
         }
 
         [HttpGet]
-        [Route("checkout/success")]
+        [Authorize]
+        [Route("checkout/success/{session_id}/{jwt}")]
         public async Task<IActionResult> CheckoutSuccess(string session_id, string jwt)
         {
             StripeConfiguration.ApiKey = _stripeOptions.Secret;
 
-            AdditionnalData additionalData = ReadJwtToken(jwt);
+            AdditionnalData additionalData = new AdditionnalData();
+
+            try {
+                string decodedJwt = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(jwt));
+                additionalData = ReadJwtToken(decodedJwt);
+            } catch(Exception e) {
+                return BadRequest(new { error = "Invalid JWT token" });
+            }
 
             Session session = new SessionService().Get(session_id);
 
@@ -194,22 +210,24 @@ namespace Vinodrill_Back.Controllers
 
             PaymentMethod paymentMethod = new PaymentMethodService().Get(paymentIntent.PaymentMethodId);
 
+            var paiment = await paiementRepository.Add(new Paiement {
+                IdClientPaiement = additionalData.IdClient,
+                LibellePaiement = paymentMethod.Card.Brand,
+                PreferencePaiement = additionalData.SaveCredentials,
+            });
+
             // create a new command
             int idCommande = await commandeRepository.Add(new Commande {
                 IdClient = additionalData.IdClient,
                 DateCommande = DateTime.Now,
                 Message = additionalData.NoteCommande,
-                PrixCommande = paymentIntent.Amount / 100,
+                PrixCommande = paymentIntent.Amount * 100,
                 Quantite = 1,
                 CheminFacture = session.InvoiceId,
                 EstCheque = additionalData.EstCheque,
+                IdPaiement = paiment.Value.IdPaiement,
             });
 
-            await paiementRepository.Add(new Paiement {
-                IdClientPaiement = additionalData.IdClient,
-                LibellePaiement = paymentMethod.Card.Brand,
-                PreferencePaiement = additionalData.SaveCredentials,
-            });
 
             List<ReservationModel> reservations = additionalData.Reservations;
 
@@ -226,13 +244,13 @@ namespace Vinodrill_Back.Controllers
             }
 
             if(additionalData.Coupon is not null) {
-                var coupon = await bonReductionRepository.GetByCode(additionalData.Coupon);
+                var coupon = await bonReductionRepository.getByCode(additionalData.Coupon);
                 BonReduction bonReduction = coupon.Value;
                 bonReduction.EstValide = false;
                 await bonReductionRepository.Update(coupon.Value, bonReduction);
             }
 
-            return Redirect($"{_stripeOptions.FrontUrl}/paiement/merci?session_id={session.Id}&refcommande={idCommande}");
+            return Ok(new { idCommande = idCommande, session_id = session.Id });
         }
 
         [HttpGet]
@@ -320,5 +338,13 @@ namespace Vinodrill_Back.Controllers
     {
         public List<ReservationModel> Reservations { get; set; }
         public List<Article> Articles { get; set; }
+        public bool SaveCredentials { get; set; }
+        public int IdAdresse { get; set; }
+        public bool EstCheque { get; set; }
+        public string EmailClient { get; set; }
+        public string? NoteCommande { get; set; } = "";
+        public string? Coupon { get; set; } = null;
+        public int IdClient { get; set;}
+        public string NomClient { get; set; }
     }
 }

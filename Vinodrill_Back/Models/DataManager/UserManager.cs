@@ -45,9 +45,16 @@ namespace Vinodrill_Back.Models.DataManager
             return await dbContext.Clients.ToListAsync();
         }
 
-        public async Task<ActionResult<User>> GetById(int id)
+        public async Task<ActionResult<User>> GetById(int id, bool withAdresses = false)
         {
-            return await dbContext.Clients.FirstOrDefaultAsync(a => a.IdClient == id);
+            var user = dbContext.Clients.AsQueryable();
+            
+            if (withAdresses)
+            {
+                user = user.Include(x => x.AdresseClientNavigation);
+            }
+
+            return await user.FirstOrDefaultAsync(x => x.IdClient == id);
         }
 
         public User GetAuthUser(LoginModel user)
@@ -66,6 +73,26 @@ namespace Vinodrill_Back.Models.DataManager
         public async Task<ActionResult<User>> FindByEmail(string email)
         {
             return dbContext.Users.FirstOrDefault(x => x.EmailClient == email);
+        }
+
+        public Task<ActionResult<User>> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ActionResult<User>> GetAllUserData(int id)
+        {
+            // get user details and all related data
+            var user = await dbContext.Users
+                .Include(x => x.AdresseClientNavigation)
+                .Include(x => x.CommandeClientNavigation)
+                .ThenInclude(x => x.ReservationCommandeNavigation)
+                .Include(x => x.CbClientNavigation)
+                .Include(x => x.AvisClientNavigation)
+                .Include(x => x.PaiementClientNavigation)
+                .FirstAsync(x => x.IdClient == id);
+
+            return user;
         }
     }
 }

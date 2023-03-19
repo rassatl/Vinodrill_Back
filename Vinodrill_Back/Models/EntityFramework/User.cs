@@ -32,7 +32,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public DateTime DateNaissanceClient { get; set; }
 
         [Column("usr_sexe")]
-        [RegularExpression(@"^[0-9]{1}$", ErrorMessage = "sexe length must be 1 maximum")]
+        [RegularExpression(@"^[A-Z]{1}$", ErrorMessage = "sexe length must be 1 maximum")]
         [Required]
         public string SexeClient { get; set; }
 
@@ -50,7 +50,7 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string? UserRole { get; set; }
 
         [InverseProperty(nameof(Cb.ClientCbNavigation))]
-        public virtual Cb CbClientNavigation { get; set; } = null;
+        public virtual Cb? CbClientNavigation { get; set; } = null;
 
         [InverseProperty(nameof(Adresse.ClientAdresseNavigation))]
         public virtual ICollection<Adresse> AdresseClientNavigation { get; set; } = new List<Adresse>();
