@@ -60,5 +60,10 @@ namespace Vinodrill_Back.Models.DataManager
 
             return response;
         }
+
+        public async Task<ActionResult<IEnumerable<Avis>>> GetAllWithParams(int? idClient, int? idSejour)
+        {
+            return await dbContext.Avis.Where(x => x.IdClient == idClient && x.IdSejour == idSejour).ToListAsync();
+        }
     }
 }

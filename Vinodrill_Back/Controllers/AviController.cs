@@ -24,9 +24,15 @@ namespace Vinodrill_Back.Controllers
         // GET: api/Avis
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Avis>))]
-        public async Task<ActionResult<IEnumerable<Avis>>> GetAvis()
+        public async Task<ActionResult<IEnumerable<Avis>>> GetAvis(int? idClient = null, int? idSejour = null)
         {
-            return await dataRepository.GetAll();
+            if (idClient == null && idSejour == null)
+            {
+                return await dataRepository.GetAll();
+            } else
+            {
+                return await dataRepository.GetAllWithParams(idClient, idSejour);
+            }
         }
 
         // GET: api/Avis/GetAvisById/5
