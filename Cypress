@@ -1,0 +1,4 @@
+Cypress : 
+
+npm install cypress 
+npx cypress open -> Cypress Test Runner
