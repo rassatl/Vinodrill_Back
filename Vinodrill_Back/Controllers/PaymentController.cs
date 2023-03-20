@@ -221,7 +221,7 @@ namespace Vinodrill_Back.Controllers
                 IdClient = additionalData.IdClient,
                 DateCommande = DateTime.Now,
                 Message = additionalData.NoteCommande,
-                PrixCommande = paymentIntent.Amount * 100,
+                PrixCommande = paymentIntent.Amount / 100,
                 Quantite = 1,
                 CheminFacture = session.InvoiceId,
                 EstCheque = additionalData.EstCheque,
