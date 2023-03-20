@@ -29,8 +29,7 @@ namespace Vinodrill_Back
             builder.Services.Configure<StripeOptions>(builder.Configuration.GetSection("Stripe"));
 
             // For Entity Framework
-            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
-            //builder.Services.AddDbContext<AuthDbContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContext")));
+            builder.Services.AddDbContext<VinodrillDBContext>(Options => Options.UseNpgsql(builder.Configuration.GetConnectionString("VinoDrillDbContextRemote")));
 
             // Add http context
             builder.Services.AddHttpContextAccessor();
