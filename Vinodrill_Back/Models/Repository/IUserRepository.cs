@@ -10,5 +10,6 @@ namespace Vinodrill_Back.Models.Repository
         Task<ActionResult<User>> FindByEmail(string email);
         Task<ActionResult<User>> GetById(int id, bool withAdresses = false);
         Task<ActionResult<User>> GetAllUserData(int id);
+        Task<ActionResult<User>> GetByEmail(string email);
     }
 }

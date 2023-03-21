@@ -10,6 +10,12 @@ using Vinodrill_Back.Models.Repository;
 using Vinodrill_Back.Models.Auth;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
+using Google.Apis.Auth.OAuth2.Mvc;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis;
+using Google.Apis.Services;
+using Stripe;
+using static Google.Apis.Requests.BatchRequest;
 
 namespace Vinodrill_Back.Controllers
 {
@@ -43,6 +49,43 @@ namespace Vinodrill_Back.Controllers
                     userDetails = user,
                 });
             }
+            return response;
+        }
+
+        [AllowAnonymous]
+        [Route("google-login")]
+        public async Task<IActionResult> GoogleLogin(CancellationToken cancelToken)
+        {
+            IActionResult response = Unauthorized();
+
+            var result = await new AuthorizationCodeMvcApp(this,
+                            new GoogleAuth()).AuthorizeAsync(cancelToken);
+
+            if (result.Credential == null)
+                return new RedirectResult(result.RedirectUri);
+
+            var plusService = new PlusService(new BaseClientService.Initializer
+            {
+                HttpClientInitializer = result.Credential,
+                ApplicationName = "MyApp"
+            });
+
+            //get the user basic information
+            Person me = plusService.People.Get("me").Execute();
+
+            //check if the user is exists in our database
+            var user = await dataRepository.GetByEmail(me.Email);
+
+            if (user.Value != null)
+            {
+                var tokenString = GenerateJwtToken(user.Value);
+                response = Ok(new
+                {
+                    token = tokenString,
+                    userDetails = user,
+                });
+            }
+
             return response;
         }
 

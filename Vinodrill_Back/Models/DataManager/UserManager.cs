@@ -94,5 +94,10 @@ namespace Vinodrill_Back.Models.DataManager
 
             return user;
         }
+
+        public async Task<ActionResult<User>> GetByEmail(string email)
+        {
+            return await dbContext.Users.FirstOrDefaultAsync(u => u.EmailClient == email);
+        }
     }
 }

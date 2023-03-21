@@ -9,6 +9,8 @@ using System.Text;
 using Vinodrill_Back.Models.Auth;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Features;
 using Stripe;
+using Google.Apis.Auth.OAuth2.Mvc;
+using Google.Apis.Auth.OAuth2;
 
 namespace Vinodrill_Back
 {
@@ -114,6 +116,14 @@ namespace Vinodrill_Back
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials();
+            });
+
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions
+            {
+                ClientId = "your-client-id",
+                ClientSecret = "your-client-secret",
+                CallbackPath = new PathString("/signin-google"),
+                Scope = new[] { "email", "profile" }
             });
 
             app.UseHttpsRedirection();
