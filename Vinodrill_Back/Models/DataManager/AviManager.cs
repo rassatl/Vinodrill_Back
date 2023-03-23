@@ -63,7 +63,22 @@ namespace Vinodrill_Back.Models.DataManager
 
         public async Task<ActionResult<IEnumerable<Avis>>> GetAllWithParams(int? idClient, int? idSejour)
         {
-            return await dbContext.Avis.Where(x => x.IdClient == idClient && x.IdSejour == idSejour).ToListAsync();
+            if (idClient is not null && idSejour is not null)
+            {
+                return await dbContext.Avis.Where(x => x.IdClient == idClient && x.IdSejour == idSejour).ToListAsync();
+            }
+            else if (idClient is null)
+            {
+                return await dbContext.Avis.Where(x => x.IdSejour == idSejour).ToListAsync();
+            }
+            else if (idSejour is null)
+            {
+                return await dbContext.Avis.Where(x => x.IdClient == idClient).ToListAsync();
+            }
+            else
+            {
+                return await dbContext.Avis.ToListAsync();
+            }
         }
     }
 }

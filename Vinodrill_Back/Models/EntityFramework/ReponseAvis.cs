@@ -19,6 +19,6 @@ namespace Vinodrill_Back.Models.EntityFramework
         public string Commentaire { get; set; }
 
         [InverseProperty(nameof(Avis.ReponseAvisAvisNavigation))]
-        public virtual Avis AvisReponseAvisNavigation { get; set; } = null!;
+        public virtual Avis? AvisReponseAvisNavigation { get; set; } = null!;
     }
 }

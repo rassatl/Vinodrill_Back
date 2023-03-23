@@ -52,7 +52,7 @@ namespace Vinodrill_Back.Controllers
             return response;
         }
 
-        [AllowAnonymous]
+        /*[AllowAnonymous]
         [Route("google-login")]
         public async Task<IActionResult> GoogleLogin(CancellationToken cancelToken)
         {
@@ -87,7 +87,7 @@ namespace Vinodrill_Back.Controllers
             }
 
             return response;
-        }
+        }*/
 
         private User AuthenticateUser(LoginModel user)
         {

@@ -38,6 +38,8 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual DbSet<BonReduction> BonReductions { get; set; } = null!;
         public virtual DbSet<Paiement> Paiements { get; set; } = null!;
 
+        public virtual DbSet<ReponseAvis> ReponseAvis { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<Adopte>(entity =>

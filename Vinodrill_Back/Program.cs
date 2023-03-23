@@ -100,6 +100,7 @@ namespace Vinodrill_Back
             builder.Services.AddScoped<IPaiementRepository, PaiementManager>();
             builder.Services.AddScoped<IDataRepository<User>, UserManager>();
             builder.Services.AddScoped<IBonreductionRepository, BonReductionManager>();
+            builder.Services.AddScoped<IDataRepository<ReponseAvis>, ReponseAvisManager>();
 
             var app = builder.Build();
 
@@ -118,13 +119,13 @@ namespace Vinodrill_Back
                 .AllowCredentials();
             });
 
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions
+            /*app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions
             {
                 ClientId = "your-client-id",
                 ClientSecret = "your-client-secret",
                 CallbackPath = new PathString("/signin-google"),
                 Scope = new[] { "email", "profile" }
-            });
+            });*/
 
             app.UseHttpsRedirection();
 
