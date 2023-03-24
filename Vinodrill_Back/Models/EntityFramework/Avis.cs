@@ -47,12 +47,12 @@ namespace Vinodrill_Back.Models.EntityFramework
         public virtual ICollection<ReponseAvis> ReponseAvisAvisNavigation { get; set; } = new List<ReponseAvis>();
 
         [InverseProperty(nameof(User.AvisClientNavigation))]
-        public virtual User ClientAvisNavigation { get; set; } = null!;
+        public virtual User? ClientAvisNavigation { get; set; } = null!;
 
         [InverseProperty(nameof(ImageAvis.AvisImageAvisNavigation))]
         public virtual ICollection<ImageAvis> ImageAvisAvisNavigation { get; set; } = new List<ImageAvis>();
 
         [InverseProperty(nameof(Sejour.AvisSejourNavigation))]
-        public virtual Sejour SejourAvisNavigation { get; set; } = null!;
+        public virtual Sejour? SejourAvisNavigation { get; set; } = null!;
     }
 }
