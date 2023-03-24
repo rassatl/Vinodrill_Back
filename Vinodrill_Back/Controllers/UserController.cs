@@ -96,7 +96,7 @@ namespace Vinodrill_Back.Controllers
 
         [HttpGet]
         [Route("GetUserData")]
-        [Authorize(Policy = Policies.Client)]
+        [Authorize]
         public async Task<ActionResult<User>> GetUserData( [FromQuery] int id)
         {
             var user = await dataRepository.GetAllUserData(id);
