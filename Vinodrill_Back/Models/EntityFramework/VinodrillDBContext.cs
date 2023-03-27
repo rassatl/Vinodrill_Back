@@ -209,7 +209,7 @@ namespace Vinodrill_Back.Models.EntityFramework
 
                 entity.HasOne(d => d.SejourAvisNavigation)
                     .WithMany(p => p.AvisSejourNavigation)
-                    .HasForeignKey(d => d.IdClient)
+                    .HasForeignKey(d => d.IdSejour)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_sej_avi");
 

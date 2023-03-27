@@ -80,15 +80,15 @@ namespace Vinodrill_Back.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Activite))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Activite>> PostActivite(Activite Activite)
+        public async Task<ActionResult<Activite>> PostActivite(Activite activite)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            await dataRepository.Add(Activite);
+            await dataRepository.Add(activite);
 
-            return CreatedAtAction("GetActiviteById", new { id = Activite.IdActivite }, Activite);
+            return CreatedAtAction("GetActiviteById", new { id = activite.IdActivite }, activite);
         }
 
         // DELETE: api/Activites/5

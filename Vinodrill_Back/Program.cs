@@ -101,6 +101,7 @@ namespace Vinodrill_Back
             builder.Services.AddScoped<IDataRepository<User>, UserManager>();
             builder.Services.AddScoped<IBonreductionRepository, BonReductionManager>();
             builder.Services.AddScoped<IDataRepository<ReponseAvis>, ReponseAvisManager>();
+            builder.Services.AddScoped<IDataRepository<Societe>, SocieteManager>();
 
             var app = builder.Build();
 

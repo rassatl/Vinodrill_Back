@@ -110,7 +110,7 @@ namespace Vinodrill_Back.Controllers
                 issuer: _configuration["Jwt:ValidIssuer"],
                 audience: _configuration["Jwt:ValidAudience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddHours(12),
                 signingCredentials: credentials
             );
             return new JwtSecurityTokenHandler().WriteToken(token);

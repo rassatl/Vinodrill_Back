@@ -27,6 +27,12 @@ namespace Vinodrill_Back.Models.DataManager
             entityToUpdate.DescriptionSejour = entity.DescriptionSejour;
             entityToUpdate.PrixSejour = entity.PrixSejour;
             entityToUpdate.NbJour = entity.NbJour;
+            entityToUpdate.IdDestination= entity.IdDestination;
+            entityToUpdate.IdTheme= entity.IdTheme;
+            entityToUpdate.PhotoSejour= entity.PhotoSejour;
+            entityToUpdate.NbNuit= entity.NbNuit;
+            entityToUpdate.LibelleTemps= entity.LibelleTemps;
+            entityToUpdate.NoteMoyenne= entity.NoteMoyenne;
 
             await dbContext.SaveChangesAsync();
         }
