@@ -80,12 +80,24 @@ namespace Vinodrill_Back.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Activite))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Activite>> PostActivite(Activite activite)
+        public async Task<ActionResult<Activite>> PostActivite(RequestBodyActivite request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            Activite activite = new Activite
+            {
+                IdPartenaire = request.IdPartenaire,
+                LibelleActivite = request.LibelleActivite,
+                DescriptionActivite = request.DescriptionActivite,
+                RueRdv = request.RueRdv,
+                CpRdv = request.CpRdv,
+                VilleRdv = request.VilleRdv,
+                HoraireActivite = TimeOnly.FromDateTime(DateTime.Parse(request.HoraireActivite))
+            };
+
             await dataRepository.Add(activite);
 
             return CreatedAtAction("GetActiviteById", new { id = activite.IdActivite }, activite);
@@ -108,5 +120,16 @@ namespace Vinodrill_Back.Controllers
             return NoContent();
         }
 
+    }
+
+    public class RequestBodyActivite
+    {
+        public int IdPartenaire { get; set; }
+        public string LibelleActivite { get; set; }
+        public string DescriptionActivite { get; set; }
+        public string RueRdv { get; set; }
+        public string CpRdv { get; set; }
+        public string VilleRdv { get; set; }
+        public string HoraireActivite { get; set; }
     }
 }

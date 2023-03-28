@@ -40,19 +40,41 @@ namespace Vinodrill_Back.Controllers
 
         // // POST: api/Hebergement
         // // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        // [HttpPost]
-        // [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Hebergement))]
-        // [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        // public async Task<ActionResult<Hebergement>> PostAdresse(Hebergement hebergement, Hotel hotel)
-        // {
-        //     if (!ModelState.IsValid)
-        //     {
-        //         return BadRequest(ModelState);
-        //     }
-        //     await dataRepository.Add(hebergement, hotel);
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Hebergement))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Hebergement>> Post(RequestBodyHebergement request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //     return CreatedAtAction("GetHebergement", new { id = hebergement.IdHebergement }, hebergement);
-        // }
+            Hotel hotel = new Hotel
+            {
+                NomPartenaire = request.NomPartenaire,
+                RuePartenaire = request.RuePartenaire,
+                CpPartenaire = request.CpPartenaire,
+                VillePartenaire = request.VillePartenaire,
+                PhotoPartenaire = request.PhotoPartenaire,
+                EmailPartenaire = request.EmailPartenaire,
+                Contact = request.Contact,
+                DetailPartenaire = request.DetailPartenaire,
+                NbEtoileHotel = request.NbEtoileHotel,
+            };
+
+            Hebergement hebergement = new Hebergement
+            {
+                LibelleHebergement = request.LibelleHebergement,
+                DescriptionHebergement = request.DescriptionHebergement,
+                NbChambre = request.NbChambre,
+                HoraireHebergement = TimeOnly.FromDateTime(DateTime.Parse( request.HoraireHebergement))
+            };
+
+            await dataRepository.Add(hebergement, hotel);
+
+            return CreatedAtAction("GetHebergementById", new { id = hebergement.IdHebergement }, hebergement);
+        }
 
         // GET: api/Activites/GetVisiteById/5
         [HttpGet("GetHebergementById/{id}")]
@@ -70,5 +92,27 @@ namespace Vinodrill_Back.Controllers
             return hebergement;
 
         }
+
+
+    }
+
+    public class RequestBodyHebergement
+    {
+        /*public int IdPartenaire {get; set;}
+        public int IdHebergement {get; set;}*/
+        public string LibelleHebergement { get; set; }
+        public string DescriptionHebergement { get; set; }
+        public int NbChambre { get; set; }
+        public string HoraireHebergement { get; set; }
+        
+        public string NomPartenaire { get; set; }
+        public string RuePartenaire { get; set; }
+        public string CpPartenaire { get; set; }
+        public string VillePartenaire { get; set; }
+        public string? PhotoPartenaire { get; set; }
+        public string EmailPartenaire { get; set; }
+        public string Contact { get; set; }
+        public string DetailPartenaire { get; set; }
+        public int NbEtoileHotel { get; set; }
     }
 }

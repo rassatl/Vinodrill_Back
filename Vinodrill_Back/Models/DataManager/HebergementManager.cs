@@ -13,9 +13,10 @@ namespace Vinodrill_Back.Models.DataManager
 
         public HebergementManager(VinodrillDBContext context) { dbContext = context; }
 
-        public Task Add(Hebergement entity)
+        public async Task Add(Hebergement entity)
         {
-            return null;
+            await dbContext.Hebergements.AddAsync(entity);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task Add(Hebergement entity, Hotel hotel)
@@ -31,7 +32,11 @@ namespace Vinodrill_Back.Models.DataManager
                 Contact = hotel.Contact,
                 DetailPartenaire = hotel.DetailPartenaire
             };
+
+            
+
             dbContext.Partenaires.Add(newPartenaire);
+            await dbContext.SaveChangesAsync();
 
             int idPartenaire = dbContext.Partenaires.OrderByDescending(p => p.IdPartenaire).First().IdPartenaire;
 
