@@ -17,12 +17,10 @@ namespace Vinodrill_Back.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepository dataRepository;
-        private readonly IConfiguration _configuration;
 
-        public UserController(IUserRepository dataRepo, IConfiguration configuration)
+        public UserController(IUserRepository dataRepo)
         {
             dataRepository = dataRepo;
-            _configuration = configuration;
         }
 
         [HttpGet("GetUserById/{id}")]

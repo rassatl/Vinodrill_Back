@@ -87,16 +87,7 @@ namespace Vinodrill_Back.Controllers
                 return BadRequest(ModelState);
             }
 
-            Activite activite = new Activite
-            {
-                IdPartenaire = request.IdPartenaire,
-                LibelleActivite = request.LibelleActivite,
-                DescriptionActivite = request.DescriptionActivite,
-                RueRdv = request.RueRdv,
-                CpRdv = request.CpRdv,
-                VilleRdv = request.VilleRdv,
-                HoraireActivite = TimeOnly.FromDateTime(DateTime.Parse(request.HoraireActivite))
-            };
+            Activite activite = request.ToActivite();
 
             await dataRepository.Add(activite);
 
@@ -124,6 +115,7 @@ namespace Vinodrill_Back.Controllers
 
     public class RequestBodyActivite
     {
+        public int? IdActivite { get; set; }
         public int IdPartenaire { get; set; }
         public string LibelleActivite { get; set; }
         public string DescriptionActivite { get; set; }
@@ -131,5 +123,21 @@ namespace Vinodrill_Back.Controllers
         public string CpRdv { get; set; }
         public string VilleRdv { get; set; }
         public string HoraireActivite { get; set; }
+
+        public Activite ToActivite()
+        {
+            Activite activite = new Activite
+            {
+                IdPartenaire = this.IdPartenaire,
+                LibelleActivite = this.LibelleActivite,
+                DescriptionActivite = this.DescriptionActivite,
+                RueRdv = this.RueRdv,
+                CpRdv = this.CpRdv,
+                VilleRdv = this.VilleRdv,
+                HoraireActivite = TimeOnly.FromDateTime(DateTime.Parse(this.HoraireActivite))
+            };
+
+            return activite;
+        }
     }
 }

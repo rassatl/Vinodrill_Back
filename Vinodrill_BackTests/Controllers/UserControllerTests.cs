@@ -19,7 +19,7 @@ namespace Vinodrill_Back.Controllers.Tests
     {
         private readonly VinodrillDBContext _context;
         private readonly UserController _controller;
-        private IDataRepository<User> _dataRepository;
+        private IUserRepository _dataRepository;
         public UserControllerTests()
         {
             var builder = new DbContextOptionsBuilder<VinodrillDBContext>().UseNpgsql("Server=postgresql-vinodrill.alwaysdata.net;port=5432;Database=vinodrill_main_db;uid=vinodrill;password=uaK99vfWnq6GLrg;SearchPath=vinodrill;"); // Chaine de connexion à mettre dans les ( )
@@ -46,7 +46,7 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void GetUserByIdTest_HttpResponse404()
         {
-            var mockRepository = new Mock<IDataRepository<User>>();
+            var mockRepository = new Mock<IUserRepository>();
             var userController = new UserController(mockRepository.Object);
             // Act
             ActionResult<User> avi = userController.GetUserById(-1).Result;
@@ -74,8 +74,8 @@ namespace Vinodrill_Back.Controllers.Tests
 
 
             // Act
-            var mockRepository = new Mock<IDataRepository<User>>();
-            mockRepository.Setup(x => x.GetById(1).Result).Returns(user);
+            var mockRepository = new Mock<IUserRepository>();
+            mockRepository.Setup(x => x.GetById(1, false).Result).Returns(user);
             var userController = new UserController(mockRepository.Object);
 
 
@@ -110,8 +110,8 @@ namespace Vinodrill_Back.Controllers.Tests
             };
 
 
-            var mockRepository = new Mock<IDataRepository<User>>();
-            mockRepository.Setup(x => x.GetById(1).Result).Returns(user);
+            var mockRepository = new Mock<IUserRepository>();
+            mockRepository.Setup(x => x.GetById(1, false).Result).Returns(user);
             var userController = new UserController(mockRepository.Object);
             var actionResult = userController.PutUser(1, user).Result;
             Assert.IsInstanceOfType(actionResult, typeof(NoContentResult), "Pas un NoContentResult");
@@ -120,7 +120,7 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutUserTest_HttpResponse400()
         {
-            var mockRepository = new Mock<IDataRepository<User>>();
+            var mockRepository = new Mock<IUserRepository>();
             var userController = new UserController(mockRepository.Object);
 
             // Arrange
@@ -147,7 +147,7 @@ namespace Vinodrill_Back.Controllers.Tests
         [TestMethod()]
         public void PutUserTest_HttpResponse404()
         {
-            var mockRepository = new Mock<IDataRepository<User>>();
+            var mockRepository = new Mock<IUserRepository>();
             var userController = new UserController(mockRepository.Object);
 
             // Arrange

@@ -41,7 +41,7 @@ namespace Vinodrill_Back.Controllers.Tests
             var mockRepository = new Mock<IDataRepository<Activite>>();
             var userController = new ActiviteController(mockRepository.Object);
 
-            Activite activite = new Activite()
+            RequestBodyActivite requestActivite = new RequestBodyActivite()
             {
                 IdActivite = 1,
                 LibelleActivite = "Activite de follie",
@@ -49,16 +49,25 @@ namespace Vinodrill_Back.Controllers.Tests
                 RueRdv = "9 Rue de l'arc-en-ciel",
                 CpRdv = "74000",
                 VilleRdv = "Annecy",
-                HoraireActivite = new TimeOnly()
+                HoraireActivite = new TimeOnly().AddHours(1).ToString(),
             };
 
-            var actionResult = userController.PostActivite(activite).Result;
+            Activite activite = requestActivite.ToActivite();
+
+            var actionResult = userController.PostActivite(requestActivite).Result;
             Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Activite>), "Pas un ActionResult<Activite>");
             Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult), "Pas un CreatedAtActionResult");
             var result = actionResult.Result as CreatedAtActionResult;
             Assert.IsInstanceOfType(result.Value, typeof(Activite), "Pas une Activite");
             activite.IdActivite = ((Activite)result.Value).IdActivite;
-            Assert.AreEqual(activite, (Activite)result.Value, "Activitees pas identiques");
+            //Assert.AreEqual(activite, (Activite)result.Value, "Activitees pas identiques");
+            Assert.AreEqual(activite.IdActivite, ((Activite)result.Value).IdActivite, "Id pas identiques");
+            Assert.AreEqual(activite.LibelleActivite, ((Activite)result.Value).LibelleActivite, "Libelle pas identiques");
+            Assert.AreEqual(activite.DescriptionActivite, ((Activite)result.Value).DescriptionActivite, "Description pas identiques");
+            Assert.AreEqual(activite.RueRdv, ((Activite)result.Value).RueRdv, "Rue pas identiques");
+            Assert.AreEqual(activite.CpRdv, ((Activite)result.Value).CpRdv, "Cp pas identiques");
+            Assert.AreEqual(activite.VilleRdv, ((Activite)result.Value).VilleRdv, "Ville pas identiques");
+            Assert.AreEqual(activite.HoraireActivite, ((Activite)result.Value).HoraireActivite, "Horaire pas identiques");
         }
     }
 }
